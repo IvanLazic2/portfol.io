@@ -1,0 +1,41 @@
+@import "../../../variables.scss";
+
+.dropdown-item {
+    width: 100% !important;
+}
+
+.dropdown-item:focus {
+    background-color: $main-color;
+}
+
+#upper-files-container {
+    column-gap: 150px
+}
+
+#dropdown-container,
+#dropdown-container button {
+    width: 130px;
+}
+
+#dropdownMenuLink {
+    color: black !important;
+    background-color: white !important;
+    text-align: left;
+}
+
+#dropdownMenuLink:hover {
+    background-color: $file-hover !important;
+}
+
+#dropdownMenuLink:after {
+    float: right;
+    text-align: right;
+    margin-top: 8px;
+}
+
+#page-title {
+    font-weight: 300;
+    font-size: 1.5rem;
+    line-height: 2.5rem;
+    padding-top: 5px;
+}

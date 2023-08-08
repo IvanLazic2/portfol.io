@@ -1,0 +1,15 @@
+@import "../../../variables.scss";
+
+footer {
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    margin-top: auto;
+    width: 100%;
+    border-top: solid 1px $main-color;
+    //background-image: linear-gradient(to right, rgba(255, 255, 255, 0.7), rgba($main-color, $alpha: 0.8)), url("../../../assets/images/server.jpg");
+}
+
+#footer-copy {
+    margin: 0;
+}

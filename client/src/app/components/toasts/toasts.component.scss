@@ -1,0 +1,22 @@
+@import "../../../variables.scss";
+
+:host {
+    position: absolute;
+    top: 90px;
+    right: 5px;
+    z-index: 1200;
+    border-radius: 5px;
+}
+
+.toast {
+    margin: 10px;
+    border-radius: 5px;
+}
+
+.Success {
+    background-color: $main-color;
+}
+
+.Warning {
+    background-color: $warning;
+}

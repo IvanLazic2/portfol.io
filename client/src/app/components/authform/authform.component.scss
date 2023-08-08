@@ -1,0 +1,23 @@
+@import "../../../variables.scss";
+
+.page-title {
+    font-weight: 300;
+    font-size: 1.5rem;
+    line-height: 2.5rem;
+    padding-top: 5px;
+}
+
+.auth-container {
+    margin-top: 0 !important;
+}
+
+.form-control:focus {
+    border-color: $main-color;
+    box-shadow: 0px 0px 0px 4px rgba($main-color, 0.3);
+}
+
+#submitButton {
+    background-color: $main-color;
+    border: 1px solid $main-color;
+    color: black;
+}
