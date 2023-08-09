@@ -3,7 +3,7 @@
     <h5 class="card-title">{{ File?.Name ?? '' }}</h5>
     <h6 class="card-subtitle mb-2 text-muted">{{ ConvertToMB(File?.Size ?? 0) }} mb</h6>
     <!--<p class="card-text file-text">{{ GetFileIcon(File?.Name ?? '') }}</p>-->
-    <img [src]="File?._id ?? '' | secureImage | async">
+    <img [src]="">
         <div class="file-link-container d-inline-flex">
             <a class="card-link file-card-link" (click)="Download()"><fa-icon [icon]="downloadIcon"></fa-icon></a>
             <a class="card-link file-card-link" (click)="Share()"><fa-icon [icon]="shareIcon"></fa-icon></a>

@@ -14,14 +14,18 @@
 </head>
 
 <body>
+    
+
     <div class="content-layout">
-        <div [@navbarAnimationTrigger]="getRouteAnimation()" class="navbar">
-            <app-nav></app-nav>
+    <!--<app-sidebar [@navbarAnimationTrigger]="getRouteAnimation()" class="navbar">
+            
             <div *ngIf="canShowNewArt()">
-                <app-newart animateAfterAppear="fadeIn" *ifRoles="['Artist']" ></app-newart>
+                <app-new-project animateAfterAppear="fadeIn" *ifRoles="['Artist']" ></app-new-project>
             </div>
             
-        </div>
+        </app-sidebar>-->
+
+        <app-sidebar [@navbarAnimationTrigger]="getRouteAnimation()"></app-sidebar>
 
         <div [@contentAnimationTrigger]="getRouteAnimation()" class="content">
             <router-outlet></router-outlet>
@@ -31,8 +35,6 @@
             <app-footer></app-footer>
         </div>-->    
     </div>
-
-    
 
     <div class="toast-container">
         <app-toasts aria-live="polite" aria-atomic="true"></app-toasts>

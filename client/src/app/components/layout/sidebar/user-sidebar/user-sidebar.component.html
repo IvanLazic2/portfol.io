@@ -1,0 +1,17 @@
+<p>user profile picture</p>
+<p>user description</p>
+
+<div *ngIf="this.userService.GetLoggedIn() | async">
+    <div *ifRoles="['Artist']">
+
+
+        <div class="container-sm mb-2">
+            <div class="d-flex flex-wrap justify-content-evenly mb-2 p-3">
+                <h2 id="page-title" class="d-inline m-1">Create a <b>new project</b></h2>
+                <button routerLink="/project/new" id="createProjectButton" class="btn btn-primary my-2">Create</button>
+            </div>
+        </div>
+
+
+    </div>
+</div>

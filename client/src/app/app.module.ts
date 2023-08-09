@@ -7,8 +7,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { FooterComponent } from './components/footer/footer.component';
-import { NavComponent } from './components/nav/nav.component';
+import { FooterComponent } from './components/layout/footer/footer.component';
+import { NavbarComponent } from './components/layout/navbar/navbar.component';
 import { HomeComponent } from './components/home/home.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -20,27 +20,24 @@ import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastsComponent } from './components/toasts/toasts.component';
 import { AuthformComponent } from './components/authform/authform.component';
 import { UserComponent } from './components/user/user.component';
-import { AnimationService } from './services/animation/animation.service';
-import { IfrolesDirective } from './directives/ifroles/ifroles.directive';
 import { NewartComponent } from './components/newart/newart.component';
 import { PortfolioitemComponent } from './components/portfolioitem/portfolioitem.component';
 import { AnimateAfterAppearDirective } from './directives/animations/animateBeforeAppear/animate-after-appear.directive';
 import { SecureImagePipe } from './pipes/secureImage/secure-image.pipe';
+import { SidebarModule } from './components/layout/sidebar/sidebar.module';
+import { CommonDirectivesModule } from './directives/common-directives.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    FooterComponent,
-    NavComponent,
     UserComponent,
     ToastsComponent,
     AuthformComponent,
     NewartComponent,
     PortfolioitemComponent,
     AnimateAfterAppearDirective,
-    IfrolesDirective,
-    SecureImagePipe
+    SecureImagePipe,
   ],
   imports: [
     BrowserModule,
@@ -51,7 +48,9 @@ import { SecureImagePipe } from './pipes/secureImage/secure-image.pipe';
     RoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    NgbProgressbarModule
+    NgbProgressbarModule,
+    CommonDirectivesModule,
+    SidebarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

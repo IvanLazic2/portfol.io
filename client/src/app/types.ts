@@ -1,5 +1,25 @@
 //// App Models
 
+export interface Project {
+    _id: string,
+    Name: string,
+    Images: Image[],
+    Concept: string,
+    TehnicalInfo: TehnicalInfo
+}
+
+export interface Image {
+    _id: string,
+    ImageId: string,
+    Description: string,
+}
+
+export interface TehnicalInfo {
+    _id: string,
+    Dimensions: number[], // Width, Height, Depth
+    Material: string
+}
+
 export interface File {
     _id: string,
     Name: string,

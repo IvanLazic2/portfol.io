@@ -7,11 +7,11 @@
 // async route guards
 
 import { Component, OnInit } from '@angular/core';
-import { ChildrenOutletContexts, NavigationEnd, Router, Event as NavigationEvent } from '@angular/router';
+import { ChildrenOutletContexts, NavigationEnd, Router, Event as NavigationEvent, NavigationStart } from '@angular/router';
 import { Location } from '@angular/common';
 import { BehaviorSubject, filter, map, startWith } from 'rxjs';
 import { File, Page } from './types';
-import { animate, state, style, transition, trigger, query, group } from '@angular/animations'; 
+import { animate, state, style, transition, trigger, query, group } from '@angular/animations';
 import { AnimationService } from './services/animation/animation.service';
 import { start } from '@popperjs/core';
 import { IntersectionObserverService } from './services/IntersectionObserver/intersection-observer-service.service';
@@ -144,7 +144,9 @@ export class AppComponent {
     protected animationService: AnimationService,
     protected router: Router,
     protected location: Location
-    ) {  }
+  ) {
+    //this.router.navigate([{ outlets: { primary: ['signin'], sidebar: ['sidebar'] } }])
+  }
 
   /*readonly showAbout2$ = this.router.events.pipe(
     filter((event: NavigationEnd) => event instanceof NavigationEnd),
@@ -154,13 +156,11 @@ export class AppComponent {
 
   title = 'client';
 
-  
-
   getRouteAnimation() {
     return this.animationService.GetCurrentAnimation();
   }
 
-  canShowNewArt(): boolean {
+  /*canShowNewArt(): boolean {
     return ["/user"].every((path) => this.location.path().startsWith(path));
-  }
+  }*/
 }
