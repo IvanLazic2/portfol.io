@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpEventType, HttpParams, HttpRequest, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpEventType, HttpParams, HttpRequest, HttpHeaders, HttpEvent } from '@angular/common/http';
 import { BehaviorSubject, filter, map, Observable, tap, last, endWith } from 'rxjs';
 
 
-import { File, Page, Category, SortOrder, ToastType } from "../../types"
+import { Page, Category, SortOrder, ToastType } from "../../types"
 import { ToastService } from '../toast/toast.service';
 import { UserService } from '../user/user.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,10 +22,10 @@ export class FilesService {
 
 
   constructor(
-    protected http: HttpClient,
-    protected toastService: ToastService,
-    protected userService: UserService,
-    protected sanitizer: DomSanitizer
+    private http: HttpClient,
+    private authService: AuthService,
+    private toastService: ToastService,
+    private userService: UserService,
   ) {
 
     this.RefreshFiles();
@@ -120,6 +121,51 @@ export class FilesService {
         last()
       );
   }
+
+
+
+
+
+
+
+
+
+  
+
+  public UploadFile(file: File): Observable<HttpEvent<any>> {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+
+    const req = new HttpRequest('POST', '/api/upload/', formData, {
+      "headers": this.authService.GetAuthHeaders(),
+      reportProgress: true,
+    });
+
+    return this.http.request(req);
+  }
+
+  public UploadProjectFiles(projectId: string, files: File[]): Observable<HttpEvent<any>> {
+    const formData = new FormData();
+    for (let file of files) {
+      formData.append('files', file, file.name);
+    }
+
+    const req = new HttpRequest('POST', '/api/upload/', formData, {
+      "headers": this.authService.GetAuthHeaders(),
+      reportProgress: true,
+    });
+
+    return this.http.request(req);
+  }
+
+
+
+
+
+
+
+
+
 
   Download(_id: string) {
     const token = window.localStorage.getItem("token");

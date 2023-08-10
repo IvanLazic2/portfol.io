@@ -5,10 +5,6 @@ import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
-
-import { FooterComponent } from './components/layout/footer/footer.component';
-import { NavbarComponent } from './components/layout/navbar/navbar.component';
 import { HomeComponent } from './components/home/home.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -23,7 +19,7 @@ import { UserComponent } from './components/user/user.component';
 import { NewartComponent } from './components/newart/newart.component';
 import { PortfolioitemComponent } from './components/portfolioitem/portfolioitem.component';
 import { AnimateAfterAppearDirective } from './directives/animations/animateBeforeAppear/animate-after-appear.directive';
-import { SecureImagePipe } from './pipes/secureImage/secure-image.pipe';
+import { SecureImagePipe } from './pipes/_depr_secureImage/secure-image.pipe';
 import { SidebarModule } from './components/layout/sidebar/sidebar.module';
 import { CommonDirectivesModule } from './directives/common-directives.module';
 

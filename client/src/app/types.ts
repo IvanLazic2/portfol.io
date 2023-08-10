@@ -1,3 +1,12 @@
+//// POST Models
+
+export interface ProjectPOST {
+    Name: string,
+    Concept: string
+}
+
+
+
 //// App Models
 
 export interface Project {

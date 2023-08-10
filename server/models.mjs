@@ -52,21 +52,19 @@ export class UserSigninPOST {
     }
 }
 
-export class ProjectPOST {
-    constructor(name, images, concept, tehnicalInfo) {
-        this.Name = name;
-        this.Images = images;
-        this.Concept = concept;
-        this.TehnicalInfo = tehnicalInfo;
-    }
 
-    Validate() {
-        if (!this.Name)
-            return "Name is required";
-        if (!this.Artwork)
-            return "Artwork is required";
-    }
-}
+
+
+
+
+
+
+
+
+
+
+
+
 
 export class ImagePOST {
     constructor(image, description) {

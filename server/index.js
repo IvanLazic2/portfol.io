@@ -1,3 +1,5 @@
+// https://github.com/geshan/expressjs-structure/tree/master
+
 import express from "express";
 import mongodb, { GridFSBucket, ObjectId } from "mongodb";
 import multer from "multer";
@@ -8,6 +10,9 @@ import util from "util";
 import jwt from "jsonwebtoken";
 import { UserDL, UserSignupPOST, UserSigninPOST, UserSigninGET, UserGET, FileDL } from "./models.mjs";
 
+import { router as projectRouter } from './src/routers/project.router.js';
+import { router as uploadRouter } from './src/routers/upload.router.js';
+
 const randomBytesAsync = util.promisify(crypto.randomBytes);
 const pbkdf2Async = util.promisify(crypto.pbkdf2);
 
@@ -16,6 +21,11 @@ const __dirname = path.resolve();
 const port = 3000;
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
+
+
+
+
+
 
 
 const connectToDB = async () => {
@@ -39,6 +49,10 @@ const connectToDB = async () => {
 
 (
     async () => {
+        
+
+
+
         const jwtProtection = (req, res, next) => {
             try {
                 const token = req.headers["authorization"];
@@ -77,9 +91,28 @@ const connectToDB = async () => {
         app.use(express.json());
         app.use(express.urlencoded({ extended: true }));
 
+        // routers
+        app.use('/api/project', projectRouter);
+        app.use('/api/upload', uploadRouter);
+
+
+
+
+
+
         let { db, bucket } = await connectToDB();
 
         //app.use(express.static('../client/dist/client'));
+
+
+
+
+
+
+
+
+
+
 
         app.get("/api/test", jwtProtection, (req, res) => {
             res.send("aaa");
@@ -147,6 +180,9 @@ const connectToDB = async () => {
                 });
         });
 
+
+
+
         app.get("/api/getImage/:_id", (req, res) => {
             db
                 .collection("files")
@@ -158,6 +194,18 @@ const connectToDB = async () => {
                     return res.status(500).json({ message: err });
                 });
         })
+
+
+
+
+        /*app.post("/api/project", jwtProtection, async (req, res) => {
+            console.log(req.body);
+        });
+
+        app.post("/api/upload", jwtProtection, )*/
+
+
+
 
         app.post("/api/files", jwtProtection, upload.single("file"), async (req, res) => {
             const fileDL = new FileDL(req.file.originalname, req.file.size, Date.now(), ObjectId(req.id));

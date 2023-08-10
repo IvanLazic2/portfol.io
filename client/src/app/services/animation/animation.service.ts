@@ -17,7 +17,7 @@ export class AnimationService {
       this.currentAnimation = this.lastAnimation;
 
     this.lastAnimation = this.currentAnimation;
-    console.log(this.currentAnimation);
+    //console.log(this.currentAnimation);
     return this.currentAnimation;
 
 
