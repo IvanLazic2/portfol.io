@@ -18,6 +18,8 @@ export class NewProjectComponent {
   form: FormGroup;
   progress: number = 0;
 
+  //@ViewChild('fileInput') fileInput: ElementRef;
+
   constructor(
     private fb: FormBuilder,
     private filesService: FilesService,
@@ -57,17 +59,24 @@ export class NewProjectComponent {
 
     if (files && files.length > 0) {
       for (let i = 0; i < files.length; i++) {
-        this.files.setControl(this.files.length, this.fb.control(files[i]));
+        //this.files.setControl(this.files.length, this.fb.control(files[i]));
       }
     }
   }
 
   onFileChange(event: Event) {
+
+    console.log("a1", this.files.length);
+
     const files = (event.target as HTMLInputElement).files;
+
+    
 
     if (files && files.length > 0) {
       for (let i = 0; i < files.length; i++) {
-        this.files.setControl(this.files.length, this.fb.control(files[i]));
+        
+        //this.files.setControl(this.files.length, this.fb.control(files[i]));
+        this.files.push(this.fb.control(files[i]));
       }
     }
   }
@@ -82,7 +91,7 @@ export class NewProjectComponent {
     const projectConcept = this.form.value.projectConcept;
     const files = this.form.value.files;
 
-    console.log(projectName, projectConcept, files);
+    //console.log(projectName, projectConcept, files);
 
     const project: ProjectPOST = {
       Name: projectName,
@@ -94,16 +103,17 @@ export class NewProjectComponent {
         console.log(response);
         //alert("project create success");
 
-        const projectId = "" // getaj projectid sa servera
+        const projectId = response.projectId;
 
         this.filesService.UploadProjectFiles(projectId, files).subscribe({
           next: event => {
             if (event.type === HttpEventType.UploadProgress) {
+              //console.log("PROGRESS: ", this.progress);
               this.progress = Math.round(100 * event.loaded / (event?.total ?? 0));
             }
             else if (event.type === HttpEventType.Response) {
               console.log(event.body);
-              alert('file upload success');
+              console.log('file upload success');
               this.files.clear();
               this.form.reset();
               this.progress = 0;
@@ -136,12 +146,16 @@ export class NewProjectComponent {
 
     this.files.removeAt(index);
 
+    console.log((document.getElementById("fileInput") as HTMLInputElement).files);
+
     const reader = new FileReader();
 
     reader.onload = () => {
       const url = reader.result as string;
       URL.revokeObjectURL(url);
     }
+
+    (document.getElementById("fileInput") as HTMLInputElement).value = "";
 
     reader.readAsDataURL(fileControl.value);
 

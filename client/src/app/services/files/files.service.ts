@@ -149,6 +149,7 @@ export class FilesService {
     for (let file of files) {
       formData.append('files', file, file.name);
     }
+    formData.append('projectId', projectId);
 
     const req = new HttpRequest('POST', '/api/upload/', formData, {
       "headers": this.authService.GetAuthHeaders(),

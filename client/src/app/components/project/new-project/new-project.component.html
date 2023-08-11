@@ -38,7 +38,8 @@
             <p>Drag and drop your files here</p>
         </div>
 
-        <input id="fileInput" type="file" multiple (change)="onFileChange($event)">
+        <input id="fileInput" type="file" formArrayName="files" multiple (change)="onFileChange($event)">
+
         
         <ul formArrayName="files">
             <li *ngFor="let file of files.controls; let i = index" [formGroupName]="i">

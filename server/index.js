@@ -1,7 +1,6 @@
 // https://github.com/geshan/expressjs-structure/tree/master
 
 import express from "express";
-import mongodb, { GridFSBucket, ObjectId } from "mongodb";
 import multer from "multer";
 import fs from "fs";
 import path from "path";
@@ -9,6 +8,8 @@ import crypto from "crypto";
 import util from "util";
 import jwt from "jsonwebtoken";
 import { UserDL, UserSignupPOST, UserSigninPOST, UserSigninGET, UserGET, FileDL } from "./models.mjs";
+import { GridFSBucket, ObjectId } from "mongodb";
+import { db } from './src/configs/db.config.js';
 
 import { router as projectRouter } from './src/routers/project.router.js';
 import { router as uploadRouter } from './src/routers/upload.router.js';
@@ -28,24 +29,7 @@ const upload = multer({ storage: storage });
 
 
 
-const connectToDB = async () => {
-    const url = "mongodb://127.0.0.1:27017";
-    const client = new mongodb.MongoClient(url);
-    const dbName = "portfolio";
 
-    try {
-        await client.connect();
-        console.log("MongoDB connected");
-    }
-    catch (exc) {
-        console.log(exc);
-    }
-
-    let db = client.db(dbName);
-    let bucket = new mongodb.GridFSBucket(db);
-
-    return { db, bucket };
-}
 
 (
     async () => {
@@ -100,7 +84,7 @@ const connectToDB = async () => {
 
 
 
-        let { db, bucket } = await connectToDB();
+        //let { db, bucket } = await connectToDB();
 
         //app.use(express.static('../client/dist/client'));
 
