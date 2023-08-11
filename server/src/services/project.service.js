@@ -1,7 +1,11 @@
 import { ObjectId } from "mongodb";
 import { db } from '../configs/db.config.js';
 
+import { ProjectDL } from "../models/project/Project.models.js";
+
 export async function get(res, id) {
+
+
     db
         .collection("projects")
         .findOne({ "_id": ObjectId(id) })
@@ -24,10 +28,12 @@ export async function get(res, id) {
         });
 }
 
-export async function create(res, project) {
+export async function create(res, userId, project) {
+    const projectDL = ProjectDL.InstanceFromObject(userId, project);
+
     db
         .collection('projects')
-        .insertOne(project)
+        .insertOne(projectDL)
         .then(result => {
             res.status(200).json({ message: "Project created.", projectId: result.insertedId.toString() });
         })

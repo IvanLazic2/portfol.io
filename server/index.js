@@ -8,7 +8,7 @@ import crypto from "crypto";
 import util from "util";
 import jwt from "jsonwebtoken";
 import { UserDL, UserSignupPOST, UserSigninPOST, UserSigninGET, UserGET, FileDL } from "./models.mjs";
-import { GridFSBucket, ObjectId } from "mongodb";
+import { Decimal128, GridFSBucket, ObjectId } from "mongodb";
 import { db } from './src/configs/db.config.js';
 
 import { router as projectRouter } from './src/routers/project.router.js';
@@ -46,6 +46,7 @@ const upload = multer({ storage: storage });
                         console.log(token);
 
                     req.id = decodedToken.id;
+                    req.userId = decodedToken.id;
 
                     return;
                 });
@@ -76,7 +77,7 @@ const upload = multer({ storage: storage });
         app.use(express.urlencoded({ extended: true }));
 
         // routers
-        app.use('/api/project', projectRouter);
+        app.use('/api/project', jwtProtection, projectRouter);
         app.use('/api/upload', uploadRouter);
 
 

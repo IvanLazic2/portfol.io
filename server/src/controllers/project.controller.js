@@ -1,7 +1,9 @@
 import { ObjectId } from "mongodb";
 import { db } from '../configs/db.config.js';
-import { ProjectPOST } from '../models/project/ProjectPOST.model.js';
+
 import * as projectService from '../services/project.service.js';
+
+import { ProjectPOST } from '../models/project/Project.models.js';
 
 export async function get(req, res, next) {
     try {
@@ -21,14 +23,16 @@ export async function get(req, res, next) {
 
 export async function create(req, res, next) {
     try {
-
+        
         const project = ProjectPOST.InstanceFromObject(req.body);
 
         const errorMessage = project.Validate();
-        if (errorMessage)
-            res.status(400).json({ message: errorMessage });
-
-        await projectService.create(res, project); // TODO: svakom useru dodat projekt u njegov collection
+        if (errorMessage) {
+            res.statusMessage = errorMessage;
+            return res.status(400).end();
+        }
+        
+        await projectService.create(res, req.userId, project); // TODO: svakom useru dodat projekt u njegov collection
 
     } catch (error) {
         console.error("Error in project controller: create: ", error);
