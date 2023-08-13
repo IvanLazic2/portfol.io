@@ -3,50 +3,41 @@ import { db } from '../configs/db.config.js';
 
 import { ProjectDL } from "../models/project/Project.models.js";
 
-export async function get(res, id) {
+export async function get(id) {
+    const result = await db
+        .collection('projects')
+        .findOne({ '_id': ObjectId(id) });
 
+    return result;
+}
 
-    db
-        .collection("projects")
-        .findOne({ "_id": ObjectId(id) })
-        .then(dbProject => {
-            if (!dbProject)
-                res.status(400).json({ message: "Cannot find project." });
+export async function getAll(userId) {
+    const result = await db
+        .collection('projects')
+        .find({ 'UserId': userId })
+        .toArray();
 
-            const project = ProjectGET.InstanceFromObject(dbProject);
-
-            if (!project) {
-                console.error("Error in project service: get: ", "Cannot cast dbProject");
-                res.status(500).json({ message: "Something went wrong." })
-            }
-
-            res.status(200).json({ project: project });
-        })
-        .catch(error => {
-            console.error("Error in project service: get: ", error);
-            res.status(500).json({ message: "Failed getting project." });
-        });
+    return result;
 }
 
 export async function create(res, userId, project) {
     const projectDL = ProjectDL.InstanceFromObject(userId, project);
 
-    db
+    const result = await db
         .collection('projects')
-        .insertOne(projectDL)
-        .then(result => {
-            res.status(200).json({ message: "Project created.", projectId: result.insertedId.toString() });
-        })
-        .catch(error => {
-            console.error("Error in project service: create: ", error);
-            res.status(500).json({ message: "Failed creating project." });
-        });
+        .insertOne(projectDL);
+
+    return result;
 }
 
-export async function update(res, id, project) {
-    /* temp */ res.status(200).json({ message: "Project update called." });
+export async function update(id, project) {
+
 }
 
-export async function remove(res, id) {
-    /* temp */ res.status(200).json({ message: "Project remove called." });
+export async function remove(id) {
+    const result = await db
+        .collection('projects')
+        .deleteOne({ _id: ObjectId(id) });
+
+    return result;
 }

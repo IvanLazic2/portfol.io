@@ -1,0 +1,7 @@
+<p>project-details works!</p>
+
+<div *ngIf="Project$ | async as Project">
+    <p>Id: {{ Project.Id }}, Name: {{ Project.Name }}, Concept: {{ Project.Concept }}</p>
+    <button (click)="Edit()">Edit</button>
+    <button (click)="Delete()">Delete</button>
+</div>

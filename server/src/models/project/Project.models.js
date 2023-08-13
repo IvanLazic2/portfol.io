@@ -15,6 +15,29 @@ export class ProjectPOST {
     }
 }
 
+export class ProjectGET {
+    constructor(id, name, concept) {
+        this.Id = id;
+        this.Name = name;
+        this.Concept = concept;
+        //this.TehnicalInfo = tehnicalInfo;
+    }
+
+    static InstanceFromObject(obj) {
+        return new ProjectGET(obj._id, obj.Name, obj.Concept);
+    }
+
+    static InstanceFromObjectArray(objArr) {
+        const result = [];
+
+        objArr.forEach(function (el) {
+            result.push(ProjectGET.InstanceFromObject(el));
+        });
+
+        return result;
+    }
+}
+
 export class ProjectDL {
     constructor(userId, name, concept) {
         this.UserId = userId;

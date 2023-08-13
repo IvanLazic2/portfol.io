@@ -1,18 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NewProjectComponent } from './new-project/new-project.component';
-import { ProjectComponent } from './project.component';
-import { ProjectRoutingModule } from './project-routing.module';
+import { ProjectsComponent } from './projects.component';
+import { ProjectRoutingModule } from './projects-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SafeUrlPipe } from 'src/app/pipes/safeUrl/safe-url.pipe';
+import { RouterModule } from '@angular/router';
+import { ProjectDetailsComponent } from './project-details/project-details.component';
 
 
 
 @NgModule({
   declarations: [
-    ProjectComponent,
+    ProjectsComponent,
     NewProjectComponent,
+    ProjectDetailsComponent,
 
     SafeUrlPipe
   ],
@@ -21,7 +24,11 @@ import { SafeUrlPipe } from 'src/app/pipes/safeUrl/safe-url.pipe';
     ProjectRoutingModule,
     NgbModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule
+  ],
+  exports: [
+    ProjectsComponent
   ]
 })
-export class ProjectModule { }
+export class ProjectsModule { }

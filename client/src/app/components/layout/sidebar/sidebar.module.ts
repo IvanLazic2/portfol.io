@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NewProjectComponent } from '../../project/new-project/new-project.component';
+import { NewProjectComponent } from '../../projects/new-project/new-project.component';
 import { UserSidebarComponent } from './user-sidebar/user-sidebar.component';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

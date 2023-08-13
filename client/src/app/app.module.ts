@@ -22,6 +22,7 @@ import { AnimateAfterAppearDirective } from './directives/animations/animateBefo
 import { SecureImagePipe } from './pipes/_depr_secureImage/secure-image.pipe';
 import { SidebarModule } from './components/layout/sidebar/sidebar.module';
 import { CommonDirectivesModule } from './directives/common-directives.module';
+import { ProjectsModule } from './components/projects/projects.module';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { CommonDirectivesModule } from './directives/common-directives.module';
     ReactiveFormsModule,
     NgbProgressbarModule,
     CommonDirectivesModule,
-    SidebarModule
+    SidebarModule,
+    ProjectsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

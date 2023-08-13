@@ -33,7 +33,7 @@ const upload = multer({ storage: storage });
 
 (
     async () => {
-        
+
 
 
 
@@ -77,7 +77,7 @@ const upload = multer({ storage: storage });
         app.use(express.urlencoded({ extended: true }));
 
         // routers
-        app.use('/api/project', jwtProtection, projectRouter);
+        app.use('/api/projects', jwtProtection, projectRouter);
         app.use('/api/upload', uploadRouter);
 
 

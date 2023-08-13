@@ -8,7 +8,7 @@ import { ProjectPOST } from 'src/app/types';
   providedIn: 'root'
 })
 export class ProjectService {
-  private projectUrl = '/api/project/'
+  private projectsUrl = '/api/projects/';
 
   constructor(
     private http: HttpClient,
@@ -16,8 +16,26 @@ export class ProjectService {
   ) { }
 
   public CreateProject(project: ProjectPOST): Observable<any> {
-    return this.http.post(this.projectUrl, project, {
-        "headers": this.authService.GetAuthHeaders()
+    return this.http.post(this.projectsUrl, project, {
+        "headers": this.authService.GetAuthHeaders(),
       });
+  }
+
+  public GetProjects(): Observable<any> {
+    return this.http.get(this.projectsUrl, {
+      "headers": this.authService.GetAuthHeaders(),
+    });
+  }
+
+  public GetProject(id: string): Observable<any> {
+    return this.http.get(this.projectsUrl + id, {
+      "headers": this.authService.GetAuthHeaders(),
+    })
+  }
+
+  public DeleteProject(id: string): Observable<any> {
+    return this.http.delete(this.projectsUrl + id, {
+      "headers": this.authService.GetAuthHeaders(),
+    })
   }
 }

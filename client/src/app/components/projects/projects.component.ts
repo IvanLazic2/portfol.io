@@ -1,0 +1,34 @@
+import { Component, OnInit } from '@angular/core';
+import { Observable, firstValueFrom } from 'rxjs';
+import { ProjectService } from 'src/app/services/project/project.service';
+
+@Component({
+  selector: 'app-projects',
+  templateUrl: './projects.component.html',
+  styleUrls: ['./projects.component.scss']
+})
+export class ProjectsComponent implements OnInit{
+  Projects$: Observable<any[]>;
+
+  constructor(
+    private projectService: ProjectService
+  ) { }
+
+  ngOnInit(): void {
+    this.GetProjects();
+  }
+
+  protected GetProjects() {
+    this.Projects$ = this.projectService.GetProjects();
+  }
+
+  protected EditProject() {
+
+  }
+
+  protected async DeleteProject(id: string) {
+    const result = await firstValueFrom(this.projectService.DeleteProject(id));
+    console.log(result);
+    this.GetProjects();
+  }
+}

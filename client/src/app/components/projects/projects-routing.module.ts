@@ -1,17 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { ProjectComponent } from './project.component';
+import { ProjectsComponent } from './projects.component';
 import { NewProjectComponent } from './new-project/new-project.component';
+import { ProjectDetailsComponent } from './project-details/project-details.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: ProjectComponent,
+    component: ProjectsComponent,
   },
   {
     path: 'new',
     component: NewProjectComponent,
+  },
+  {
+    path: ':id',
+    component: ProjectDetailsComponent
   }
 ];
 

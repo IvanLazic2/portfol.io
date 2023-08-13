@@ -8,6 +8,7 @@ import { ProjectService } from 'src/app/services/project/project.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { ProjectPOST, ToastType } from 'src/app/types';
+import { Observable, lastValueFrom, firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-new-project',
@@ -17,6 +18,7 @@ import { ProjectPOST, ToastType } from 'src/app/types';
 export class NewProjectComponent {
   form: FormGroup;
   progress: number = 0;
+  uploadProgress: number = 0;
 
   //@ViewChild('fileInput') fileInput: ElementRef;
 
@@ -60,28 +62,29 @@ export class NewProjectComponent {
     if (files && files.length > 0) {
       for (let i = 0; i < files.length; i++) {
         //this.files.setControl(this.files.length, this.fb.control(files[i]));
+        this.files.push(this.fb.control(files[i]));
       }
     }
   }
 
   onFileChange(event: Event) {
 
-    console.log("a1", this.files.length);
+    //console.log("a1", this.files.length);
 
     const files = (event.target as HTMLInputElement).files;
 
-    
+
 
     if (files && files.length > 0) {
       for (let i = 0; i < files.length; i++) {
-        
+
         //this.files.setControl(this.files.length, this.fb.control(files[i]));
         this.files.push(this.fb.control(files[i]));
       }
     }
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (!this.form.valid) {
       alert("Form not valid");
       return;
@@ -98,7 +101,38 @@ export class NewProjectComponent {
       Concept: projectConcept
     };
 
-    this.projectService.CreateProject(project).subscribe({
+    try {
+
+      const createResponse = await firstValueFrom(this.projectService.CreateProject(project));
+
+      if (!createResponse.projectId)
+        console.error("projectId undefined");
+
+      let uploadResponse$ = this.filesService.UploadProjectFiles(createResponse.projectId, files)
+
+      uploadResponse$.subscribe({
+        next: event => {
+          if (event.type === HttpEventType.UploadProgress) {
+            this.uploadProgress = Math.round((100 * event.loaded) / (event?.total ?? 100));
+            console.log(this.uploadProgress);
+          } else if (event.type === HttpEventType.Response) {
+            console.log('Upload complete:', event.body);
+            this.uploadProgress = 0;
+            this.files.clear();
+            this.form.reset();
+          }
+        }
+      });
+
+      await lastValueFrom(uploadResponse$);
+
+    } catch (error) {
+      console.error(error);
+      this.uploadProgress = 0;
+    }
+
+
+    /*this.projectService.CreateProject(project).subscribe({
       next: response => {
         console.log(response);
         //alert("project create success");
@@ -131,7 +165,7 @@ export class NewProjectComponent {
         console.error(error);
         alert("project create error");
       }
-    });
+    });*/
 
   }
 

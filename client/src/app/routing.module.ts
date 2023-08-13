@@ -29,7 +29,7 @@ const routes: Route[] =
     },
     {
       path: 'project',
-      loadChildren: () => import('./components/project/project.module').then(m => m.ProjectModule),
+      loadChildren: () => import('./components/projects/projects.module').then(m => m.ProjectsModule),
       data: { animation: "sidebarAnimation" }
     },
   ]
