@@ -1,7 +1,41 @@
 <p>project-details works!</p>
-
 <div *ngIf="Project$ | async as Project">
-    <p>Id: {{ Project.Id }}, Name: {{ Project.Name }}, Concept: {{ Project.Concept }}</p>
-    <button (click)="Edit()">Edit</button>
-    <button (click)="Delete()">Delete</button>
+
+    <div *ngIf="!this.editProjectSevice.getIsEditing();">
+        <div *ngIf="Project$ | async as Project">
+            <p>Id: {{ Project.Id }}, Name: {{ Project.Name }}, Concept: {{ Project.Concept }}</p>
+            <button (click)="Edit()">Edit</button>
+            <button (click)="Delete()">Delete</button>
+        </div>
+    </div>
+
+    <div *ngIf="this.editProjectSevice.getIsEditing();">
+        <form [formGroup]="form" (ngSubmit)="Save()">
+
+            <div>
+                <label for="projectName">Name:</label>
+                <input type="text" id="projectName" formControlName="projectName">
+
+                <div *ngIf="projectName.invalid && projectName.touched">
+                    <p *ngIf="projectName.errors?.['required']">Name is required</p>
+                    <p *ngIf="projectName.errors?.['minLength']">Name must be at least 3 characters long</p>
+                </div>
+            </div>
+
+            <div>
+                <label for="projectConcept">Concept:</label>
+                <input type="text" id="projectConcept" formControlName="projectConcept">
+
+                <div *ngIf="projectConcept.invalid && projectConcept.touched">
+                    <p *ngIf="projectConcept.errors?.['pattern']">Concept must contain only alphanumeric characters and
+                        spaces</p>
+                </div>
+            </div>
+
+            <button type="button" (click)="this.editProjectSevice.setIsEditing(false)">Cancel</button>
+            <button type="submit">Save</button>
+
+        </form>
+
+    </div>
 </div>

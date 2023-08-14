@@ -17,7 +17,6 @@ import { Observable, lastValueFrom, firstValueFrom } from 'rxjs';
 })
 export class NewProjectComponent {
   form: FormGroup;
-  progress: number = 0;
   uploadProgress: number = 0;
 
   //@ViewChild('fileInput') fileInput: ElementRef;

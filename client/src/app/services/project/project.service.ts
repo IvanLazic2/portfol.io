@@ -33,6 +33,12 @@ export class ProjectService {
     })
   }
 
+  public EditProject(id: string, project: ProjectPOST) {
+    return this.http.put(this.projectsUrl + id, project, {
+      "headers": this.authService.GetAuthHeaders(),
+    });
+  }
+
   public DeleteProject(id: string): Observable<any> {
     return this.http.delete(this.projectsUrl + id, {
       "headers": this.authService.GetAuthHeaders(),

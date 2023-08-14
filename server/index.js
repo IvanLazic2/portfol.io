@@ -60,7 +60,9 @@ const upload = multer({ storage: storage });
         }
 
         async function generateToken(res, id, username, message) {
-            const exp = Math.floor(Date.now() / 1000) + 60 * 60;
+
+            const exp = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 365;
+
             jwt.sign({ id, username, exp }, secret, (err, token) => {
                 if (err)
                     return res.status(500).json({ message: err });

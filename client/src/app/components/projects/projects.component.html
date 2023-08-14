@@ -3,8 +3,8 @@
 <div *ngFor="let project of Projects$ | async">
     <div style="background-color: bisque; margin: 5px;">
         <p>Id: {{ project.Id }}, Name: {{ project.Name }}, Concept: {{ project.Concept }}</p>
-        <button [routerLink]="['/project', project.Id]">Details</button>
-        <button (click)="EditProject()" >Edit</button>
+        <button (click)="DetailsProject(project.Id)">Details</button>
+        <button (click)="EditProject(project.Id)" >Edit</button>
         <button (click)="DeleteProject(project.Id)">Delete</button>
     </div>
 

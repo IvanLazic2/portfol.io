@@ -72,7 +72,9 @@ export async function update(req, res, next) {
         if (errorMessage)
             return res.status(400).json({ messageType: MessageType.Warning, message: errorMessage });
 
-        await projectService.update(res, req.params.id, project)
+        const result = await projectService.update(req.params.id, project)
+
+        res.status(200).json({ messageType: MessageType.Success, message: "Project updated." });
 
     } catch (error) {
         console.error("Error in project controller: update: ", error);

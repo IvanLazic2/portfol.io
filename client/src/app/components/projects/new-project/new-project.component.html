@@ -1,7 +1,7 @@
 <div *ngIf="this.userService.GetLoggedIn() | async">
 
     <div class="navbar navbar-expand-sm p-3">
-        <div class="container-md" style="background-color: red;">
+        <div class="container-md">
 
             <h2 class="d-inline" id="page-title">Create a <b>new project</b></h2>
 
@@ -54,7 +54,7 @@
 
         <button type="submit">Submit</button>
 
-        <progress [value]="progress" max="100"></progress>
+        <progress [value]="uploadProgress" max="100"></progress>
 
     </form>
 </div>

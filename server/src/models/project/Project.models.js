@@ -38,7 +38,13 @@ export class ProjectGET {
     }
 }
 
-export class ProjectDL {
+
+
+
+
+// DATA LAYER
+
+export class ProjectCreate {
     constructor(userId, name, concept) {
         this.UserId = userId;
         this.Name = name;
@@ -47,6 +53,18 @@ export class ProjectDL {
     }
 
     static InstanceFromObject(userId, obj) {
-        return new ProjectDL(userId, obj.Name, obj.Concept);
+        return new ProjectCreate(userId, obj.Name, obj.Concept);
+    }
+}
+
+export class ProjectUpdate {
+    constructor(name, concept) {
+        this.Name = name;
+        this.Concept = concept;
+        //this.TehnicalInfo = tehnicalInfo;
+    }
+
+    static InstanceFromObject(obj) {
+        return new ProjectUpdate(obj.Name, obj.Concept);
     }
 }
