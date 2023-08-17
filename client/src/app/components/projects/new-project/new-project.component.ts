@@ -1,8 +1,8 @@
-import { HttpEventType } from '@angular/common/http';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { HttpEventType, HttpEvent } from '@angular/common/http';
+import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { take } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { FilesService } from 'src/app/services/files/files.service';
 import { ProjectService } from 'src/app/services/project/project.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
@@ -15,9 +15,11 @@ import { Observable, lastValueFrom, firstValueFrom } from 'rxjs';
   templateUrl: './new-project.component.html',
   styleUrls: ['./new-project.component.scss']
 })
-export class NewProjectComponent {
+export class NewProjectComponent implements OnDestroy {
   form: FormGroup;
-  uploadProgress: number = 0;
+  //uploadProgress: number = 0;
+  uploadProgresses: { [key: string]: number } = {};
+  uploadSubscriptions: Subscription[] = [];
 
   //@ViewChild('fileInput') fileInput: ElementRef;
 
@@ -33,9 +35,10 @@ export class NewProjectComponent {
     this.form = this.fb.group({
       projectName: ['', [Validators.required, Validators.minLength(3)]],
       projectConcept: ['', [Validators.pattern(/^[a-zA-Z0-9]+$/)]],
-      files: this.fb.array([], [Validators.required])
+      //files: this.fb.array([], [Validators.required])
     });
   }
+  files: File[] = [];
 
   get projectName() {
     return this.form.get('projectName') as FormControl;
@@ -45,42 +48,16 @@ export class NewProjectComponent {
     return this.form.get('projectConcept') as FormControl;
   }
 
-  get files() {
-    return this.form.get('files') as FormArray;
+  onSelect(event: any) {
+    console.log(event);
+    this.files.push(...event.addedFiles);
+    console.log(this.files);
   }
 
-  onDragOver(event: DragEvent) {
-    event.preventDefault();
-  }
-
-  onDrop(event: DragEvent) {
-    event.preventDefault();
-
-    const files = event.dataTransfer?.files;
-
-    if (files && files.length > 0) {
-      for (let i = 0; i < files.length; i++) {
-        //this.files.setControl(this.files.length, this.fb.control(files[i]));
-        this.files.push(this.fb.control(files[i]));
-      }
-    }
-  }
-
-  onFileChange(event: Event) {
-
-    //console.log("a1", this.files.length);
-
-    const files = (event.target as HTMLInputElement).files;
-
-
-
-    if (files && files.length > 0) {
-      for (let i = 0; i < files.length; i++) {
-
-        //this.files.setControl(this.files.length, this.fb.control(files[i]));
-        this.files.push(this.fb.control(files[i]));
-      }
-    }
+  onRemove(event: any) {
+    console.log(event);
+    this.files.splice(this.files.indexOf(event), 1);
+    console.log(this.files);
   }
 
   async onSubmit() {
@@ -91,8 +68,6 @@ export class NewProjectComponent {
 
     const projectName = this.form.value.projectName;
     const projectConcept = this.form.value.projectConcept;
-    const files = this.form.value.files;
-
     //console.log(projectName, projectConcept, files);
 
     const project: ProjectPOST = {
@@ -107,91 +82,37 @@ export class NewProjectComponent {
       if (!createResponse.projectId)
         console.error("projectId undefined");
 
-      let uploadResponse$ = this.filesService.UploadProjectFiles(createResponse.projectId, files)
+      let uploadResponses$ = this.filesService.UploadProjectFiles(createResponse.projectId, this.files);
 
-      uploadResponse$.subscribe({
-        next: event => {
-          if (event.type === HttpEventType.UploadProgress) {
-            this.uploadProgress = Math.round((100 * event.loaded) / (event?.total ?? 100));
-            console.log(this.uploadProgress);
-          } else if (event.type === HttpEventType.Response) {
-            console.log('Upload complete:', event.body);
-            this.uploadProgress = 0;
-            this.files.clear();
-            this.form.reset();
-          }
-        }
-      });
-
-      await lastValueFrom(uploadResponse$);
-
-    } catch (error) {
-      console.error(error);
-      this.uploadProgress = 0;
-    }
-
-
-    /*this.projectService.CreateProject(project).subscribe({
-      next: response => {
-        console.log(response);
-        //alert("project create success");
-
-        const projectId = response.projectId;
-
-        this.filesService.UploadProjectFiles(projectId, files).subscribe({
+      uploadResponses$.forEach(([fileName, response$]) => {
+        const uploadSubscription = response$.subscribe({
           next: event => {
             if (event.type === HttpEventType.UploadProgress) {
-              //console.log("PROGRESS: ", this.progress);
-              this.progress = Math.round(100 * event.loaded / (event?.total ?? 0));
+              if (event.total !== undefined) {
+                this.uploadProgresses[fileName] = Math.round((100 * event.loaded) / event.total);
+              }
             }
             else if (event.type === HttpEventType.Response) {
-              console.log(event.body);
-              console.log('file upload success');
-              this.files.clear();
-              this.form.reset();
-              this.progress = 0;
+              delete this.uploadProgresses[fileName];
+              console.log(fileName, event.body);
             }
           },
-          error: error => {
-            console.error(error);
-            alert('file upload error');
-            this.progress = 0;
+          error: (error: any) => {
+
+          },
+          complete: () => {
+
           }
         });
 
-      },
-      error: error => {
-        console.error(error);
-        alert("project create error");
-      }
-    });*/
-
-  }
-
-  onClick() {
-    const input = document.getElementById("fileInput") as HTMLInputElement;
-
-    input.click();
-  }
-
-  onRemove(index: number) {
-    const fileControl = this.files.at(index);
-
-    this.files.removeAt(index);
-
-    console.log((document.getElementById("fileInput") as HTMLInputElement).files);
-
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      const url = reader.result as string;
-      URL.revokeObjectURL(url);
+        this.uploadSubscriptions.push(uploadSubscription);
+      });
+    } catch (error) {
+      console.error(error);
     }
-
-    (document.getElementById("fileInput") as HTMLInputElement).value = "";
-
-    reader.readAsDataURL(fileControl.value);
-
   }
 
+  ngOnDestroy(): void {
+    this.uploadSubscriptions.forEach(subscription => subscription.unsubscribe());
+  }
 }

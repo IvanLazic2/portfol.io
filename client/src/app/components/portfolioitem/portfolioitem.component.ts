@@ -3,7 +3,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { faDownload, faShare, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FilesService } from 'src/app/services/files/files.service';
-import { File, ToastType } from '../../types';
+import { ToastType } from '../../types';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import mb from 'node-mb';
@@ -17,7 +17,7 @@ import mb from 'node-mb';
 export class PortfolioitemComponent implements OnInit {
   imageToShow: any;
   isImageLoading: boolean;
-  @Input() File?: (File | undefined);
+  @Input() File?: any
   downloadIcon = faDownload
   shareIcon = faShare
   trashIcon = faTrash

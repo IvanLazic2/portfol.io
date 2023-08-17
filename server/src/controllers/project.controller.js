@@ -1,7 +1,8 @@
-// TODO: dodat messageType = ["success", "warning", "error"]
-
+import fs from 'fs/promises';
 import { MessageType } from '../enums/messageType.js';
-import * as projectService from '../services/project.service.js';
+import * as ProjectService from '../services/project.service.js';
+import * as UploadService from '../services/upload.service.js';
+import { uploadDirectory } from '../configs/upload.config.js';
 
 import { ProjectPOST, ProjectGET } from '../models/project/Project.models.js';
 
@@ -13,7 +14,7 @@ export async function get(req, res, next) {
             return res.staus(500).end();
         }
 
-        const result = await projectService.get(req.params.id);
+        const result = await ProjectService.get(req.params.id);
 
         const project = ProjectGET.InstanceFromObject(result);
 
@@ -28,7 +29,7 @@ export async function get(req, res, next) {
 export async function getAll(req, res, next) {
     try {
 
-        const result = await projectService.getAll(req.userId);
+        const result = await ProjectService.getAll(req.userId);
 
         const projects = ProjectGET.InstanceFromObjectArray(result);
 
@@ -53,7 +54,7 @@ export async function create(req, res, next) {
             return res.status(400).json({ messageType: MessageType.Warning, message: errorMessage });
         }
 
-        const result = await projectService.create(res, req.userId, project);
+        const result = await ProjectService.create(res, req.userId, project);
 
         res.status(200).json({ messageType: MessageType.Success, message: "Project created.", projectId: result.insertedId.toString() })
 
@@ -72,7 +73,7 @@ export async function update(req, res, next) {
         if (errorMessage)
             return res.status(400).json({ messageType: MessageType.Warning, message: errorMessage });
 
-        const result = await projectService.update(req.params.id, project)
+        const result = await ProjectService.update(req.params.id, project)
 
         res.status(200).json({ messageType: MessageType.Success, message: "Project updated." });
 
@@ -90,7 +91,11 @@ export async function remove(req, res, next) {
             return res.staus(500).end();
         }
 
-        const result = await projectService.remove(req.params.id);
+        await fs.rm(uploadDirectory + req.params.id, { recursive: true });
+
+        await UploadService.removeAll(req.params.id);
+
+        await ProjectService.remove(req.params.id);
 
         res.status(200).json({ messageType: MessageType.Success, message: "Project removed" });
 

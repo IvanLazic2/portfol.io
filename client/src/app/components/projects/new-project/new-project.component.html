@@ -34,27 +34,38 @@
         </div>
 
 
-        <div class="drop-zone" (dragover)="onDragOver($event)" (drop)="onDrop($event)" (click)="onClick()">
-            <p>Drag and drop your files here</p>
-        </div>
 
-        <input id="fileInput" type="file" formArrayName="files" multiple (change)="onFileChange($event)">
+        <ngx-dropzone (change)="onSelect($event)">
 
-        
-        <ul formArrayName="files">
-            <li *ngFor="let file of files.controls; let i = index" [formGroupName]="i">
-                <img [src]="file.value | safeUrl">
-                <button type="button" (click)="onRemove(i)">Remove</button>
-            </li>
-        </ul>
+            <ngx-dropzone-label>Drop your art here.</ngx-dropzone-label>
 
-        <div *ngIf="files.invalid && files.touched">
-            <p *ngIf="files.errors?.['required']">At least one file is required</p>
-        </div>
+            <div *ngFor="let f of files">
+                <div *ngIf="f.type.startsWith('image/')">
+                    <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" [file]="f" [removable]="true"
+                        (removed)="onRemove(f)">
+                        <ngx-dropzone-label style="color: white;">{{ f.name }}</ngx-dropzone-label>
+                        
+                    </ngx-dropzone-image-preview>
+                    <progress max="100" [value]="uploadProgresses[f.name] || 0"
+                            [style.width.%]="uploadProgresses[f.name] || 0"></progress>
+                </div>
+            </div>
+
+            <div *ngFor="let f of files">
+                <div *ngIf="f.type.startsWith('video/')">
+                    <ngx-dropzone-video-preview ngProjectAs="ngx-dropzone-preview" [file]="f" [removable]="true"
+                        (removed)="onRemove(f)">
+                        <ngx-dropzone-label style="color: white;">{{ f.name }}</ngx-dropzone-label>
+                        
+                    </ngx-dropzone-video-preview>
+                    <progress max="100" [value]="uploadProgresses[f.name] || 0"
+                            [style.width.%]="uploadProgresses[f.name] || 0"></progress>
+                </div>
+            </div>
+
+        </ngx-dropzone>
 
         <button type="submit">Submit</button>
-
-        <progress [value]="uploadProgress" max="100"></progress>
 
     </form>
 </div>

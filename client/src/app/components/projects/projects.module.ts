@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SafeUrlPipe } from 'src/app/pipes/safeUrl/safe-url.pipe';
 import { RouterModule } from '@angular/router';
 import { ProjectDetailsComponent } from './project-details/project-details.component';
+import { NgxDropzoneModule } from 'ngx-dropzone';
 
 
 
@@ -25,7 +26,8 @@ import { ProjectDetailsComponent } from './project-details/project-details.compo
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule
+    RouterModule,
+    NgxDropzoneModule,
   ],
   exports: [
     ProjectsComponent

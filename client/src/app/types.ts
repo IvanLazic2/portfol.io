@@ -5,7 +5,10 @@ export interface ProjectPOST {
     Concept: string
 }
 
-
+export interface UploadEdit {
+    UploadId: string,
+    File: File
+}
 
 //// App Models
 
@@ -29,14 +32,14 @@ export interface TehnicalInfo {
     Material: string
 }
 
-export interface File {
+/*export interface File {
     _id: string,
     Name: string,
     Size: number,
     UploadDate: Date;
     //Categories: Category[],
     //_defaultSortIndex: number
-}
+}*/
 
 export enum Category {
     Files = "files",

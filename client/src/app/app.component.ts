@@ -10,7 +10,7 @@ import { Component, OnInit } from '@angular/core';
 import { ChildrenOutletContexts, NavigationEnd, Router, Event as NavigationEvent, NavigationStart } from '@angular/router';
 import { Location } from '@angular/common';
 import { BehaviorSubject, filter, map, startWith } from 'rxjs';
-import { File, Page } from './types';
+import { Page } from './types';
 import { animate, state, style, transition, trigger, query, group } from '@angular/animations';
 import { AnimationService } from './services/animation/animation.service';
 import { start } from '@popperjs/core';

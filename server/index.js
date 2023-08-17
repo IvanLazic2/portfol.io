@@ -13,6 +13,7 @@ import { db } from './src/configs/db.config.js';
 
 import { router as projectRouter } from './src/routers/project.router.js';
 import { router as uploadRouter } from './src/routers/upload.router.js';
+import { router as thumbnailRouter } from './src/routers/thumbnail.router.js';
 
 const randomBytesAsync = util.promisify(crypto.randomBytes);
 const pbkdf2Async = util.promisify(crypto.pbkdf2);
@@ -81,7 +82,7 @@ const upload = multer({ storage: storage });
         // routers
         app.use('/api/projects', jwtProtection, projectRouter);
         app.use('/api/upload', uploadRouter);
-
+        app.use('/api/thumbnail', thumbnailRouter);
 
 
 

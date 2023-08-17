@@ -33,8 +33,6 @@ export async function create(res, userId, project) {
 export async function update(id, project) {
     const projectUpdate = ProjectUpdate.InstanceFromObject(project);
 
-    console.log("tusam");
-
     const result = await db
         .collection('projects')
         .updateOne(

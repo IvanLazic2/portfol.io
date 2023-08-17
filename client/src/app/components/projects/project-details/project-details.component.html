@@ -7,10 +7,16 @@
             <button (click)="Edit()">Edit</button>
             <button (click)="Delete()">Delete</button>
         </div>
+        <div>
+            <p>aaa</p>
+            <div *ngFor="let thumbnail of this.Thumbnails">
+                <img [src]="'data:image/jpeg;base64,' + thumbnail">
+            </div>
+        </div>
     </div>
 
     <div *ngIf="this.editProjectSevice.getIsEditing();">
-        <form [formGroup]="form" (ngSubmit)="Save()">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
             <div>
                 <label for="projectName">Name:</label>
@@ -31,6 +37,40 @@
                         spaces</p>
                 </div>
             </div>
+
+
+
+            <ngx-dropzone (change)="onSelect($event)">
+
+                <ngx-dropzone-label>Drop your art here.</ngx-dropzone-label>
+
+                <div *ngFor="let f of filesToAdd">
+                    <div *ngIf="f.type.startsWith('image/')">
+                        <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" [file]="f" [removable]="true"
+                            (removed)="onRemove(f)">
+                            <ngx-dropzone-label style="color: white;">{{ f.name }}</ngx-dropzone-label>
+
+                        </ngx-dropzone-image-preview>
+                        <progress max="100" [value]="uploadProgresses[f.name] || 0"
+                            [style.width.%]="uploadProgresses[f.name] || 0"></progress>
+                    </div>
+                </div>
+
+                <div *ngFor="let f of filesToAdd">
+                    <div *ngIf="f.type.startsWith('video/')">
+                        <ngx-dropzone-video-preview ngProjectAs="ngx-dropzone-preview" [file]="f" [removable]="true"
+                            (removed)="onRemove(f)">
+                            <ngx-dropzone-label style="color: white;">{{ f.name }}</ngx-dropzone-label>
+
+                        </ngx-dropzone-video-preview>
+                        <progress max="100" [value]="uploadProgresses[f.name] || 0"
+                            [style.width.%]="uploadProgresses[f.name] || 0"></progress>
+                    </div>
+                </div>
+
+            </ngx-dropzone>
+
+
 
             <button type="button" (click)="this.editProjectSevice.setIsEditing(false)">Cancel</button>
             <button type="submit">Save</button>

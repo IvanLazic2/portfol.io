@@ -127,9 +127,12 @@ export class FilesService {
 
 
 
+  private readonly uploadUrl = "/api/upload/";
+  private readonly thumbnailUrl = "/api/thumbnail/";
 
-
-
+  public GetThumbnails(projectId: string): Observable<string[]> {
+    return this.http.get<string[]>(this.thumbnailUrl + projectId);
+  }
   
 
   public UploadFile(file: File): Observable<HttpEvent<any>> {
@@ -144,11 +147,32 @@ export class FilesService {
     return this.http.request(req);
   }
 
-  public UploadProjectFiles(projectId: string, files: File[]): Observable<HttpEvent<any>> {
-    const formData = new FormData();
+
+
+  public UploadProjectFiles(projectId: string, files: File[]): [string, Observable<HttpEvent<any>>][] {
+    const responses: [string, Observable<any>][] = [];
+
+    files.forEach(file => {
+      const formData = new FormData();
+      formData.append('upload', file);
+      formData.append('projectId', projectId);
+
+      const response = this.http.post(this.uploadUrl, formData, {
+        "headers": this.authService.GetAuthHeaders(),
+        reportProgress: true,
+        observe: 'events'
+      });
+
+      responses.push([file.name, response]);
+    });
+
+    return responses;
+
+    /*const formData = new FormData();
     for (let file of files) {
       formData.append('files', file, file.name);
     }
+    formData.append('upload', files[0]);
     formData.append('projectId', projectId);
 
     const req = new HttpRequest('POST', '/api/upload/', formData, {
@@ -156,10 +180,14 @@ export class FilesService {
       reportProgress: true,
     });
 
-    return this.http.request(req);
+    return this.http.request(req);*/
   }
 
-
+  DeleteUpload(uploadId: string): Observable<any> {
+    return this.http.delete(this.uploadUrl + uploadId, {
+      "headers": this.authService.GetAuthHeaders(),
+    });
+  }
 
 
 
