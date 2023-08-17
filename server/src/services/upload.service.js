@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { db } from "../configs/db.config.js"
 import { UploadDL } from "../models/upload/Upload.model.js";
 
@@ -21,6 +22,13 @@ export async function getAll(projectId) {
 }
 
 // TODO: async function get(id)
+export async function get(id) {
+    const result = await db
+        .collection('uploads')
+        .findOne({ _id: ObjectId(id) });
+
+    return result;
+}
 
 export async function remove(id) {
     const result = await db

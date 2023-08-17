@@ -130,8 +130,8 @@ export class FilesService {
   private readonly uploadUrl = "/api/upload/";
   private readonly thumbnailUrl = "/api/thumbnail/";
 
-  public GetThumbnails(projectId: string): Observable<string[]> {
-    return this.http.get<string[]>(this.thumbnailUrl + projectId);
+  public GetThumbnails(projectId: string): Observable<any[]> {
+    return this.http.get<any[]>(this.thumbnailUrl + projectId);
   }
   
 

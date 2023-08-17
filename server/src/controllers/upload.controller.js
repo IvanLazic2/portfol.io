@@ -2,7 +2,7 @@
 import fs from "fs/promises";
 import sharp from "sharp";
 import { exec } from "child_process";
-import { uploadDirectory } from "../configs/upload.config.js";
+import { upload, uploadDirectory } from "../configs/upload.config.js";
 import * as UploadService from '../services/upload.service.js';
 import { MessageType } from "../enums/messageType.js";
 import { UploadGET } from "../models/upload/Upload.model.js";
@@ -48,46 +48,23 @@ export async function create(req, res, next) {
         return res.status(200).json({ message: "Files save called: projectId: " + req.body.projectId });
 
     } catch (err) {
-        console.error("Error in upload controller: saveFiles: ", err);
+        console.error("Error in upload controller: create: ", err);
         next(err);
     }
 }
 
-export async function get() {
-
+export async function get(req, res, next) {
+    
 }
-
-/*export async function getThumbnails(req, res, next) {
-    try {
-
-        const result = await UploadService.getThumbnails(req.params.projectId);
-
-        const promises = [];
-        const uploads = [];
-
-        for (const upload of result) {
-            const buffer = await fs.readFile(uploadDirectory + upload._id.toString())
-                .catch((error) => {
-                    console.error(`Error reading file: ${error}`);
-                });
-
-            if (buffer) {
-                uploads.push(new UploadGET(upload.Name, upload.Size, upload.UploadDate, buffer));
-            }
-        }
-
-        console.log(uploads);
-
-        res.status(200).end();
-
-    } catch (err) {
-        console.error("Error in upload controller: getFiles: ", err);
-        next(err);
-    }
-}*/
 
 export async function remove(req, res, next) {
     try {
+        const getResult = await UploadService.get(req.params.id);
+
+        await fs.rm(uploadDirectory + getResult.ProjectId + '/' + req.params.id + '.jpg')
+        await fs.rm(uploadDirectory + getResult.ProjectId + '/thumbnail_' + req.params.id + '.jpg')
+
+        const removeResult = await UploadService.remove(req.params.id);
 
         /* temp */ return res.status(200).json({ message: "File delete called: id: " + req.params.id });
 

@@ -1,21 +1,15 @@
 <p>project-details works!</p>
 <div *ngIf="Project$ | async as Project">
 
-    <div *ngIf="!this.editProjectSevice.getIsEditing();">
+    <div *ngIf="!this.editProjectService.getIsEditing();">
         <div *ngIf="Project$ | async as Project">
             <p>Id: {{ Project.Id }}, Name: {{ Project.Name }}, Concept: {{ Project.Concept }}</p>
             <button (click)="Edit()">Edit</button>
             <button (click)="Delete()">Delete</button>
         </div>
-        <div>
-            <p>aaa</p>
-            <div *ngFor="let thumbnail of this.Thumbnails">
-                <img [src]="'data:image/jpeg;base64,' + thumbnail">
-            </div>
-        </div>
     </div>
 
-    <div *ngIf="this.editProjectSevice.getIsEditing();">
+    <div *ngIf="this.editProjectService.getIsEditing();">
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
             <div>
@@ -72,10 +66,17 @@
 
 
 
-            <button type="button" (click)="this.editProjectSevice.setIsEditing(false)">Cancel</button>
+            <button type="button" (click)="this.editProjectService.setIsEditing(false)">Cancel</button>
             <button type="submit">Save</button>
 
         </form>
-
     </div>
+
+    <div>
+        <div *ngFor="let thumbnail of this.Thumbnails">
+            <img [src]="'data:image/jpeg;base64,' + thumbnail.Data">
+            <button (click)="DeleteUpload(thumbnail.UploadId)">Delete</button>
+        </div>
+    </div>
+
 </div>
