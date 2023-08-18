@@ -84,32 +84,37 @@ export class NewProjectComponent implements OnDestroy {
 
       let uploadResponses$ = this.filesService.UploadProjectFiles(createResponse.projectId, this.files);
 
-      uploadResponses$.forEach(([fileName, response$]) => {
-        const uploadSubscription = response$.subscribe({
-          next: event => {
-            if (event.type === HttpEventType.UploadProgress) {
-              if (event.total !== undefined) {
+      const uploadPromises = uploadResponses$.map(([fileName, response$]) => {
+        return new Promise<void>((resolve, reject) => {
+          const uploadSubscription = response$.subscribe({
+            next: event => {
+              if (event.type === HttpEventType.UploadProgress && event.total !== undefined) {
                 this.uploadProgresses[fileName] = Math.round((100 * event.loaded) / event.total);
+              } else if (event.type === HttpEventType.Response) {
+                delete this.uploadProgresses[fileName];
+                console.log(fileName, event.body);
+                resolve();
               }
+            },
+            error: (error: any) => {
+              reject(error);
             }
-            else if (event.type === HttpEventType.Response) {
-              delete this.uploadProgresses[fileName];
-              console.log(fileName, event.body);
-            }
-          },
-          error: (error: any) => {
+          });
 
-          },
-          complete: () => {
-
-          }
+          this.uploadSubscriptions.push(uploadSubscription);
         });
-
-        this.uploadSubscriptions.push(uploadSubscription);
       });
+
+      await Promise.all(uploadPromises);
+      
     } catch (error) {
       console.error(error);
     }
+
+    for (const subscription of this.uploadSubscriptions) {
+      subscription.unsubscribe();
+    }
+
   }
 
   ngOnDestroy(): void {

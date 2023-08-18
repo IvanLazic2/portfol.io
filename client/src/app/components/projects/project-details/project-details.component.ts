@@ -140,6 +140,7 @@ export class ProjectDetailsComponent implements OnInit {
       // Handle error while getting project or thumbnails
     }
   
+    this.filesToAdd = [];
     this.editProjectService.setIsEditing(false);
   }
 
