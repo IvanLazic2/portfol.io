@@ -144,66 +144,6 @@ export class ProjectDetailsComponent implements OnInit {
     this.editProjectService.setIsEditing(false);
   }
 
-  /*protected async onSubmit() {
-    const projectName = this.form.value.projectName;
-    const projectConcept = this.form.value.projectConcept;
-
-    const project: ProjectPOST = {
-      Name: projectName,
-      Concept: projectConcept
-    };
-
-    try {
-
-      const editResponse = await firstValueFrom(this.projectService.EditProject(this.ProjectId, project));
-
-      let uploadResponses$ = this.filesService.UploadProjectFiles(this.ProjectId, this.filesToAdd);
-
-      uploadResponses$.forEach(([fileName, response$]) => {
-        const uploadSubscription = response$.subscribe({
-          next: event => {
-            if (event.type === HttpEventType.UploadProgress) {
-              if (event.total !== undefined) {
-                this.uploadProgresses[fileName] = Math.round((100 * event.loaded) / event.total);
-              }
-            }
-            else if (event.type === HttpEventType.Response) {
-              delete this.uploadProgresses[fileName];
-              console.log(fileName, event.body);
-            }
-          },
-          error: (error: any) => {
-
-          },
-          complete: () => {
-
-          }
-        });
-
-        this.uploadSubscriptions.push(uploadSubscription);
-      });
-
-      //////////////////////
-      for (const subscription of this.uploadSubscriptions) {
-        subscription.unsubscribe();
-      }
-      
-      for (const response of uploadResponses$) {
-        await lastValueFrom(response[1]);
-      }
-      //////////////////////
-    
-    } catch (error) {
-      console.error(error);
-    }
-
-    
-    await this.getProject();
-    await this.getThumbnails();
-
-    this.editProjectSevice.setIsEditing(false);
-  }*/
-
   onSelect(event: any) {
     this.filesToAdd.push(...event.addedFiles);
   }
