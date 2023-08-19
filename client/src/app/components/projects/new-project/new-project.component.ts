@@ -1,5 +1,5 @@
 import { HttpEventType, HttpEvent } from '@angular/common/http';
-import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, OnDestroy, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription, take } from 'rxjs';
@@ -87,7 +87,7 @@ export class NewProjectComponent implements OnDestroy {
       const uploadPromises = uploadResponses$.map(([fileName, response$]) => {
         return new Promise<void>((resolve, reject) => {
           const uploadSubscription = response$.subscribe({
-            next: event => {
+            next: (event: any) => {
               if (event.type === HttpEventType.UploadProgress && event.total !== undefined) {
                 this.uploadProgresses[fileName] = Math.round((100 * event.loaded) / event.total);
               } else if (event.type === HttpEventType.Response) {

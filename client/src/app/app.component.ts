@@ -6,6 +6,9 @@
 
 // async route guards
 
+/* package versions:
+   https://stackoverflow.com/questions/16073603/how-to-update-each-dependency-in-package-json-to-the-latest-version */
+
 import { Component, OnInit } from '@angular/core';
 import { ChildrenOutletContexts, NavigationEnd, Router, Event as NavigationEvent, NavigationStart } from '@angular/router';
 import { Location } from '@angular/common';

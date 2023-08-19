@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { HttpEventType, HttpEvent } from '@angular/common/http';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,6 +7,11 @@ import { FilesService } from 'src/app/services/files/files.service';
 import { EditProjectService } from 'src/app/services/project/edit-project.service';
 import { ProjectService } from 'src/app/services/project/project.service';
 import { ProjectPOST } from 'src/app/types';
+
+import { GalleryItem, ImageItem, Gallery, ImageSize, ThumbnailsPosition, GalleryRef } from 'ng-gallery';
+import { Lightbox } from "ng-gallery/lightbox";
+
+
 
 @Component({
   selector: 'app-project-details',
@@ -23,7 +28,13 @@ export class ProjectDetailsComponent implements OnInit {
   uploadProgresses: { [key: string]: number } = {};
   uploadSubscriptions: Subscription[] = [];
 
+  galleryItems: GalleryItem[] = [];
+  galleryRef: GalleryRef;
+
   constructor(
+    public gallery: Gallery,
+    public lightbox: Lightbox,
+
     private fb: FormBuilder,
     private projectService: ProjectService,
     private route: ActivatedRoute,
@@ -35,6 +46,8 @@ export class ProjectDetailsComponent implements OnInit {
       projectName: ['', [Validators.required, Validators.minLength(3)]],
       projectConcept: ['', [Validators.pattern(/^[a-zA-Z0-9]+$/)]]
     });
+
+
   }
 
   get projectName() {
@@ -45,13 +58,43 @@ export class ProjectDetailsComponent implements OnInit {
     return this.form.get('projectConcept') as FormControl;
   }
 
-
   async ngOnInit(): Promise<void> {
     this.ProjectId = await this.getId();
+
     await this.getProject();
     await this.getThumbnails();
+    
+    this.galleryInit();
+    
+
 
     this.setFormFromObservable();
+  }
+
+  galleryInit(): void {
+    this.galleryRef = this.gallery.ref('lightbox');
+
+    this.galleryRef.setConfig({
+      imageSize: ImageSize.Contain,
+      thumbPosition: ThumbnailsPosition.Bottom,
+      loadingStrategy: 'lazy',
+    });
+
+    this.lightbox.setConfig({
+      panelClass: 'fullscreen',
+    });
+
+    this.addImages();
+  }
+
+  private addImages() {
+    this.galleryItems = this.Thumbnails.map((thumbnail: any) => {
+      const item = new ImageItem({ src: '/api/upload/' + thumbnail.UploadId, thumb: 'data:image/jpeg;base64,' + thumbnail.Data })
+      //const item = new ImageItem({ src: '/api/upload/' + thumbnail.UploadId, thumb: '/api/thumbnail/' + thumbnail.UploadId })
+      return item;
+    });
+
+    this.galleryRef.load(this.galleryItems);
   }
 
   private async getId() {
@@ -133,8 +176,11 @@ export class ProjectDetailsComponent implements OnInit {
     }
   
     try {
+
       await this.getProject();
       await this.getThumbnails();
+      this.addImages();
+
     } catch (error) {
       console.error(error);
       // Handle error while getting project or thumbnails
@@ -159,6 +205,8 @@ export class ProjectDetailsComponent implements OnInit {
 
   protected async DeleteUpload(uploadId: string) {
     const deleteResponse = await lastValueFrom(this.filesService.DeleteUpload(uploadId));
-    this.getThumbnails();
+
+    await this.getThumbnails();
+    this.addImages();
   }
 }

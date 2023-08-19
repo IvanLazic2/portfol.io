@@ -1,12 +1,17 @@
 // https://levelup.gitconnected.com/complete-guide-to-upload-multiple-files-in-node-js-using-middleware-3ac78a0693f3
 import fs from "fs/promises";
 import sharp from "sharp";
+import path from "path";
 import { exec } from "child_process";
 import { upload, uploadDirectory } from "../configs/upload.config.js";
 import * as UploadService from '../services/upload.service.js';
 import { MessageType } from "../enums/messageType.js";
 import { UploadGET } from "../models/upload/Upload.model.js";
 
+import { URL } from 'url';
+
+const __filename = new URL('', import.meta.url).pathname;
+const __dirname = new URL('.', import.meta.url).pathname;
 
 async function checkAndCreateDirectory(res, path) {
     try {
@@ -54,6 +59,14 @@ export async function create(req, res, next) {
 }
 
 export async function get(req, res, next) {
+    try {
+        const getResult = await UploadService.get(req.params.id);
+        //console.log(__dirname);
+        res.sendFile(path.resolve(uploadDirectory + getResult.ProjectId + '/' + req.params.id + '.jpg'));    
+    } catch (error) {
+        console.error(error)
+    }
+
     
 }
 

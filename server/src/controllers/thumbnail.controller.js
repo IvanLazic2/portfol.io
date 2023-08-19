@@ -25,3 +25,7 @@ export async function getAll(req, res, next) {
         next(err);
     }
 }
+
+export async function get(req, res, next) {
+    
+}

@@ -10,6 +10,10 @@ import { RouterModule } from '@angular/router';
 import { ProjectDetailsComponent } from './project-details/project-details.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 
+import { GalleryModule } from 'ng-gallery';
+import { LightboxModule } from 'ng-gallery/lightbox';
+
+import { LightgalleryModule } from 'lightgallery/angular';
 
 
 @NgModule({
@@ -28,6 +32,11 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
     ReactiveFormsModule,
     RouterModule,
     NgxDropzoneModule,
+
+    GalleryModule,
+    LightboxModule,
+
+    LightgalleryModule,
   ],
   exports: [
     ProjectsComponent
