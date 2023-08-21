@@ -50,3 +50,14 @@ export async function remove(id) {
 
     return result;
 }
+
+export async function highlightUpload(id, uploadId) {
+    const result = await db
+        .collection('projects')
+        .updateOne(
+            { _id: ObjectId(id) },
+            { $set: { HighlightedUploadId: uploadId } }
+        );
+
+    return result;
+}

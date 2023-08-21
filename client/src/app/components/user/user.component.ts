@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { IntersectionObserverService } from 'src/app/services/IntersectionObserver/intersection-observer-service.service';
-import { FilesService } from 'src/app/services/files/files.service';
 import { UserService } from 'src/app/services/user/user.service';
 
 @Component({

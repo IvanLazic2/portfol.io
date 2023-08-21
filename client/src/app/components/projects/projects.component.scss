@@ -1,0 +1,92 @@
+.outer-project-container {
+    background-color: rgb(229, 229, 229);
+    position: relative;
+    margin: 20px;
+
+    border-radius: 10px;
+    max-height: 300px;
+}
+
+gallery {
+    max-height: 300px;
+}
+
+.inner-project-container-ltr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+        "gallery info";
+}
+
+.project-info-container-ltr {
+    grid-area: info;
+    margin: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.gallery-ltr {
+    grid-area: gallery;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.inner-project-container-rtl {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+        "info gallery";
+}
+
+.project-info-container-rtl {
+    grid-area: info;
+    margin: 10px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.gallery-rtl {
+    grid-area: gallery;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.buttons-ltr {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 10px;
+}
+
+.buttons-rtl {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin: 10px;
+}
+
+
+.masonry-container {
+    display: inline-block;
+    width: 50%;
+}
+
+.masonry-item {
+    width: 100px;
+    max-height: 100px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    transition: top 0.4s ease-in-out, left 0.4s ease-in-out;
+    border-radius: 10px;
+}
+
+.masonry-item img {
+    width: 100px;
+    max-height: 100px;
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out;
+}
+
+.masonry-item:hover img {
+    transform: scale(1.05);
+}

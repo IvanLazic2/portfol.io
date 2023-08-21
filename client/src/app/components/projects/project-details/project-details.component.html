@@ -72,12 +72,12 @@
         </form>
     </div>
 
-    <div style="margin: 20px;">
+    <!--<div style="margin: 20px;">
         <div style="display: inline; position: relative; margin: 2px;" *ngFor="let thumbnail of this.Thumbnails">
             <img [src]="'data:image/jpeg;base64,' + thumbnail.Data">
             <button style="position: absolute; right: 0;" (click)="DeleteUpload(thumbnail.UploadId)">Del</button>
         </div>
-    </div>
+    </div> aaaaa-->
 
     <!--<div>
         <gallery fluid thumbPosition="bottom" gallerize [items]="images"></gallery>
@@ -90,18 +90,45 @@
                     ovo je za thumbnail
                     <img className="img-responsive" [src]="'data:image/jpeg;base64,' + thumbnail.Data">
                 </a>
-        </lightgallery>
+        </lightgallery> 
     </div>-->
 
-    <div style="margin: 20px;">
-        <div style="display: inline; position: relative; margin: 2px;"
-            *ngFor="let thumbnail of this.Thumbnails; index as i">
+    <!--<div class="gallery m-3">
+        <div class="gallery-img" *ngFor="let uploadId of this.Project.UploadIds; index as i">
 
-            <img [lightbox]="i" [src]="'data:image/jpeg;base64,' + thumbnail.Data" [gallery]="'lightbox'">
-
-            <button style="position: absolute; right: 0;" (click)="DeleteUpload(thumbnail.UploadId)">Del</button>
+            <img [lightbox]="i" [src]="this.uploadService.ThumbnailUrl + uploadId" [gallery]="'lightbox'">
+            <button style="position: absolute; right: 0; top: 0;" (click)="DeleteUpload(uploadId)">Del</button>
 
         </div>
+    </div>-->
+
+    <div>
+        <ngx-masonry class="m-3" [ordered]="true" [options]="masonryOptions" [updateLayout]="update">
+
+            <div ngxMasonryItem *ngFor="let uploadId of this.Project.UploadIds; index as i;" class="masonry-item">
+                <img [src]="this.uploadService.ThumbnailUrl + uploadId" [lightbox]="i" [gallery]="'lightbox'">
+                <div style="position: absolute; right: 0; top: 0;">
+                    <!--<button (click)="HighlightUpload(uploadId)">H</button>-->
+                    <button (click)="DeleteUpload(uploadId)">Del</button>
+                </div>
+            </div>
+
+        </ngx-masonry>
     </div>
+
+    <!--<div style="margin: 20px;" gallerize>
+            <img *ngFor="let uploadId of this.Project.UploadIds" [src]="this.uploadService.ThumbnailUrl + uploadId"
+                 [attr.imageSrc]="this.uploadService.UploadUrl + uploadId"
+                 [attr.thumbSrc]="this.uploadService.ThumbnailUrl + uploadId" />
+    </div>-->
+
+    <button style="position: fixed; top: 0; left: 0; z-index: 100000;" (click)="test2()">AAA</button>
+
+    <ng-template #itemTemplate let-index="index" let-type="type" let-data="data" let-currIndex="currIndex">
+        <ng-container *ngIf="type === 'imageViewer' && index === currIndex">
+            <ngx-imageviewer [src]="data.src"></ngx-imageviewer>
+        </ng-container>
+    </ng-template>
+
 
 </div>

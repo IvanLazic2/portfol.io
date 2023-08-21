@@ -1,8 +1,23 @@
 import fs from 'fs/promises';
-import { uploadDirectory } from '../configs/upload.config.js';
+import path from 'path';
+import { getThumbnailPath } from '../configs/upload.config.js';
 import * as UploadService from '../services/upload.service.js';
 
-export async function getAll(req, res, next) {
+export async function get(req, res, next) {
+    try {
+        const getUploadResult = await UploadService.get(req.params.id);
+        res.sendFile(path.resolve(getThumbnailPath(getUploadResult.ProjectId, req.params.id)));
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+
+
+
+
+
+/*export async function getAll(req, res, next) {
     try {
 
         const getAllUploadsResult = await UploadService.getAll(req.params.projectId);
@@ -24,8 +39,4 @@ export async function getAll(req, res, next) {
         console.error("Error in upload controller: getFiles: ", err);
         next(err);
     }
-}
-
-export async function get(req, res, next) {
-    
-}
+}*/

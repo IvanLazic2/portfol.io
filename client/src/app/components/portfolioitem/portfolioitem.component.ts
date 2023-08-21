@@ -1,6 +1,6 @@
 // https://angular.io/guide/image-directive
 
-import { Component, Input, OnInit } from '@angular/core';
+/*import { Component, Input, OnInit } from '@angular/core';
 import { faDownload, faShare, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FilesService } from 'src/app/services/files/files.service';
 import { ToastType } from '../../types';
@@ -53,7 +53,7 @@ export class PortfolioitemComponent implements OnInit {
     });
   }*/
 
-  Delete() {
+  /*Delete() {
     this.filesService.Delete(this.File?._id ?? "");
   }
 
@@ -135,4 +135,4 @@ export class PortfolioitemComponent implements OnInit {
 
     return result;
   }
-}
+}*/

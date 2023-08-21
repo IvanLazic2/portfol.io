@@ -44,4 +44,10 @@ export class ProjectService {
       "headers": this.authService.GetAuthHeaders(),
     })
   }
+
+  public HighlightUpload(uploadId: string): Observable<any> {
+    return this.http.get(this.projectsUrl + 'highlightUpload/' + uploadId, {
+      "headers": this.authService.GetAuthHeaders(),
+    })
+  }
 }

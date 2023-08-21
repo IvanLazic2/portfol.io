@@ -1,9 +1,15 @@
-import multer from "multer";
+import multer from 'multer';
 
-const uploadDirectory = './uploads/';
-const maxUploadCount = 10;
+export const uploadDirectory = './uploads/';
+export const maxUploadCount = 10;
 
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+export const storage = multer.memoryStorage();
+export const upload = multer({ storage: storage });
 
-export { uploadDirectory, maxUploadCount, storage, upload };
+export function getUploadPath(projectId, uploadId) {
+    return uploadDirectory + projectId + '/' + uploadId + '.jpg';
+}
+
+export function getThumbnailPath(projectId, uploadId) {
+    return uploadDirectory + projectId + '/thumbnail_' + uploadId + '.jpg';
+}

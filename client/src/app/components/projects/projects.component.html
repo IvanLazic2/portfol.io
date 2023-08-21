@@ -1,12 +1,25 @@
-<p>project works!</p>
+<h1>Your projects</h1>
 
-<div *ngFor="let project of Projects$ | async">
-    <div style="background-color: bisque; margin: 5px;">
-        <p>Id: {{ project.Id }}, Name: {{ project.Name }}, Concept: {{ project.Concept }}</p>
-        <button (click)="DetailsProject(project.Id)">Details</button>
-        <button (click)="EditProject(project.Id)" >Edit</button>
-        <button (click)="DeleteProject(project.Id)">Delete</button>
+<div class="outer-project-container" *ngFor="let project of Projects$ | async; index as i">
+
+    <div [ngClass]="i % 2 == 0 ? 'inner-project-container-ltr' : 'inner-project-container-rtl'">
+
+        <gallery [ngClass]="i % 2 == 0 ? 'gallery-ltr' : 'gallery-rtl'" imageSize="cover" loadingStrategy="lazy" [counter]="false" [id]="'gallery_' + project.Id" fluid
+            thumbPosition="bottom" [thumbHeight]="50" [thumbWidth]="60" [gallerize]="'gallery_' + project.Id"></gallery>
+
+        <div [ngClass]="i % 2 == 0 ? 'project-info-container-ltr' : 'project-info-container-rtl'">
+            <h1> {{ project.Name }} </h1>
+
+            <div [ngClass]="i % 2 == 0 ? 'project-concept-container-ltr' : 'project-concept-container-rtl'">
+                Concept: {{ project.Concept }}
+            </div>
+        </div>
+
     </div>
 
-
+    <div [ngClass]="i % 2 == 0 ? 'buttons-ltr' : 'buttons-rtl'">
+        <button (click)="DetailsProject(project.Id)">Details</button>
+        <button (click)="EditProject(project.Id)">Edit</button>
+        <button (click)="DeleteProject(project.Id)">Delete</button>
+    </div>
 </div>

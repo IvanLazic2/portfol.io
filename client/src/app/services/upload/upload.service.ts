@@ -12,7 +12,7 @@ import { AuthService } from '../auth/auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class FilesService {
+export class UploadService {
   private readonly filesUrl = "/api/files/";
 
   Files: Observable<any[]> = new Observable<any[]>();
@@ -127,19 +127,19 @@ export class FilesService {
 
 
 
-  private readonly uploadUrl = "/api/upload/";
-  private readonly thumbnailUrl = "/api/thumbnail/";
+  public readonly UploadUrl = "/api/uploads/";
+  public readonly ThumbnailUrl = "/api/thumbnails/";
 
-  public GetThumbnails(projectId: string): Observable<any[]> {
+  /*public GetThumbnails(projectId: string): Observable<any[]> {
     return this.http.get<any[]>(this.thumbnailUrl + projectId);
-  }
+  }*/
   
 
   public UploadFile(file: File): Observable<HttpEvent<any>> {
     const formData = new FormData();
     formData.append('file', file, file.name);
 
-    const req = new HttpRequest('POST', '/api/upload/', formData, {
+    const req = new HttpRequest('POST', this.UploadUrl, formData, {
       "headers": this.authService.GetAuthHeaders(),
       reportProgress: true,
     });
@@ -157,7 +157,7 @@ export class FilesService {
       formData.append('upload', file);
       formData.append('projectId', projectId);
 
-      const response = this.http.post(this.uploadUrl, formData, {
+      const response = this.http.post(this.UploadUrl, formData, {
         "headers": this.authService.GetAuthHeaders(),
         reportProgress: true,
         observe: 'events'
@@ -184,7 +184,7 @@ export class FilesService {
   }
 
   DeleteUpload(uploadId: string): Observable<any> {
-    return this.http.delete(this.uploadUrl + uploadId, {
+    return this.http.delete(this.UploadUrl + uploadId, {
       "headers": this.authService.GetAuthHeaders(),
     });
   }

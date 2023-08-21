@@ -16,15 +16,16 @@ export class ProjectPOST {
 }
 
 export class ProjectGET {
-    constructor(id, name, concept) {
+    constructor(id, name, concept, highlightedUploadId) {
         this.Id = id;
         this.Name = name;
         this.Concept = concept;
         //this.TehnicalInfo = tehnicalInfo;
+        this.HighlightedUploadId = highlightedUploadId;
     }
 
     static InstanceFromObject(obj) {
-        return new ProjectGET(obj._id, obj.Name, obj.Concept);
+        return new ProjectGET(obj._id, obj.Name, obj.Concept, obj.HighlightedUploadId);
     }
 
     static InstanceFromObjectArray(objArr) {

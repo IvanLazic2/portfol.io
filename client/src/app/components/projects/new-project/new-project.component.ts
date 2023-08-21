@@ -3,7 +3,7 @@ import { Component, ElementRef, Inject, OnDestroy, ViewChild } from '@angular/co
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription, take } from 'rxjs';
-import { FilesService } from 'src/app/services/files/files.service';
+import { UploadService } from 'src/app/services/upload/upload.service';
 import { ProjectService } from 'src/app/services/project/project.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { UserService } from 'src/app/services/user/user.service';
@@ -25,7 +25,7 @@ export class NewProjectComponent implements OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private filesService: FilesService,
+    private uploadService: UploadService,
     private projectService: ProjectService,
 
     protected userService: UserService,
@@ -82,7 +82,7 @@ export class NewProjectComponent implements OnDestroy {
       if (!createResponse.projectId)
         console.error("projectId undefined");
 
-      let uploadResponses$ = this.filesService.UploadProjectFiles(createResponse.projectId, this.files);
+      let uploadResponses$ = this.uploadService.UploadProjectFiles(createResponse.projectId, this.files);
 
       const uploadPromises = uploadResponses$.map(([fileName, response$]) => {
         return new Promise<void>((resolve, reject) => {

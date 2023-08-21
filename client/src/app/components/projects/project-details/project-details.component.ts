@@ -1,16 +1,16 @@
-import { Component, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnChanges, OnInit, OnDestroy, QueryList, SimpleChanges, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
 import { HttpEventType, HttpEvent } from '@angular/common/http';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, lastValueFrom, firstValueFrom, Subscription, forkJoin, subscribeOn } from 'rxjs';
-import { FilesService } from 'src/app/services/files/files.service';
+import { Observable, lastValueFrom, firstValueFrom, Subscription, forkJoin, subscribeOn, timeout } from 'rxjs';
+import { UploadService } from 'src/app/services/upload/upload.service';
 import { EditProjectService } from 'src/app/services/project/edit-project.service';
 import { ProjectService } from 'src/app/services/project/project.service';
 import { ProjectPOST } from 'src/app/types';
 
 import { GalleryItem, ImageItem, Gallery, ImageSize, ThumbnailsPosition, GalleryRef } from 'ng-gallery';
 import { Lightbox } from "ng-gallery/lightbox";
-
+import { NgxMasonryOptions } from 'ngx-masonry';
 
 
 @Component({
@@ -18,11 +18,11 @@ import { Lightbox } from "ng-gallery/lightbox";
   templateUrl: './project-details.component.html',
   styleUrls: ['./project-details.component.scss']
 })
-export class ProjectDetailsComponent implements OnInit {
+export class ProjectDetailsComponent implements OnInit, OnDestroy {
   form: FormGroup;
   ProjectId: string;
   Project$: Observable<any>;
-  Thumbnails: any;
+  Project: any;
 
   filesToAdd: File[] = [];
   uploadProgresses: { [key: string]: number } = {};
@@ -30,6 +30,13 @@ export class ProjectDetailsComponent implements OnInit {
 
   galleryItems: GalleryItem[] = [];
   galleryRef: GalleryRef;
+  masonryOptions: NgxMasonryOptions = {
+    itemSelector: '.masonry-item',
+    horizontalOrder: true,
+    gutter: 10,
+    columnWidth: 200,
+  }
+  update: boolean;
 
   constructor(
     public gallery: Gallery,
@@ -39,8 +46,9 @@ export class ProjectDetailsComponent implements OnInit {
     private projectService: ProjectService,
     private route: ActivatedRoute,
     protected editProjectService: EditProjectService,
-    protected filesService: FilesService,
+    protected uploadService: UploadService,
     private router: Router,
+    private elementRef: ElementRef,
   ) {
     this.form = this.fb.group({
       projectName: ['', [Validators.required, Validators.minLength(3)]],
@@ -62,10 +70,9 @@ export class ProjectDetailsComponent implements OnInit {
     this.ProjectId = await this.getId();
 
     await this.getProject();
-    await this.getThumbnails();
-    
+
     this.galleryInit();
-    
+
 
 
     this.setFormFromObservable();
@@ -78,6 +85,7 @@ export class ProjectDetailsComponent implements OnInit {
       imageSize: ImageSize.Contain,
       thumbPosition: ThumbnailsPosition.Bottom,
       loadingStrategy: 'lazy',
+
     });
 
     this.lightbox.setConfig({
@@ -87,14 +95,42 @@ export class ProjectDetailsComponent implements OnInit {
     this.addImages();
   }
 
+  @ViewChildren('gallery-item') galleryItemElements: QueryList<any>;
+
+  async ngAfterViewInit() {
+    this.galleryItemElements.changes.subscribe(element => {
+      element.forEach((e: any) => this.test(e.nativeElement))
+    })
+
+    setTimeout(() => {
+      this.update = !this.update;
+    }, 1000);
+
+
+  }
+
+  test2() {
+    //console.log(this.galleryItemElements)
+    this.update = !this.update;
+  }
+
+  test(elm: any) {
+    console.log(elm);
+  }
+
   private addImages() {
-    this.galleryItems = this.Thumbnails.map((thumbnail: any) => {
-      const item = new ImageItem({ src: '/api/upload/' + thumbnail.UploadId, thumb: 'data:image/jpeg;base64,' + thumbnail.Data })
+    this.galleryItems = this.Project.UploadIds.map((uploadId: any) => {
+      const item = new ImageItem({ src: this.uploadService.UploadUrl + uploadId, thumb: this.uploadService.ThumbnailUrl + uploadId })
       //const item = new ImageItem({ src: '/api/upload/' + thumbnail.UploadId, thumb: '/api/thumbnail/' + thumbnail.UploadId })
       return item;
     });
 
     this.galleryRef.load(this.galleryItems);
+
+  }
+
+  async HighlightUpload(uploadId: string) {
+    await lastValueFrom(this.projectService.HighlightUpload(uploadId));
   }
 
   private async getId() {
@@ -111,10 +147,11 @@ export class ProjectDetailsComponent implements OnInit {
 
   private async getProject() {
     this.Project$ = this.projectService.GetProject(this.ProjectId);
+    this.Project = await lastValueFrom(this.Project$);
   }
 
   private async getThumbnails() {
-    this.Thumbnails = await lastValueFrom(this.filesService.GetThumbnails(this.ProjectId));
+    //this.Thumbnails = await lastValueFrom(this.filesService.GetThumbnails(this.ProjectId));
   }
 
   private async setFormFromObservable() {
@@ -131,17 +168,17 @@ export class ProjectDetailsComponent implements OnInit {
   protected async onSubmit() {
     const projectName = this.form.value.projectName;
     const projectConcept = this.form.value.projectConcept;
-  
+
     const project: ProjectPOST = {
       Name: projectName,
       Concept: projectConcept
     };
-  
+
     try {
       const editResponse = await firstValueFrom(this.projectService.EditProject(this.ProjectId, project));
-  
-      const uploadResponses$ = this.filesService.UploadProjectFiles(this.ProjectId, this.filesToAdd);
-  
+
+      const uploadResponses$ = this.uploadService.UploadProjectFiles(this.ProjectId, this.filesToAdd);
+
       const uploadPromises = uploadResponses$.map(([fileName, response$]) => {
         return new Promise<void>((resolve, reject) => {
           const uploadSubscription = response$.subscribe({
@@ -158,23 +195,23 @@ export class ProjectDetailsComponent implements OnInit {
               reject(error); // Reject the promise on upload error
             }
           });
-  
+
           this.uploadSubscriptions.push(uploadSubscription);
         });
       });
-  
+
       await Promise.all(uploadPromises); // Wait for all uploads to complete
-  
+
     } catch (error) {
       console.error(error);
       // Handle error, provide feedback to the user, etc.
     }
-  
+
     // Cleanup upload subscriptions
     for (const subscription of this.uploadSubscriptions) {
       subscription.unsubscribe();
     }
-  
+
     try {
 
       await this.getProject();
@@ -185,7 +222,7 @@ export class ProjectDetailsComponent implements OnInit {
       console.error(error);
       // Handle error while getting project or thumbnails
     }
-  
+
     this.filesToAdd = [];
     this.editProjectService.setIsEditing(false);
   }
@@ -194,7 +231,7 @@ export class ProjectDetailsComponent implements OnInit {
     this.filesToAdd.push(...event.addedFiles);
   }
 
-  async onRemove(event: any) {
+  onRemove(event: any) {
     this.filesToAdd.splice(this.filesToAdd.indexOf(event), 1);
   }
 
@@ -204,9 +241,14 @@ export class ProjectDetailsComponent implements OnInit {
   }
 
   protected async DeleteUpload(uploadId: string) {
-    const deleteResponse = await lastValueFrom(this.filesService.DeleteUpload(uploadId));
+    const deleteResponse = await lastValueFrom(this.uploadService.DeleteUpload(uploadId));
 
-    await this.getThumbnails();
+    //await this.getThumbnails();
+    await this.getProject();
     this.addImages();
+  }
+
+  ngOnDestroy(): void {
+    this.galleryRef.destroy();
   }
 }

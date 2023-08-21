@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+/*import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FilesService } from 'src/app/services/files/files.service';
@@ -73,4 +73,4 @@ export class NewartComponent {
     }
   }
 
-}
+}*/

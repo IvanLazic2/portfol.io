@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.get('/', projectController.getAll);
 router.get('/:id', projectController.get);
+router.get('/highlightUpload/:uploadId', projectController.highlightUpload);
 router.post('/', projectController.create);
 router.put('/:id', projectController.update);
 router.delete('/:id', projectController.remove);

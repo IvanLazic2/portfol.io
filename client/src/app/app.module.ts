@@ -16,10 +16,7 @@ import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastsComponent } from './components/toasts/toasts.component';
 import { AuthformComponent } from './components/authform/authform.component';
 import { UserComponent } from './components/user/user.component';
-import { NewartComponent } from './components/newart/newart.component';
-import { PortfolioitemComponent } from './components/portfolioitem/portfolioitem.component';
 import { AnimateAfterAppearDirective } from './directives/animations/animateBeforeAppear/animate-after-appear.directive';
-import { SecureImagePipe } from './pipes/_depr_secureImage/secure-image.pipe';
 import { SidebarModule } from './components/layout/sidebar/sidebar.module';
 import { CommonDirectivesModule } from './directives/common-directives.module';
 import { ProjectsModule } from './components/projects/projects.module';
@@ -31,10 +28,7 @@ import { ProjectsModule } from './components/projects/projects.module';
     UserComponent,
     ToastsComponent,
     AuthformComponent,
-    NewartComponent,
-    PortfolioitemComponent,
     AnimateAfterAppearDirective,
-    SecureImagePipe,
   ],
   imports: [
     BrowserModule,

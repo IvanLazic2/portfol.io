@@ -18,6 +18,8 @@ export async function get(req, res, next) {
 
         const project = ProjectGET.InstanceFromObject(result);
 
+        project.UploadIds = (await UploadService.getAll(project.Id.toString())).map(upload => { return upload._id.toString(); });
+
         return res.status(200).json(project);
 
     } catch (error) {
@@ -29,9 +31,13 @@ export async function get(req, res, next) {
 export async function getAll(req, res, next) {
     try {
 
-        const result = await ProjectService.getAll(req.userId);
+        const getProjectsResult = await ProjectService.getAll(req.userId);
 
-        const projects = ProjectGET.InstanceFromObjectArray(result);
+        const projects = ProjectGET.InstanceFromObjectArray(getProjectsResult);
+
+        for (const project of projects) {
+            project.UploadIds = (await UploadService.getAll(project.Id.toString())).map(upload => { return upload._id.toString(); });
+        }
 
         return res.status(200).json(projects);
 
@@ -101,6 +107,20 @@ export async function remove(req, res, next) {
 
     } catch (error) {
         console.error("Error in project controller: remove", error);
+        return res.status(500).end();
+    }
+}
+
+export async function highlightUpload(req, res, next) {
+    try {
+
+        const getUploadResult = await UploadService.get(req.params.uploadId);
+        const updateProjectResult = await ProjectService.highlightUpload(getUploadResult.ProjectId, req.params.uploadId);
+
+        return res.status(200).json({ messageType: MessageType.Success, message: "Upload highlighted" });
+
+    } catch (error) {
+        console.error("Error in upload controller: highlightUpload: ", err);
         return res.status(500).end();
     }
 }

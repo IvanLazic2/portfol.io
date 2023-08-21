@@ -10,11 +10,14 @@ import { RouterModule } from '@angular/router';
 import { ProjectDetailsComponent } from './project-details/project-details.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 
+
 import { GalleryModule } from 'ng-gallery';
 import { LightboxModule } from 'ng-gallery/lightbox';
 
-import { LightgalleryModule } from 'lightgallery/angular';
+//import { ImageViewerModule } from 'ngx-image-viewer';
+import { ImageViewerModule } from '@devadri/ngx-imageviewer'
 
+import { NgxMasonryModule } from 'ngx-masonry';
 
 @NgModule({
   declarations: [
@@ -36,7 +39,9 @@ import { LightgalleryModule } from 'lightgallery/angular';
     GalleryModule,
     LightboxModule,
 
-    LightgalleryModule,
+    ImageViewerModule,
+    NgxMasonryModule,
+    
   ],
   exports: [
     ProjectsComponent

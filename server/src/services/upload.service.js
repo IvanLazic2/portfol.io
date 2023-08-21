@@ -21,7 +21,6 @@ export async function getAll(projectId) {
     return result;
 }
 
-// TODO: async function get(id)
 export async function get(id) {
     const result = await db
         .collection('uploads')

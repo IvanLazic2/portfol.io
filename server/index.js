@@ -81,8 +81,8 @@ const upload = multer({ storage: storage });
 
         // routers
         app.use('/api/projects', jwtProtection, projectRouter);
-        app.use('/api/upload', uploadRouter);
-        app.use('/api/thumbnail', thumbnailRouter);
+        app.use('/api/uploads', uploadRouter);
+        app.use('/api/thumbnails', thumbnailRouter);
 
 
 
