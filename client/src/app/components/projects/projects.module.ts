@@ -18,6 +18,8 @@ import { LightboxModule } from 'ng-gallery/lightbox';
 import { ImageViewerModule } from '@devadri/ngx-imageviewer'
 
 import { NgxMasonryModule } from 'ngx-masonry';
+import { IfrolesDirective } from 'src/app/directives/ifroles/ifroles.directive';
+import { CommonDirectivesModule } from 'src/app/directives/common-directives.module';
 
 @NgModule({
   declarations: [
@@ -41,6 +43,7 @@ import { NgxMasonryModule } from 'ngx-masonry';
 
     ImageViewerModule,
     NgxMasonryModule,
+    CommonDirectivesModule
     
   ],
   exports: [

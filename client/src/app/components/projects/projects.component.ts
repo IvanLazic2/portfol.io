@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, firstValueFrom, lastValueFrom } from 'rxjs';
-import { EditProjectService } from 'src/app/services/project/edit-project.service';
 import { ProjectService } from 'src/app/services/project/project.service';
 import { GalleryItem, ImageItem, Gallery, ImageSize, ThumbnailsPosition, GalleryRef } from 'ng-gallery';
 import { Lightbox } from "ng-gallery/lightbox";
 import { NgxMasonryOptions } from 'ngx-masonry';
 import { UploadService } from 'src/app/services/upload/upload.service';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-projects',
@@ -22,17 +22,22 @@ export class ProjectsComponent implements OnInit {
     public lightbox: Lightbox,
     protected uploadService: UploadService,
     private projectService: ProjectService,
-    private editProjectSevice: EditProjectService,
     private router: Router,
+    protected userService: UserService,
   ) { }
 
   async ngOnInit() {
     this.gallery.config.loadingStrategy = 'lazy';
-    await this.GetProjects();
-    this.galleriesInit();
+    await this.getProjects();
+    //this.galleriesInit();
   }
 
-  galleriesInit() {
+  private async getProjects() {
+    this.Projects$ = this.projectService.GetProjects();
+    this.Projects = await lastValueFrom(this.Projects$);
+  }
+
+  /*galleriesInit() {
     for (const project of this.Projects) {
       const gallery = this.gallery.ref('gallery_' + project.Id);
 
@@ -52,26 +57,20 @@ export class ProjectsComponent implements OnInit {
     });
 
     gallery.load(galleryItems);
-  }
-
-  protected async GetProjects() {
-    this.Projects$ = this.projectService.GetProjects();
-    this.Projects = await lastValueFrom(this.Projects$);
-  }
+  }*/
 
   protected DetailsProject(id: string) {
-    this.editProjectSevice.setIsEditing(false);
+    this.projectService.setIsEditing(false);
     this.router.navigate(['/project', id]);
   }
 
   protected EditProject(id: string) {
-    this.editProjectSevice.setIsEditing(true);
+    this.projectService.setIsEditing(true);
     this.router.navigate(['/project', id]);
   }
 
   protected async DeleteProject(id: string) {
     const result = await firstValueFrom(this.projectService.DeleteProject(id));
-    console.log(result);
-    this.GetProjects();
+    await this.getProjects();
   }
 }

@@ -13,7 +13,8 @@ import { NewProjectSidebarComponent } from './new-project-sidebar/new-project-si
 import { IfrolesDirective } from 'src/app/directives/ifroles/ifroles.directive';
 import { CommonDirectivesModule } from 'src/app/directives/common-directives.module';
 
-
+import { GravatarModule } from 'ngx-gravatar';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,9 @@ import { CommonDirectivesModule } from 'src/app/directives/common-directives.mod
     NgbModule,
     RoutingModule,
     FontAwesomeModule,
-    CommonDirectivesModule
+    CommonDirectivesModule,
+    GravatarModule,
+    ReactiveFormsModule,
   ],
   exports: [
     SidebarComponent

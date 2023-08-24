@@ -1,7 +1,45 @@
-<p>user profile picture</p>
-<p>user description</p>
+<img ngxGravatar [size]="256" [email]="this.userService.User?.Email ?? ''" [fallback]="'mp'"
+    [src]="this.userService.GetUserProfilePicture()" />
 
-<div *ngIf="this.userService.GetLoggedIn() | async">
+<h1>{{ this.userService.User?.Username ?? "" }}</h1>
+
+<div *ngIf="!this.userService.getIsEditing()">
+
+    <h3>{{ this.userService.User?.FullName ?? "" }}</h3>
+    <p>{{ this.userService.User?.Bio ?? "" }}</p>
+    <button (click)="Edit()">Edit profile</button>
+
+</div>
+<div *ngIf="this.userService.getIsEditing()">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+        <div>
+            <label for="fullName">Full name:</label>
+            <input type="text" id="fullName" formControlName="fullName">
+
+            <div *ngIf="fullName.invalid && fullName.touched">
+                <p *ngIf="fullName.errors?.['minlength']">Full Name must be at least 3 characters long</p>
+            </div>
+        </div>
+
+        <div>
+            <label for="bio">Bio:</label>
+            <input type="text" id="bio" formControlName="bio">
+
+            <div *ngIf="bio.invalid && bio.touched">
+            </div>
+        </div>
+
+        <button type="button" (click)="this.userService.setIsEditing(false)">Cancel</button>
+        <button type="submit">Save</button>
+
+    </form>
+</div>
+
+
+
+
+<!--<div *ngIf="this.userService.GetIsLoggedInObservable() | async">
     <div *ifRoles="['Artist']">
 
 
@@ -14,4 +52,4 @@
 
 
     </div>
-</div>
+</div>-->

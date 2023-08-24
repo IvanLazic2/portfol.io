@@ -2,7 +2,7 @@
 
 <app-projects></app-projects>
 
-<div *ngIf="this.userService.GetLoggedIn() | async" class="container-sm mb-2">
+<div *ngIf="this.userService.GetIsLoggedInObservable() | async" class="container-sm mb-2">
     <div id="upper-files-container" class="d-flex flex-wrap justify-content-between mb-2">
 
         <!--<ng-content select="#page-title"></ng-content>-->

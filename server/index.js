@@ -14,6 +14,13 @@ import { db } from './src/configs/db.config.js';
 import { router as projectRouter } from './src/routers/project.router.js';
 import { router as uploadRouter } from './src/routers/upload.router.js';
 import { router as thumbnailRouter } from './src/routers/thumbnail.router.js';
+import { router as userRouter } from './src/routers/user.router.js';
+
+
+
+// TEMP!!!!
+import { jwtProtection } from "./src/middlewares/jwtProtection.middleware.js";
+//
 
 const randomBytesAsync = util.promisify(crypto.randomBytes);
 const pbkdf2Async = util.promisify(crypto.pbkdf2);
@@ -38,27 +45,7 @@ const upload = multer({ storage: storage });
 
 
 
-        const jwtProtection = (req, res, next) => {
-            try {
-                const token = req.headers["authorization"];
-
-                jwt.verify(token, secret, (err, decodedToken) => {
-                    if (err)
-                        console.log(token);
-
-                    req.id = decodedToken.id;
-                    req.userId = decodedToken.id;
-
-                    return;
-                });
-
-                next();
-
-            }
-            catch (err) {
-                return res.status(401).json({ message: "Unauthenticated." });
-            }
-        }
+        
 
         async function generateToken(res, id, username, message) {
 
@@ -83,28 +70,17 @@ const upload = multer({ storage: storage });
         app.use('/api/projects', jwtProtection, projectRouter);
         app.use('/api/uploads', uploadRouter);
         app.use('/api/thumbnails', thumbnailRouter);
+        app.use('/api/users', userRouter);
+
+
+
+
+        
 
 
 
 
 
-        //let { db, bucket } = await connectToDB();
-
-        //app.use(express.static('../client/dist/client'));
-
-
-
-
-
-
-
-
-
-
-
-        app.get("/api/test", jwtProtection, (req, res) => {
-            res.send("aaa");
-        });
 
         /*app.get('/files', (req, res) => {
             res.sendFile(path.join(__dirname, "../client/dist/client/index.html"));
@@ -122,7 +98,9 @@ const upload = multer({ storage: storage });
             res.sendFile(path.join(__dirname, "../client/dist/client/index.html"));
         });*/
 
-        app.get("/api/user", jwtProtection, async (req, res) => {
+
+        
+        /*app.get("/api/user", jwtProtection, async (req, res) => {
             db
                 .collection("users")
                 .findOne({ "_id": ObjectId(req.id) })
@@ -136,16 +114,16 @@ const upload = multer({ storage: storage });
                 .catch(err => {
                     res.status(500).json({ message: err });
                 });
-        });
+        });*/
 
         app.get("/api/files", jwtProtection, async (req, res) => {
             const files = await db.collection("files").find({ "Owner": ObjectId(req.id) }).toArray();
             return res.status(200).jsonp(files);
         });
 
-        app.get("/api/users", async (req, res) => {
+        /*app.get("/api/users", async (req, res) => {
             res.jsonp(await db.collection("users").find({}).toArray());
-        });
+        });*/
         app.get("/api/deleteusers", async (req, res) => {
             try {
                 db.collection("users").drop();
@@ -160,7 +138,7 @@ const upload = multer({ storage: storage });
                 .collection("files")
                 .findOne({ "_id": ObjectId(req.params._id) })
                 .then(dbFile => {
-                    res.status(200).sendFile
+                    //res.status(200).sendFile
                     return res.status(200).download(path.join(__dirname + "/files/" + dbFile._id.toString()), dbFile.Name);
                 })
                 .catch(err => {

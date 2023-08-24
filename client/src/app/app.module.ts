@@ -20,12 +20,15 @@ import { AnimateAfterAppearDirective } from './directives/animations/animateBefo
 import { SidebarModule } from './components/layout/sidebar/sidebar.module';
 import { CommonDirectivesModule } from './directives/common-directives.module';
 import { ProjectsModule } from './components/projects/projects.module';
+import { GravatarModule } from 'ngx-gravatar';
+import { AccountComponent } from './components/account/account.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     UserComponent,
+    AccountComponent,
     ToastsComponent,
     AuthformComponent,
     AnimateAfterAppearDirective,
@@ -42,7 +45,8 @@ import { ProjectsModule } from './components/projects/projects.module';
     NgbProgressbarModule,
     CommonDirectivesModule,
     SidebarModule,
-    ProjectsModule
+    ProjectsModule,
+    GravatarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

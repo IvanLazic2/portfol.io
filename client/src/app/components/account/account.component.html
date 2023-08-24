@@ -1,0 +1,61 @@
+<div *ngIf="this.userService.GetIsLoggedInObservable() | async">
+
+    <ng-template #usernameModal let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">Change username</h4>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="usernameForm">
+                <div class="mb-3">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" formControlName="username">
+        
+                    <div *ngIf="username.invalid && username.touched">
+                        <p *ngIf="username.errors?.['required']">Username is required</p>
+                        <p *ngIf="username.errors?.['minlength']">Username must be at least 3 characters long</p>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-outline-dark" (click)="onUsernameSubmit()">Save</button>
+        </div>
+    </ng-template>
+
+    <ng-template #emailModal let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">Change email</h4>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="emailForm">
+                <div class="mb-3">
+                    <label for="email">Email:</label>
+                    <input type="text" id="email" formControlName="email">
+        
+                    <div *ngIf="email.invalid && email.touched">
+                        <p *ngIf="email.errors?.['required']">Email is required</p>
+                        <p *ngIf="email.errors?.['email']">Email invalid</p>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-dark" (click)="onEmailSubmit()">Save</button>
+        </div>
+    </ng-template>
+
+    <div>
+        <p style="display: inline-block;">Username: {{ this.User?.Username ?? "" }}</p>
+        <button style="display: inline-block;" class="btn btn-outline-primary"
+            (click)="openModal(usernameModal)">Change</button>
+    </div>
+
+    <div>
+        <p style="display: inline-block;">Email: {{ this.User?.Email ?? "" }}</p>
+        <button style="display: inline-block;" class="btn btn-outline-primary"
+            (click)="openModal(emailModal)">Change</button>
+    </div>
+
+</div>

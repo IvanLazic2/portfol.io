@@ -1,7 +1,7 @@
 <p>project-details works!</p>
 <div *ngIf="Project$ | async as Project">
 
-    <div *ngIf="!this.editProjectService.getIsEditing();">
+    <div *ngIf="!this.projectService.getIsEditing();">
         <div *ngIf="Project$ | async as Project">
             <p>Id: {{ Project.Id }}, Name: {{ Project.Name }}, Concept: {{ Project.Concept }}</p>
             <button (click)="Edit()">Edit</button>
@@ -9,7 +9,7 @@
         </div>
     </div>
 
-    <div *ngIf="this.editProjectService.getIsEditing();">
+    <div *ngIf="this.projectService.getIsEditing();">
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
             <div>
@@ -18,7 +18,7 @@
 
                 <div *ngIf="projectName.invalid && projectName.touched">
                     <p *ngIf="projectName.errors?.['required']">Name is required</p>
-                    <p *ngIf="projectName.errors?.['minLength']">Name must be at least 3 characters long</p>
+                    <p *ngIf="projectName.errors?.['minlength']">Name must be at least 3 characters long</p>
                 </div>
             </div>
 
@@ -66,8 +66,7 @@
 
 
 
-            <button type="button" (click)="this.editProjectService.setIsEditing(false)">Cancel</button>
-            <button type="submit">Save</button>
+            
 
         </form>
     </div>

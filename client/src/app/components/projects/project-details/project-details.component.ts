@@ -4,7 +4,6 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, lastValueFrom, firstValueFrom, Subscription, forkJoin, subscribeOn, timeout } from 'rxjs';
 import { UploadService } from 'src/app/services/upload/upload.service';
-import { EditProjectService } from 'src/app/services/project/edit-project.service';
 import { ProjectService } from 'src/app/services/project/project.service';
 import { ProjectPOST } from 'src/app/types';
 
@@ -43,9 +42,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     public lightbox: Lightbox,
 
     private fb: FormBuilder,
-    private projectService: ProjectService,
+    protected projectService: ProjectService,
     private route: ActivatedRoute,
-    protected editProjectService: EditProjectService,
     protected uploadService: UploadService,
     private router: Router,
     private elementRef: ElementRef,
@@ -75,7 +73,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
 
 
-    this.setFormFromObservable();
+    this.setForm();
   }
 
   galleryInit(): void {
@@ -154,15 +152,14 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     //this.Thumbnails = await lastValueFrom(this.filesService.GetThumbnails(this.ProjectId));
   }
 
-  private async setFormFromObservable() {
-    const project = await firstValueFrom(this.Project$);
-    this.form.controls['projectName'].setValue(project.Name);
-    this.form.controls['projectConcept'].setValue(project.Concept);
+  private async setForm() {
+    this.projectName.setValue(this.Project.Name);
+    this.projectConcept.setValue(this.Project.Concept);
   }
 
-  protected async Edit() {
-    this.setFormFromObservable();
-    this.editProjectService.setIsEditing(true);
+  protected Edit() {
+    this.setForm();
+    this.projectService.setIsEditing(true);
   }
 
   protected async onSubmit() {
@@ -224,7 +221,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     }
 
     this.filesToAdd = [];
-    this.editProjectService.setIsEditing(false);
+    this.projectService.setIsEditing(false);
   }
 
   onSelect(event: any) {

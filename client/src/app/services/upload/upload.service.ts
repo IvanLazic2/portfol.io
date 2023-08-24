@@ -76,21 +76,9 @@ export class UploadService {
     }
   }
 
-  /*ShouldShow(file?: File)
-  {
-    if (this.CurrentPage == Page.Trash)
-    {
-      return file?.Categories.includes(Page.Trash.toString() as Category);
-    }
-    else if (this.CurrentPage == Page.Files)
-    {
-      return !file?.Categories.includes(Page.Trash.toString() as Category);
-    }
-    else
-    {
-      return file?.Categories.includes(this.CurrentPage!.toString() as Category);
-    }
-  }*/
+
+
+  
 
   UploadStatus(event: any): { percentage: number, done: boolean } {
     if (event.body) {

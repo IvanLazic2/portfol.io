@@ -4,6 +4,7 @@ import { RouterModule, Route } from "@angular/router";
 import { AuthformComponent } from './components/authform/authform.component';
 import { HomeComponent } from './components/home/home.component';
 import { UserComponent } from './components/user/user.component';
+import { AccountComponent } from './components/account/account.component';
 
 const routes: Route[] =
   [
@@ -32,6 +33,11 @@ const routes: Route[] =
       loadChildren: () => import('./components/projects/projects.module').then(m => m.ProjectsModule),
       data: { animation: "sidebarAnimation" }
     },
+    {
+      path: 'account',
+      component: AccountComponent,
+      data: { animation: "sidebarAnimation" }
+    }
   ]
 
 @NgModule({

@@ -18,7 +18,4 @@ export class UserComponent {
     protected userService: UserService)
   { }
 
-  ngOnInit(): void {
-  }
-
 }

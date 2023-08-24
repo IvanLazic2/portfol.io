@@ -5,11 +5,11 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class UserroleService {
-  _userRoles = new BehaviorSubject<Array<string>>(["Artist"]);
+  private userRoles = new BehaviorSubject<Array<string>>(["Artist"]);
 
   constructor() { }
 
   public GetUserRoles() {
-    return this._userRoles;
+    return this.userRoles;
   }
 }

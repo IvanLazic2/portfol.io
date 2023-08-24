@@ -1,11 +1,20 @@
 <h1>Your projects</h1>
+<div *ngIf="this.userService.GetIsLoggedInObservable() | async">
+    <div *ifRoles="['Artist']">
+        <button routerLink="/project/new" id="createProjectButton" class="btn btn-primary my-2">New</button>
+    </div>
+</div>
+
+
 
 <div class="outer-project-container" *ngFor="let project of Projects$ | async; index as i">
 
     <div [ngClass]="i % 2 == 0 ? 'inner-project-container-ltr' : 'inner-project-container-rtl'">
 
-        <gallery [ngClass]="i % 2 == 0 ? 'gallery-ltr' : 'gallery-rtl'" imageSize="cover" loadingStrategy="lazy" [counter]="false" [id]="'gallery_' + project.Id" fluid
-            thumbPosition="bottom" [thumbHeight]="50" [thumbWidth]="60" [gallerize]="'gallery_' + project.Id"></gallery>
+        <!--<gallery [ngClass]="i % 2 == 0 ? 'gallery-ltr' : 'gallery-rtl'" imageSize="cover" loadingStrategy="lazy" [counter]="false" [id]="'gallery_' + project.Id" fluid
+            thumbPosition="bottom" [thumbHeight]="50" [thumbWidth]="60" [gallerize]="'gallery_' + project.Id"></gallery>-->
+
+        <img [src]="this.uploadService.ThumbnailUrl + project.UploadIds[0]">
 
         <div [ngClass]="i % 2 == 0 ? 'project-info-container-ltr' : 'project-info-container-rtl'">
             <h1> {{ project.Name }} </h1>

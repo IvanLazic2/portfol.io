@@ -1,7 +1,7 @@
 import { HttpClient, HttpEvent, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
-import { Observable } from 'rxjs';
+import { Observable, lastValueFrom } from 'rxjs';
 import { ProjectPOST } from 'src/app/types';
 
 @Injectable({
@@ -9,11 +9,20 @@ import { ProjectPOST } from 'src/app/types';
 })
 export class ProjectService {
   private projectsUrl = '/api/projects/';
+  private isEditing = false;
 
   constructor(
     private http: HttpClient,
     private authService: AuthService,
   ) { }
+
+  getIsEditing() {
+    return this.isEditing;
+  }
+
+  setIsEditing(value: boolean) {
+    this.isEditing = value;
+  }
 
   public CreateProject(project: ProjectPOST): Observable<any> {
     return this.http.post(this.projectsUrl, project, {
@@ -21,8 +30,8 @@ export class ProjectService {
       });
   }
 
-  public GetProjects(): Observable<any> {
-    return this.http.get(this.projectsUrl, {
+  public GetProjects() {
+    return this.http.get<any[]>(this.projectsUrl, {
       "headers": this.authService.GetAuthHeaders(),
     });
   }

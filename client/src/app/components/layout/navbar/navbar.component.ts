@@ -12,7 +12,7 @@ import { NavigationEnd, Router, Event as NavigationEvent } from '@angular/router
   styleUrls: ['./navbar.component.scss']
   
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
   AuthType: any = AuthType;
   User$: BehaviorSubject<User | null>;
 
@@ -28,5 +28,7 @@ export class NavbarComponent {
     protected userService: UserService
     ) { }
 
-  
+  async ngOnInit() {
+      await this.userService.GetUser();
+  }
 }

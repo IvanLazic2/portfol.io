@@ -11,14 +11,15 @@ export async function get(req, res, next) {
 
         if (!req.params.id) {
             console.error("Error in project controller: get: projectId undefined.");
-            return res.staus(500).end();
+            return res.status(500).end();
         }
 
-        const result = await ProjectService.get(req.params.id);
-
-        const project = ProjectGET.InstanceFromObject(result);
-
-        project.UploadIds = (await UploadService.getAll(project.Id.toString())).map(upload => { return upload._id.toString(); });
+        const getProjectResult = await ProjectService.get(req.params.id);
+        const project = ProjectGET.InstanceFromObject(getProjectResult);
+        project.UploadIds = (await UploadService.getAll(project.Id.toString()))
+            .map(upload => { 
+                    return upload._id.toString(); 
+                });
 
         return res.status(200).json(project);
 
@@ -32,7 +33,6 @@ export async function getAll(req, res, next) {
     try {
 
         const getProjectsResult = await ProjectService.getAll(req.userId);
-
         const projects = ProjectGET.InstanceFromObjectArray(getProjectsResult);
 
         for (const project of projects) {
@@ -60,9 +60,9 @@ export async function create(req, res, next) {
             return res.status(400).json({ messageType: MessageType.Warning, message: errorMessage });
         }
 
-        const result = await ProjectService.create(res, req.userId, project);
+        const createProjectResult = await ProjectService.create(res, req.userId, project);
 
-        res.status(200).json({ messageType: MessageType.Success, message: "Project created.", projectId: result.insertedId.toString() })
+        res.status(200).json({ messageType: MessageType.Success, message: "Project created.", projectId: createProjectResult.insertedId.toString() })
 
     } catch (error) {
         console.error("Error in project controller: create: ", error);
@@ -79,7 +79,7 @@ export async function update(req, res, next) {
         if (errorMessage)
             return res.status(400).json({ messageType: MessageType.Warning, message: errorMessage });
 
-        const result = await ProjectService.update(req.params.id, project)
+        const updateProjectResult = await ProjectService.update(req.params.id, project)
 
         res.status(200).json({ messageType: MessageType.Success, message: "Project updated." });
 
