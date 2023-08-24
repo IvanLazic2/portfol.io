@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, filter, map, Observable, tap, last, endWith, lastValueFrom } from 'rxjs';
+import { BehaviorSubject, filter, map, Observable, tap, last, endWith, lastValueFrom, firstValueFrom } from 'rxjs';
 
 import { AuthType, ToastType, User } from "../../types";
 import { Router } from '@angular/router';
@@ -11,11 +11,13 @@ import { AuthService } from '../auth/auth.service';
   providedIn: 'root'
 })
 export class UserService {
-  userUrl = '/api/users/';
+  public readonly UserUrl = '/api/users/';
+  public readonly ProfilePictureUrl = '/api/profilePictures/';
 
   isLoggedIn = new BehaviorSubject<boolean>(localStorage.getItem("token") != null);
 
   User: any;
+  ProfilePictureSrcUrl: string;
 
   private isEditing = false;
 
@@ -39,11 +41,15 @@ export class UserService {
     if (!this.GetIsLoggedIn())
       return;
 
-    const getUserResponse$ = this.http.get(this.userUrl, {
+    const getUserResponse$ = this.http.get(this.UserUrl, {
       "headers": this.authService.GetAuthHeaders(),
     });
 
     this.User = await lastValueFrom(getUserResponse$);
+    if (this.User.ProfilePictureId)
+      this.ProfilePictureSrcUrl = this.ProfilePictureUrl + this.User.ProfilePictureId;
+    else
+      this.ProfilePictureSrcUrl = "";
   }
 
   GetIsLoggedInObservable() {
@@ -52,26 +58,41 @@ export class UserService {
 
   async GetIsLoggedIn() {
     return await lastValueFrom(this.isLoggedIn);
-  }
-
-  GetUserProfilePicture() {
-    return "";
-  }
+  }  
 
   EditUser(user: any) {
-    return this.http.put(this.userUrl, user, {
+    return this.http.put(this.UserUrl, user, {
       "headers": this.authService.GetAuthHeaders(),
     });
   }
 
   ChangeUsername(username: string) {
-    return this.http.put(this.userUrl + 'changeUsername/', { Username: username}, {
+    return this.http.put(this.UserUrl + 'changeUsername/', { Username: username}, {
       "headers": this.authService.GetAuthHeaders(),
     });
   }
 
   ChangeEmail(email: string) {
-    return this.http.put(this.userUrl + 'changeEmail/', { Email: email}, {
+    return this.http.put(this.UserUrl + 'changeEmail/', { Email: email}, {
+      "headers": this.authService.GetAuthHeaders(),
+    });
+  }
+
+  ChangeProfilePicture(profilePicture: File) {
+    const formData = new FormData();
+    formData.append('profilePicture', profilePicture, profilePicture.name);
+
+    return this.http.post(this.ProfilePictureUrl, formData, {
+      "headers": this.authService.GetAuthHeaders(),
+    });
+  }
+
+  ClearProfilePicture() {
+    this.ProfilePictureSrcUrl = "";
+  }
+
+  DeleteProfilePicture() {
+    return this.http.delete(this.ProfilePictureUrl, {
       "headers": this.authService.GetAuthHeaders(),
     });
   }

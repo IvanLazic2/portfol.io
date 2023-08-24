@@ -78,7 +78,7 @@ export class UploadService {
 
 
 
-  
+
 
   UploadStatus(event: any): { percentage: number, done: boolean } {
     if (event.body) {
@@ -117,6 +117,7 @@ export class UploadService {
 
   public readonly UploadUrl = "/api/uploads/";
   public readonly ThumbnailUrl = "/api/thumbnails/";
+  
 
   /*public GetThumbnails(projectId: string): Observable<any[]> {
     return this.http.get<any[]>(this.thumbnailUrl + projectId);
@@ -177,7 +178,7 @@ export class UploadService {
     });
   }
 
-
+  
 
 
 

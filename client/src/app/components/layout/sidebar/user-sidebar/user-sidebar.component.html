@@ -1,5 +1,13 @@
-<img ngxGravatar [size]="256" [email]="this.userService.User?.Email ?? ''" [fallback]="'mp'"
-    [src]="this.userService.GetUserProfilePicture()" />
+<div class="d-inline-block profile-image-container">
+    <button class="delete-button" *ngIf="this.userService.getIsEditing()" (click)="ClearProfilePicture()">X</button>
+
+    <img class="profile-picture" ngxGravatar [size]="256" [email]="this.userService.User?.Email ?? ''" [fallback]="'mp'"
+    [src]="selectedImage ? selectedImage : ProfilePictureUrl" />
+
+    <button class="change-button" *ngIf="this.userService.getIsEditing()" (click)="openFilePicker()">Change</button>
+    <input type="file" hidden #fileInput (change)="onFileSelected($event)">
+</div>
+
 
 <h1>{{ this.userService.User?.Username ?? "" }}</h1>
 
@@ -30,7 +38,7 @@
             </div>
         </div>
 
-        <button type="button" (click)="this.userService.setIsEditing(false)">Cancel</button>
+        <button type="button" (click)="CancelEditing()">Cancel</button>
         <button type="submit">Save</button>
 
     </form>

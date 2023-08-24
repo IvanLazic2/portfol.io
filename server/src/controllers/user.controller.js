@@ -36,9 +36,7 @@ export async function update(req, res) {
 export async function changeUsername(req, res) {
     try {
 
-        console.log(req.body.Username)
-
-        const changeUsernameResult = await UserService.ChangeUsername(req.userId, req.body.Username);
+        const changeUsernameResult = await UserService.changeUsername(req.userId, req.body.Username);
 
         return res.status(200).json({ messageType: MessageType.Success, message: "Username changed." })
 
@@ -50,7 +48,7 @@ export async function changeUsername(req, res) {
 export async function changeEmail(req, res) {
     try {
 
-        const changeEmailResult = await UserService.ChangeEmail(req.userId, req.body.Email);
+        const changeEmailResult = await UserService.changeEmail(req.userId, req.body.Email);
 
         return res.status(200).json({ messageType: MessageType.Success, message: "Email changed." })
 

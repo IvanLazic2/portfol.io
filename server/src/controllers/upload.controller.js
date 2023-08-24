@@ -2,7 +2,7 @@
 import fs from 'fs/promises';
 import sharp from 'sharp';
 import path from "path";
-import { uploadDirectory, getUploadPath } from "../configs/upload.config.js";
+import { uploadDirectory, getUploadPath, checkAndCreateDirectory } from "../configs/upload.config.js";
 import * as UploadService from '../services/upload.service.js';
 import { MessageType } from "../enums/messageType.js";
 import { UploadGET } from "../models/upload/Upload.model.js";
@@ -11,14 +11,6 @@ import { URL } from 'url';
 
 const __filename = new URL('', import.meta.url).pathname;
 const __dirname = new URL('.', import.meta.url).pathname;
-
-async function checkAndCreateDirectory(res, path) {
-    try {
-        await fs.mkdir(path, { recursive: true });
-    } catch (error) {
-        console.error(error);
-    }
-}
 
 async function createImageThumbnail(inputPath, outputPath, width, height) {
     try {
@@ -87,6 +79,3 @@ export async function remove(req, res, next) {
         next(err);
     }
 }
-
-
-

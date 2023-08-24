@@ -21,14 +21,15 @@ export class NavbarComponent implements OnInit {
 
   isMenuCollapsed = true;
 
-  
-  
-
   constructor(
     protected userService: UserService
     ) { }
 
   async ngOnInit() {
       await this.userService.GetUser();
+  }
+
+  get ProfilePictureUrl() {
+    return this.userService.ProfilePictureSrcUrl;
   }
 }

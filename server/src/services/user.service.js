@@ -20,7 +20,7 @@ export async function update(id, user) {
     return result;
 }
 
-export async function ChangeUsername(id, username) {
+export async function changeUsername(id, username) {
     const result = await db
         .collection('users')
         .updateOne(
@@ -31,7 +31,7 @@ export async function ChangeUsername(id, username) {
     return result;
 }
 
-export async function ChangeEmail(id, email) {
+export async function changeEmail(id, email) {
     const result = await db
         .collection('users')
         .updateOne(
@@ -39,5 +39,27 @@ export async function ChangeEmail(id, email) {
             { $set: { Email: email } }
         );
         
+    return result;
+}
+
+export async function changeProfilePicture(id, profilePictureId) {
+    const result = await db
+        .collection('users')
+        .updateOne(
+            { _id: ObjectId(id) },
+            { $set: { ProfilePictureId: profilePictureId } }
+        );
+
+    return result;
+}
+
+export async function removeProfilePicture(id) {
+    const result = await db
+        .collection('users')
+        .updateOne(
+            { _id: ObjectId(id) },
+            { $unset: { ProfilePictureId: 1 } }
+        );
+
     return result;
 }

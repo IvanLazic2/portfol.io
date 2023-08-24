@@ -7,7 +7,8 @@
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler"
-                aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation" (click)="isMenuCollapsed = !isMenuCollapsed">
+                aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"
+                (click)="isMenuCollapsed = !isMenuCollapsed">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -33,30 +34,42 @@
                     <li class="nav-item" *ngIf="userService.GetIsLoggedInObservable() | async">
                         <!--<a class="mb-0 nav-link nav-link-nohover" routerLink="user/{{ (this.userService.User | async)?.Username }}"><fa-icon [icon]="userIcon"></fa-icon> {{ (this.userService.User | async)?.Username }}</a>-->
                         <div ngbDropdown placement="bottom-right">
-                            <a ngbDropdownToggle id="userDropdown" class="mb-0 nav-link nav-link-nohover"><fa-icon [icon]="userIcon"></fa-icon> {{ this.userService.User?.Username ?? '' }}</a>
-                            <!--<button class="btn btn-warning" id="gfg"
-                                    ngbDropdownToggle>Click Here!</button>-->
+
+                            <a ngbDropdownToggle id="userDropdown" class="mb-0 nav-link nav-link-nohover">
+                                <img class="profile-picture" ngxGravatar [size]="64"
+                                    [email]="this.userService.User?.Email ?? ''" [fallback]="'mp'"
+                                    [src]="ProfilePictureUrl" />
+                                {{ this.userService.User?.Username ?? '' }}
+                            </a>
+
                             <div ngbDropdownMenu="userDropdown">
-                                <a ngbDropdownItem routerLink="user/{{ this.userService.User?.Username ?? '' }}">Profile</a>
+                                <a ngbDropdownItem
+                                    routerLink="user/{{ this.userService.User?.Username ?? '' }}">Profile</a>
                                 <a ngbDropdownItem routerLink="account">Account</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="mb-0 nav-link nav-link" (click)="this.userService.LogOut()"><fa-icon
+                                    [icon]="signoutIcon"></fa-icon> Log out</a>
                             </div>
+
                         </div>
                     </li>
-                    <li class="nav-item" *ngIf="userService.GetIsLoggedInObservable() | async">
-                        <a class="mb-0 nav-link nav-link" (click)="this.userService.LogOut()"><fa-icon [icon]="signoutIcon"></fa-icon> Log out</a>
-                    </li>
+                    <!--<li class="nav-item" *ngIf="userService.GetIsLoggedInObservable() | async">
+                        <a class="mb-0 nav-link nav-link" (click)="this.userService.LogOut()"><fa-icon
+                                [icon]="signoutIcon"></fa-icon> Log out</a>
+                    </li>-->
 
 
 
                     <li class="nav-item page-link" *ngIf="!(userService.GetIsLoggedInObservable() | async)">
-                        <a routerLinkActive="active" routerLink="/signin" (click)="isMenuCollapsed = true" id="link-signin" class="mb-0 nav-link">Sign in</a>
+                        <a routerLinkActive="active" routerLink="/signin" (click)="isMenuCollapsed = true"
+                            id="link-signin" class="mb-0 nav-link">Sign in</a>
                     </li>
                     <li class="nav-item page-link" *ngIf="!(userService.GetIsLoggedInObservable() | async)">
-                        <a routerLinkActive="active" routerLink="/signup" (click)="isMenuCollapsed = true" id="link-signup" class="mb-0 nav-link">Sign up</a>
+                        <a routerLinkActive="active" routerLink="/signup" (click)="isMenuCollapsed = true"
+                            id="link-signup" class="mb-0 nav-link">Sign up</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 </div>
-
