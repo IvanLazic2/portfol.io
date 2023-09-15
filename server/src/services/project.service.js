@@ -11,16 +11,19 @@ export async function get(id) {
     return result;
 }
 
-export async function getAll(userId) {
+export async function getAllUserProjects(username) {
+    const userId = (await db
+        .collection('users')
+        .findOne({ 'Username': username }))._id.toString();
+
     const result = await db
         .collection('projects')
         .find({ 'UserId': userId })
         .toArray();
-
     return result;
 }
 
-export async function create(res, userId, project) {
+export async function create(userId, project) {
     const projectCreate = ProjectCreate.InstanceFromObject(userId, project);
 
     const result = await db
@@ -51,12 +54,23 @@ export async function remove(id) {
     return result;
 }
 
-export async function highlightUpload(id, uploadId) {
+export async function incrementLike(id) {
     const result = await db
         .collection('projects')
         .updateOne(
             { _id: ObjectId(id) },
-            { $set: { HighlightedUploadId: uploadId } }
+            { $inc: { Likes: 1 } }
+        );
+
+    return result;
+}
+
+export async function decrementLike(id) {
+    const result = await db
+        .collection('projects')
+        .updateOne(
+            { _id: ObjectId(id) },
+            { $inc: { Likes: -1 } }
         );
 
     return result;

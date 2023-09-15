@@ -2,6 +2,7 @@ import fs from 'fs/promises';
 import { MessageType } from '../enums/messageType.js';
 import * as ProjectService from '../services/project.service.js';
 import * as UploadService from '../services/upload.service.js';
+import * as LikeService from '../services/like.service.js';
 import { uploadDirectory } from '../configs/upload.config.js';
 
 import { ProjectPOST, ProjectGET } from '../models/project/Project.models.js';
@@ -15,7 +16,9 @@ export async function get(req, res, next) {
         }
 
         const getProjectResult = await ProjectService.get(req.params.id);
+
         const project = ProjectGET.InstanceFromObject(getProjectResult);
+
         project.UploadIds = (await UploadService.getAll(project.Id.toString()))
             .map(upload => { 
                     return upload._id.toString(); 
@@ -29,10 +32,11 @@ export async function get(req, res, next) {
     }
 }
 
-export async function getAll(req, res, next) {
+export async function getAllUserProjects(req, res, next) {
     try {
 
-        const getProjectsResult = await ProjectService.getAll(req.userId);
+        const getProjectsResult = await ProjectService.getAllUserProjects(req.params.username);
+
         const projects = ProjectGET.InstanceFromObjectArray(getProjectsResult);
 
         for (const project of projects) {
@@ -60,7 +64,7 @@ export async function create(req, res, next) {
             return res.status(400).json({ messageType: MessageType.Warning, message: errorMessage });
         }
 
-        const createProjectResult = await ProjectService.create(res, req.userId, project);
+        const createProjectResult = await ProjectService.create(req.userId, project);
 
         res.status(200).json({ messageType: MessageType.Success, message: "Project created.", projectId: createProjectResult.insertedId.toString() })
 
@@ -72,6 +76,14 @@ export async function create(req, res, next) {
 
 export async function update(req, res, next) {
     try {
+
+        const getProjectResult = await ProjectService.get(req.params.id);
+
+        if (getProjectResult.UserId != req.userId) {
+            return res.status(401).end();
+        }
+
+
 
         const project = ProjectPOST.InstanceFromObject(req.body);
 
@@ -97,6 +109,14 @@ export async function remove(req, res, next) {
             return res.staus(500).end();
         }
 
+        const getProjectResult = await ProjectService.get(req.params.id);
+
+        if (getProjectResult.UserId != req.userId) {
+            return res.status(401).end();
+        }
+
+        
+
         await fs.rm(uploadDirectory + req.params.id, { recursive: true });
 
         await UploadService.removeAll(req.params.id);
@@ -111,7 +131,61 @@ export async function remove(req, res, next) {
     }
 }
 
-export async function highlightUpload(req, res, next) {
+export async function like(req, res) {
+    try {
+        if (await LikeService.isProjectLiked(req.userId, req.params.id)) {
+            return res.status(400).json({ messageType: MessageType.Warning, message: "Already liked." });
+        }
+
+        const likeProjectResult = await LikeService.likeProject(req.userId, req.params.id);
+        const incrementLikeResult = await ProjectService.incrementLike(req.params.id);
+
+        return res.status(200).json({ messageType: MessageType.Success });
+
+    } catch (error) {
+        console.error("Error in project controller: like: ", error);
+        return res.status(500).end();
+    }
+}
+
+export async function unlike(req, res) {
+    try {
+        if (!await LikeService.isProjectLiked(req.userId, req.params.id)) {
+            return res.status(400).json({ messageType: MessageType.Warning, message: "Not liked." });
+        }
+
+        const unlikeProjectResult = await LikeService.unlikeProject(req.userId, req.params.id);
+        const decrementLikeResult = await ProjectService.decrementLike(req.params.id);
+
+        return res.status(200).json({ messageType: MessageType.Success });
+
+    } catch (error) {
+        console.error("Error in project controller: unlike: ", error);
+        return res.status(500).end();
+    }
+}
+
+export async function getIsLiked(req, res) {
+    try {
+        const isProjectLikedResult = await LikeService.isProjectLiked(req.userId, req.params.id);
+        return res.status(200).json(isProjectLikedResult);
+    } catch (error) {
+        console.error("Error in project controller: isLiked: ", error);
+        return res.status(500).end();
+    }
+}
+
+export async function getLikeCount(req, res) {
+    try {
+        const getLikesCountResult = await LikeService.getProjectLikeCount(req.params.id);
+        return res.status(200).json(getLikesCountResult);
+    } catch (error) {
+        console.error("Error in project controller: getLikes: ", error);
+        return res.status(500).end();
+    }
+}
+
+/*export async function highlightUpload(req, res, next) {
     try {
 
         const getUploadResult = await UploadService.get(req.params.uploadId);
@@ -123,4 +197,4 @@ export async function highlightUpload(req, res, next) {
         console.error("Error in upload controller: highlightUpload: ", err);
         return res.status(500).end();
     }
-}
+}*/

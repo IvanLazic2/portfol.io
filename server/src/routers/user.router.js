@@ -4,7 +4,7 @@ import { jwtProtection } from '../middlewares/jwtProtection.middleware.js';
 
 const router = express.Router();
 
-router.get('/', jwtProtection, userController.get);
+router.get('/:username', userController.get);
 router.put('/', jwtProtection, userController.update);
 router.put('/changeUsername/', jwtProtection, userController.changeUsername);
 router.put('/changeEmail/', jwtProtection, userController.changeEmail);

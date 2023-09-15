@@ -6,10 +6,11 @@ import { profilePictureDirectory } from '../configs/profilePicture.config.js';
 import { checkAndCreateDirectory } from '../configs/upload.config.js';
 import { MessageType } from '../enums/messageType.js';
 import * as UserService from '../services/user.service.js';
+import { Console } from 'console';
 
 async function removeIfExists(path) {
     try {
-        await fs.unlink(path)
+        await fs.unlink(path);
     } catch (error) {
         if (error.code !== 'ENOENT') {
             console.error("Error in profilePicture controller: removeIfExists:", error);
@@ -34,11 +35,13 @@ export async function get(req, res) {
 export async function create(req, res) {
     try {
 
-        const getUserResult = await UserService.get(req.userId);
+        const getUserResult = await UserService.getById(req.userId);
         if (getUserResult.ProfilePictureId) {
             const removeProfilePictureResult = await UserService.removeProfilePicture(req.userId)
             await removeIfExists(profilePictureDirectory + getUserResult.ProfilePictureId + '.jpg');
         }
+
+        
 
         const profilePictureId = uuidv4();
         const changeProfilePictureResult = await UserService.changeProfilePicture(req.userId, profilePictureId);
@@ -57,10 +60,8 @@ export async function create(req, res) {
 }
 
 export async function remove(req, res) {
-    
-
     try {
-        const getUserResult = await UserService.get(req.userId);
+        const getUserResult = await UserService.getById(req.userId);
 
         const removeProfilePictureResult = await UserService.removeProfilePicture(req.userId);
         await removeIfExists(profilePictureDirectory + getUserResult.ProfilePictureId + '.jpg');

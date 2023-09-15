@@ -128,16 +128,16 @@ const sidebar_footer = {
   animations: [
     trigger("navbarAnimationTrigger", [
 
-      state("navbarAnimation", style(navbar_navbar)),
+      /*state("navbarAnimation", style(navbar_navbar)),
       state("sidebarAnimation", style(sidebar_navbar)),
-      transition("navbarAnimation <=> sidebarAnimation", animate(`1s ease-out`))
+      transition("navbarAnimation <=> sidebarAnimation", animate(`1s ease-out`))*/
 
     ]),
     trigger("contentAnimationTrigger", [
 
-      state("navbarAnimation", style(navbar_content)),
+      /*state("navbarAnimation", style(navbar_content)),
       state("sidebarAnimation", style(sidebar_content)),
-      transition("navbarAnimation <=> sidebarAnimation", animate(`1s ease-out`))
+      transition("navbarAnimation <=> sidebarAnimation", animate(`1s ease-out`))*/
 
     ])
   ]

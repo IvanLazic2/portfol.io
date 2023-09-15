@@ -6,8 +6,32 @@
 </div>
 
 
+<div class="filter-container">
+    <label for="search">Search:</label>
+    <input type="text" id="search" name="search" (keyup)="onSearch($event)">
 
-<div class="outer-project-container" *ngFor="let project of Projects$ | async; index as i">
+    <div ngbDropdown>
+        <button ngbDropdownToggle class="btn btn-secondary dropdown-toggle" id="dropdownMenuLink"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            {{ SortDropdownLabel }}
+        </button>
+
+
+        <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <button ngbDropdownItem (click)="SortDropdownLabel = 'Date created'; this.sortProperty = 'DateCreated';"
+                id="sort-Default" class="dropdown-item">Date created</button>
+            <button ngbDropdownItem (click)="SortDropdownLabel = 'Name'; this.sortProperty = 'Name';" id="sort-NameAtoZ"
+                class="dropdown-item">Name</button>
+        </div>
+    </div>
+
+    <div [ngClass]="{'active': sortOrder === 'desc'}" class="sort-order-toggle-button" (click)="toggleSortOrder()">
+        <span id="icon">&#9660;</span>
+    </div>
+</div>
+
+
+<div class="outer-project-container" *ngFor="let project of Projects | filter:['Name']:this.searchValue | sortBy:this.sortOrder:this.sortProperty; index as i">
 
     <div [ngClass]="i % 2 == 0 ? 'inner-project-container-ltr' : 'inner-project-container-rtl'">
 

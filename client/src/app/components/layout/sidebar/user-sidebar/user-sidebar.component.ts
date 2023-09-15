@@ -75,13 +75,15 @@ export class UserSidebarComponent implements OnInit {
 
   async onSubmit() {
     await lastValueFrom(this.userService.EditUser({ FullName: this.fullName.value, Bio: this.bio.value }));
+    
+    if (this.User.ProfilePictureId)
+      await lastValueFrom(this.userService.DeleteProfilePicture());
+
     if (this.selectedProfilePictureFile)
       await lastValueFrom(this.userService.ChangeProfilePicture(this.selectedProfilePictureFile));
 
 
-    console.log(this.User.ProfilePictureId)
-    if (this.User.ProfilePictureId)
-      await lastValueFrom(this.userService.DeleteProfilePicture());
+    
 
       
 

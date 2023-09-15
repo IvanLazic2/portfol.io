@@ -8,16 +8,35 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet">
 
     <title>portfol.io</title>
 </head>
 
 <body>
-    
 
-    <div class="content-layout">
-    <!--<app-sidebar [@navbarAnimationTrigger]="getRouteAnimation()" class="navbar">
+    <div class="layout-container">
+
+
+        <header>
+            <app-navbar></app-navbar>
+        </header>
+
+        <main>
+            <router-outlet></router-outlet>
+        </main>
+
+
+
+        <footer class="container-fluid text-center">
+            <p>Footer Text</p>
+        </footer>
+
+
+
+        <!--<app-sidebar [@navbarAnimationTrigger]="getRouteAnimation()" class="navbar">
             
             <div *ngIf="canShowNewArt()">
                 <app-new-project animateAfterAppear="fadeIn" *ifRoles="['Artist']" ></app-new-project>
@@ -25,21 +44,30 @@
             
         </app-sidebar>-->
 
-        <app-sidebar [@navbarAnimationTrigger]="getRouteAnimation()"></app-sidebar>
+        <!--<app-sidebar [@navbarAnimationTrigger]="getRouteAnimation()"></app-sidebar>-->
 
-        <div [@contentAnimationTrigger]="getRouteAnimation()" class="content">
+
+        <!--<div [@contentAnimationTrigger]="getRouteAnimation()" class="content">
             <router-outlet></router-outlet>
-        </div>
+        </div>-->
 
         <!--<div [@footerTrigger]="navShape" class="footer">
             <app-footer></app-footer>
-        </div>-->    
+        </div>-->
+
+
     </div>
+
+
+
+
+
+
 
     <div class="toast-container">
         <app-toasts aria-live="polite" aria-atomic="true"></app-toasts>
     </div>
-    
+
     <!--<app-files [Files]="this.Files$" [CurrentPage]="this.CurrentPage" [Action]="'page_' + this.CurrentPage">
         <h2 class="d-inline m-1" id="page-title" [innerHTML]="PageTitles[CurrentPage]"></h2>
     </app-files>-->
@@ -49,7 +77,7 @@
         <option value="sidebar">Sidebar</option>
     </select>-->
 
-    
+
 
 </body>
 

@@ -18,7 +18,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    NavbarComponent,
     SidebarComponent,
     UserSidebarComponent,
     NewProjectSidebarComponent

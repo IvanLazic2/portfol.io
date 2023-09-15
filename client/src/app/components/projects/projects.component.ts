@@ -17,6 +17,12 @@ export class ProjectsComponent implements OnInit {
   Projects$: Observable<any[]>;
   Projects: any[];
 
+  searchValue: string = '';
+  sortProperty: string = 'DateCreated';
+  sortOrder: boolean | 'asc' | 'desc' = 'desc';
+
+  SortDropdownLabel: string = "Date Created";
+
   constructor(
     public gallery: Gallery,
     public lightbox: Lightbox,
@@ -73,4 +79,18 @@ export class ProjectsComponent implements OnInit {
     const result = await firstValueFrom(this.projectService.DeleteProject(id));
     await this.getProjects();
   }
+
+  onSearch(event: any) {
+    this.searchValue = event.target.value;
+  }
+
+  toggleSortOrder() {
+    if (this.sortOrder == 'asc') {
+      this.sortOrder = 'desc';
+    } else {
+      this.sortOrder = 'asc';
+    }
+  }
 }
+
+

@@ -20,6 +20,8 @@ import { ImageViewerModule } from '@devadri/ngx-imageviewer'
 import { NgxMasonryModule } from 'ngx-masonry';
 import { IfrolesDirective } from 'src/app/directives/ifroles/ifroles.directive';
 import { CommonDirectivesModule } from 'src/app/directives/common-directives.module';
+import { CommonPipesModule } from 'src/app/pipes/common-pipes.module';
+import { BarRatingModule } from 'ngx-bar-rating';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,10 @@ import { CommonDirectivesModule } from 'src/app/directives/common-directives.mod
 
     ImageViewerModule,
     NgxMasonryModule,
-    CommonDirectivesModule
+    CommonDirectivesModule,
+    
+    CommonPipesModule,
+    BarRatingModule
     
   ],
   exports: [

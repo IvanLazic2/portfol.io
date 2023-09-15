@@ -4,6 +4,8 @@ import sharp from 'sharp';
 import path from "path";
 import { uploadDirectory, getUploadPath, checkAndCreateDirectory } from "../configs/upload.config.js";
 import * as UploadService from '../services/upload.service.js';
+import * as ProjectService from '../services/project.service.js';
+import * as UserService from '../services/user.service.js';
 import { MessageType } from "../enums/messageType.js";
 import { UploadGET } from "../models/upload/Upload.model.js";
 
@@ -65,10 +67,16 @@ export async function get(req, res, next) {
 
 export async function remove(req, res, next) {
     try {
-        const getResult = await UploadService.get(req.params.id);
+        const getUploadResult = await UploadService.get(req.params.id);
+        const getProjectResult = await ProjectService.get(getUploadResult.ProjectId);
+        const getUserResult = await UserService.getById(getProjectResult.UserId);
 
-        await fs.rm(uploadDirectory + getResult.ProjectId + '/' + req.params.id + '.jpg')
-        await fs.rm(uploadDirectory + getResult.ProjectId + '/thumbnail_' + req.params.id + '.jpg')
+        if (getUserResult._id.toString() != req.userId) {
+            return res.status(401).end();
+        }
+
+        await fs.rm(uploadDirectory + getUploadResult.ProjectId + '/' + req.params.id + '.jpg')
+        await fs.rm(uploadDirectory + getUploadResult.ProjectId + '/thumbnail_' + req.params.id + '.jpg')
 
         const removeResult = await UploadService.remove(req.params.id);
 

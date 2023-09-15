@@ -1,20 +1,13 @@
-<div class="navbar-container">
-    <nav class="navbar navbar-expand-sm navbar-light bg-light p-3">
-        <div class="container-md">
+<nav class="navbar navbar-light bg-light p-3">
+    <div class="container-md">
 
-            <a class="navbar-brand" routerLink="">
-                <h1 class="mb-0" id="main-title">portfol.io</h1>
-            </a>
+        <a class="navbar-brand" routerLink="">
+            <h1 class="mb-0" id="main-title">portfol.io</h1>
+        </a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler"
-                aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"
-                (click)="isMenuCollapsed = !isMenuCollapsed">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarToggler" [ngbCollapse]="isMenuCollapsed">
-                <ul class="navbar-nav mb-0 mb-lg-0">
-                    <!--<li class="nav-item page-link">
+        <div>
+            <ul class="navbar-nav mb-0 mb-lg-0">
+                <!--<li class="nav-item page-link">
                         <a routerLinkActive="active" routerLink="/files" (click)="isMenuCollapsed = true" id="link-files" class="nav-link" aria-current="page">Files</a>
                     </li>
                     <li class="nav-item page-link">
@@ -29,47 +22,45 @@
                     <li class="nav-item page-link">
                         <a routerLinkActive="active" routerLink="/newfile" (click)="isMenuCollapsed = true" id="link-newfile" class="nav-link" aria-current="page">New File</a>
                     </li>-->
-                </ul>
-                <ul class="ms-auto navbar-nav mb-0 mb-lg-0">
-                    <li class="nav-item" *ngIf="userService.GetIsLoggedInObservable() | async">
-                        <!--<a class="mb-0 nav-link nav-link-nohover" routerLink="user/{{ (this.userService.User | async)?.Username }}"><fa-icon [icon]="userIcon"></fa-icon> {{ (this.userService.User | async)?.Username }}</a>-->
-                        <div ngbDropdown placement="bottom-right">
+            </ul>
+            <ul class="ms-auto navbar-nav mb-0 mb-lg-0">
+                <li class="nav-item" *ngIf="userService.GetIsLoggedInObservable() | async">
+                    <!--<a class="mb-0 nav-link nav-link-nohover" routerLink="user/{{ (this.userService.User | async)?.Username }}"><fa-icon [icon]="userIcon"></fa-icon> {{ (this.userService.User | async)?.Username }}</a>-->
+                    <div ngbDropdown placement="bottom-right">
 
-                            <a ngbDropdownToggle id="userDropdown" class="mb-0 nav-link nav-link-nohover">
-                                <img class="profile-picture" ngxGravatar [size]="64"
-                                    [email]="this.userService.User?.Email ?? ''" [fallback]="'mp'"
-                                    [src]="ProfilePictureUrl" />
-                                {{ this.userService.User?.Username ?? '' }}
-                            </a>
+                        <a ngbDropdownToggle id="userDropdown" class="mb-0 nav-link nav-link-nohover">
+                            <img class="profile-picture shadow" ngxGravatar [size]="32"
+                                [email]="this.userService.User?.Email ?? ''" [fallback]="'mp'"
+                                [src]="ProfilePictureUrl" />
+                            {{ this.userService.User?.Username ?? '' }}
+                        </a>
 
-                            <div ngbDropdownMenu="userDropdown">
-                                <a ngbDropdownItem
-                                    routerLink="user/{{ this.userService.User?.Username ?? '' }}">Profile</a>
-                                <a ngbDropdownItem routerLink="account">Account</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="mb-0 nav-link nav-link" (click)="this.userService.LogOut()"><fa-icon
+                        <div class="position-absolute" ngbDropdownMenu="userDropdown">
+                            <a ngbDropdownItem routerLink="user/{{ this.userService.User?.Username ?? '' }}">Profile</a>
+                            <a ngbDropdownItem routerLink="account">Account</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="mb-0 nav-link nav-link" (click)="this.userService.LogOut()"><fa-icon
                                     [icon]="signoutIcon"></fa-icon> Log out</a>
-                            </div>
-
                         </div>
-                    </li>
-                    <!--<li class="nav-item" *ngIf="userService.GetIsLoggedInObservable() | async">
+
+                    </div>
+                </li>
+                <!--<li class="nav-item" *ngIf="userService.GetIsLoggedInObservable() | async">
                         <a class="mb-0 nav-link nav-link" (click)="this.userService.LogOut()"><fa-icon
                                 [icon]="signoutIcon"></fa-icon> Log out</a>
                     </li>-->
 
 
 
-                    <li class="nav-item page-link" *ngIf="!(userService.GetIsLoggedInObservable() | async)">
-                        <a routerLinkActive="active" routerLink="/signin" (click)="isMenuCollapsed = true"
-                            id="link-signin" class="mb-0 nav-link">Sign in</a>
-                    </li>
-                    <li class="nav-item page-link" *ngIf="!(userService.GetIsLoggedInObservable() | async)">
-                        <a routerLinkActive="active" routerLink="/signup" (click)="isMenuCollapsed = true"
-                            id="link-signup" class="mb-0 nav-link">Sign up</a>
-                    </li>
-                </ul>
-            </div>
+                <li class="nav-item page-link" *ngIf="!(userService.GetIsLoggedInObservable() | async)">
+                    <a routerLinkActive="active" routerLink="/signin" (click)="isMenuCollapsed = true" id="link-signin"
+                        class="mb-0 nav-link">Sign in</a>
+                </li>
+                <li class="nav-item page-link" *ngIf="!(userService.GetIsLoggedInObservable() | async)">
+                    <a routerLinkActive="active" routerLink="/signup" (click)="isMenuCollapsed = true" id="link-signup"
+                        class="mb-0 nav-link">Sign up</a>
+                </li>
+            </ul>
         </div>
-    </nav>
-</div>
+    </div>
+</nav>

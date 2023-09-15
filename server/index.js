@@ -16,6 +16,7 @@ import { router as uploadRouter } from './src/routers/upload.router.js';
 import { router as thumbnailRouter } from './src/routers/thumbnail.router.js';
 import { router as userRouter } from './src/routers/user.router.js';
 import { router as profilePictureRouter } from './src/routers/profilePicture.router.js';
+import { router as homeRouter } from './src/routers/home.router.js';
 
 
 
@@ -68,12 +69,12 @@ const upload = multer({ storage: storage });
         app.use(express.urlencoded({ extended: true }));
 
         // routers
-        app.use('/api/projects', jwtProtection, projectRouter);
+        app.use('/api/projects', projectRouter);
         app.use('/api/uploads', uploadRouter);
         app.use('/api/thumbnails', thumbnailRouter);
         app.use('/api/users', userRouter);
         app.use('/api/profilePictures', profilePictureRouter);
-
+        app.use('/api/home', homeRouter);
 
 
 

@@ -1,10 +1,18 @@
 import { ObjectId } from 'mongodb';
 import { db } from '../configs/db.config.js';
 
-export async function get(id) {
+export async function getById(id) {
     const result = await db
         .collection('users')
         .findOne({ _id: ObjectId(id) });
+
+    return result;
+}
+
+export async function getByUsername(username) {
+    const result = await db
+        .collection('users')
+        .findOne({ Username: username });
 
     return result;
 }

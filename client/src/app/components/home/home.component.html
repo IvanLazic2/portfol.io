@@ -1,2 +1,55 @@
-<p>home works!</p>
+<div class="home-container">
+    <div class="filter-container p-2">
 
+        <input class="form-control" type="text" id="search" name="search" (keyup)="onSearch($event)"
+            placeholder="Search:">
+
+        <div class="sort-container">
+            <div ngbDropdown container="body">
+                <button ngbDropdownToggle class="btn btn-outline-secondary dropdown-toggle btn-sm" id="dropdownMenuLink"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ SortDropdownLabel }}
+                </button>
+
+                <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <button ngbDropdownItem
+                        (click)="SortDropdownLabel = 'Date created'; this.sortProperty = 'DateCreated'; this.sortOrder = 'desc';"
+                        id="sort-Default" class="dropdown-item">Date created</button>
+                    <button ngbDropdownItem (click)="SortDropdownLabel = 'Name'; this.sortProperty = 'Name'; this.sortOrder = 'asc';"
+                        id="sort-NameAtoZ" class="dropdown-item">Name</button>
+                </div>
+            </div>
+
+            <div [ngClass]="{'asc-active': sortOrder === 'asc'}" class="btn btn-outline-secondary btn-sm sort-order-toggle-button"
+                (click)="toggleSortOrder()">
+                <fa-icon class="sort-icon" [icon]="upIcon"></fa-icon>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="project-container p-2">
+
+        <div class="project-card"
+            *ngFor="let project of Projects | filter:['Name', 'Username']:this.searchValue | sortBy:this.sortOrder:this.sortProperty, index as i">
+            <img [src]="this.uploadService.ThumbnailUrl + project.UploadIds[0]">
+
+            <div [ngClass]="i % 2 == 0 ? 'project-info-container-ltr' : 'project-info-container-rtl'">
+                <h1> {{ project.Name }} </h1>
+
+                <div [ngClass]="i % 2 == 0 ? 'project-concept-container-ltr' : 'project-concept-container-rtl'">
+                    Concept: {{ project.Concept }}
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button [ngClass]="this.ProjectIsLiked[project.Id] ? 'heart-solid' : 'heart-line'"
+                    (click)="onClickLike(project.Id)">{{ this.ProjectIsLiked[project.Id] ? 'Unlike' : 'Like' }}</button>
+                <span>{{ this.ProjectLikes[project.Id] }}</span>
+                <button (click)="DetailsProject(project.Id)">Details</button>
+            </div>
+        </div>
+
+    </div>
+</div>

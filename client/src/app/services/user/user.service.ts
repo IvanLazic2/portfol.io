@@ -37,15 +37,11 @@ export class UserService {
     this.isEditing = value;
   }
 
-  async GetUser() {
-    if (!this.GetIsLoggedIn())
-      return;
-
-    const getUserResponse$ = this.http.get(this.UserUrl, {
-      "headers": this.authService.GetAuthHeaders(),
-    });
+  async GetUser(username: string = localStorage.getItem("username") ?? "") {
+    const getUserResponse$ = this.http.get(this.UserUrl + username);
 
     this.User = await lastValueFrom(getUserResponse$);
+
     if (this.User.ProfilePictureId)
       this.ProfilePictureSrcUrl = this.ProfilePictureUrl + this.User.ProfilePictureId;
     else
@@ -103,7 +99,8 @@ export class UserService {
         next: (res: any) => {
           this.isLoggedIn.next(true);
           this.SetToken(res.user);
-          this.GetUser();
+          this.SetUsername(username);
+          this.GetUser(username);
 
           this.router.navigate(["/"]);
           this.toastService.show("", res.message, ToastType.Success);
@@ -120,7 +117,8 @@ export class UserService {
         next: (res: any) => {
           this.isLoggedIn.next(true);
           this.SetToken(res.user);
-          this.GetUser();
+          this.SetUsername(username);
+          this.GetUser(username);
 
 
           this.router.navigate(["/"]);
@@ -134,6 +132,7 @@ export class UserService {
 
   LogOut() {
     localStorage.removeItem("token");
+    localStorage.removeItem("username");
     this.isLoggedIn.next(false);
 
     this.router.navigate(["/signin"]);
@@ -143,5 +142,9 @@ export class UserService {
   SetToken(user: any) {
     localStorage.setItem("token", user.Token);
     //this.User.next({ Username: user.Username });
+  }
+
+  SetUsername(username: string) {
+    localStorage.setItem("username", username);
   }
 }

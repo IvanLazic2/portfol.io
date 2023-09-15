@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get('/:id', uploadController.get);
 //router.post('/', multipleUploadMiddleware, uploadController.saveFiles);
-router.post('/', upload.single('upload'), uploadController.create);
-router.delete('/:id', uploadController.remove);
+router.post('/', jwtProtection, upload.single('upload'), uploadController.create);
+router.delete('/:id', jwtProtection, uploadController.remove);
 
 export { router }

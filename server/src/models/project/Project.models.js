@@ -16,16 +16,17 @@ export class ProjectPOST {
 }
 
 export class ProjectGET {
-    constructor(id, name, concept, highlightedUploadId) {
+    constructor(id, name, concept, dateCreated, userId) {
         this.Id = id;
         this.Name = name;
         this.Concept = concept;
+        this.DateCreated = dateCreated;
+        this.UserId = userId;
         //this.TehnicalInfo = tehnicalInfo;
-        this.HighlightedUploadId = highlightedUploadId;
     }
 
     static InstanceFromObject(obj) {
-        return new ProjectGET(obj._id, obj.Name, obj.Concept, obj.HighlightedUploadId);
+        return new ProjectGET(obj._id, obj.Name, obj.Concept, obj.DateCreated, obj.UserId);
     }
 
     static InstanceFromObjectArray(objArr) {
@@ -51,6 +52,9 @@ export class ProjectCreate {
         this.Name = name;
         this.Concept = concept;
         //this.TehnicalInfo = tehnicalInfo;
+        
+        this.DateCreated = Date.now();
+        this.Likes = 0;
     }
 
     static InstanceFromObject(userId, obj) {

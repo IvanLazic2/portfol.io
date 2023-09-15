@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { HomeComponent } from './components/home/home.component';
@@ -22,6 +22,8 @@ import { CommonDirectivesModule } from './directives/common-directives.module';
 import { ProjectsModule } from './components/projects/projects.module';
 import { GravatarModule } from 'ngx-gravatar';
 import { AccountComponent } from './components/account/account.component';
+import { CommonPipesModule } from './pipes/common-pipes.module';
+import { NavbarComponent } from './components/layout/navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +34,7 @@ import { AccountComponent } from './components/account/account.component';
     ToastsComponent,
     AuthformComponent,
     AnimateAfterAppearDirective,
+    NavbarComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,7 +49,8 @@ import { AccountComponent } from './components/account/account.component';
     CommonDirectivesModule,
     SidebarModule,
     ProjectsModule,
-    GravatarModule
+    GravatarModule,
+    CommonPipesModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

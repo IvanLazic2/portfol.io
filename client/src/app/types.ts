@@ -10,6 +10,19 @@ export interface UploadEdit {
     File: File
 }
 
+export interface RatingPOST {
+    ProjectId: string,
+    UserId: string,
+    Rating: number
+}
+
+//// DELETE Models
+
+export interface RatingDELETE {
+    ProjectId: string,
+    UserId: string
+}
+
 //// App Models
 
 export interface Project {

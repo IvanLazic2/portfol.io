@@ -1,14 +1,15 @@
 import { HttpClient, HttpEvent, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
-import { Observable, lastValueFrom } from 'rxjs';
-import { ProjectPOST } from 'src/app/types';
+import { Observable } from 'rxjs';
+import { ProjectPOST, RatingDELETE, RatingPOST } from 'src/app/types';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService {
   private projectsUrl = '/api/projects/';
+  private getAllUserProjectsUrl = this.projectsUrl + 'user/';
   private isEditing = false;
 
   constructor(
@@ -30,8 +31,8 @@ export class ProjectService {
       });
   }
 
-  public GetProjects() {
-    return this.http.get<any[]>(this.projectsUrl, {
+  public GetProjects(username: string = localStorage.getItem("username") ?? ""): Observable<any[]> {
+    return this.http.get<any[]>(this.getAllUserProjectsUrl + username, {
       "headers": this.authService.GetAuthHeaders(),
     });
   }
@@ -54,9 +55,37 @@ export class ProjectService {
     })
   }
 
+  public LikeProject(projectId: string): Observable<any> {
+    return this.http.get(this.projectsUrl + 'like/' + projectId, {
+      "headers": this.authService.GetAuthHeaders(), 
+    })
+  }
+
+  public UnlikeProject(projectId: string): Observable<any> {
+    return this.http.get(this.projectsUrl + 'unlike/' + projectId, {
+      "headers": this.authService.GetAuthHeaders(), 
+    })
+  }
+
+  public GetProjectLikeCount(projectId: string): Observable<number> {
+    return this.http.get<number>(this.projectsUrl + 'likeCount/' + projectId);
+  }
+
+  public GetProjectIsLiked(projectId: string): Observable<boolean> {
+    return this.http.get<boolean>(this.projectsUrl + 'isLiked/' + projectId, {
+      "headers": this.authService.GetAuthHeaders(), 
+    })
+  }
+
+
+
+
+
+
   public HighlightUpload(uploadId: string): Observable<any> {
     return this.http.get(this.projectsUrl + 'highlightUpload/' + uploadId, {
       "headers": this.authService.GetAuthHeaders(),
     })
   }
+  
 }

@@ -1,0 +1,83 @@
+// flex container for project cards that are displayed one next to the other and they always fit the screen width
+.project-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: begin;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+    background-color: #f5f5f5;
+    gap: 10px;
+    
+    
+}
+
+.sort-order-toggle-button {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sort-order-toggle-button .sort-icon {
+    width: 15px;
+    text-align: center;
+    margin: 0 auto;
+    /*display: block;*/
+
+    display:inline-block;
+    line-height: 20px;
+    vertical-align: bottom;
+}
+
+
+
+#icon {
+    font-size: 24px;
+    transition: transform 0.2s;
+}
+
+.sort-order-toggle-button.asc-active .sort-icon {
+    transform: rotate(180deg);
+}
+
+
+
+
+.filter-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #f5f5f5;
+    gap: 10px;
+}
+
+.filter-container input {
+    width: 20%;
+    min-width: 250px;
+}
+
+.sort-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #f5f5f5;
+    gap: 10px;
+}
+
+.dropdown-menu {
+    position: absolute;
+}

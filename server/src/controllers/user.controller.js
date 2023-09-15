@@ -5,7 +5,7 @@ import { MessageType } from '../enums/messageType.js';
 export async function get(req, res) {
     try {
 
-        const getUserResult = await UserService.get(req.userId);
+        const getUserResult = await UserService.getByUsername(req.params.username);
         const user = UserGET.InstanceFromObject(getUserResult);
 
         return res.status(200).json(user);
