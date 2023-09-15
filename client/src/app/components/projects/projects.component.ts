@@ -7,6 +7,7 @@ import { Lightbox } from "ng-gallery/lightbox";
 import { NgxMasonryOptions } from 'ngx-masonry';
 import { UploadService } from 'src/app/services/upload/upload.service';
 import { UserService } from 'src/app/services/user/user.service';
+import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-projects',
@@ -14,6 +15,8 @@ import { UserService } from 'src/app/services/user/user.service';
   styleUrls: ['./projects.component.scss']
 })
 export class ProjectsComponent implements OnInit {
+  upIcon: any = faArrowUp;
+
   Projects$: Observable<any[]>;
   Projects: any[];
 

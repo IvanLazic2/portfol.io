@@ -22,6 +22,7 @@ import { IfrolesDirective } from 'src/app/directives/ifroles/ifroles.directive';
 import { CommonDirectivesModule } from 'src/app/directives/common-directives.module';
 import { CommonPipesModule } from 'src/app/pipes/common-pipes.module';
 import { BarRatingModule } from 'ngx-bar-rating';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { BarRatingModule } from 'ngx-bar-rating';
     CommonDirectivesModule,
     
     CommonPipesModule,
-    BarRatingModule
+    BarRatingModule,
+    FontAwesomeModule,
     
   ],
   exports: [
