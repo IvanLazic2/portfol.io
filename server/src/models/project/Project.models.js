@@ -1,12 +1,15 @@
 export class ProjectPOST {
-    constructor(name, concept) {
+    constructor(name, concept, material, width, height, depth) {
         this.Name = name;
         this.Concept = concept;
-        //this.TehnicalInfo = tehnicalInfo;
+        this.Material = material;
+        this.Width = width;
+        this.Height = height;
+        this.Depth = depth;
     }
 
     static InstanceFromObject(obj) {
-        return new ProjectPOST(obj.Name, obj.Concept);
+        return new ProjectPOST(obj.Name, obj.Concept, obj.Material, obj.Width, obj.Height, obj.Depth);
     }
 
     Validate() {
@@ -16,17 +19,20 @@ export class ProjectPOST {
 }
 
 export class ProjectGET {
-    constructor(id, name, concept, dateCreated, userId) {
+    constructor(id, name, concept, material, width, height, depth, dateCreated, userId) {
         this.Id = id;
         this.Name = name;
         this.Concept = concept;
         this.DateCreated = dateCreated;
         this.UserId = userId;
-        //this.TehnicalInfo = tehnicalInfo;
+        this.Material = material;
+        this.Width = width;
+        this.Height = height;
+        this.Depth = depth;
     }
 
     static InstanceFromObject(obj) {
-        return new ProjectGET(obj._id, obj.Name, obj.Concept, obj.DateCreated, obj.UserId);
+        return new ProjectGET(obj._id, obj.Name, obj.Concept, obj.Material, obj.Width, obj.Height, obj.Depth, obj.DateCreated, obj.UserId);
     }
 
     static InstanceFromObjectArray(objArr) {
@@ -47,29 +53,35 @@ export class ProjectGET {
 // DATA LAYER
 
 export class ProjectCreate {
-    constructor(userId, name, concept) {
+    constructor(userId, name, concept, material, width, height, depth) {
         this.UserId = userId;
         this.Name = name;
         this.Concept = concept;
-        //this.TehnicalInfo = tehnicalInfo;
-        
+        this.Material = material;
+        this.Width = width;
+        this.Height = height;
+        this.Depth = depth;
+
         this.DateCreated = Date.now();
         this.Likes = 0;
     }
 
     static InstanceFromObject(userId, obj) {
-        return new ProjectCreate(userId, obj.Name, obj.Concept);
+        return new ProjectCreate(userId, obj.Name, obj.Concept, obj.Material, obj.Width, obj.Height, obj.Depth);
     }
 }
 
 export class ProjectUpdate {
-    constructor(name, concept) {
+    constructor(name, concept, material, width, height, depth) {
         this.Name = name;
         this.Concept = concept;
-        //this.TehnicalInfo = tehnicalInfo;
+        this.Material = material;
+        this.Width = width;
+        this.Height = height;
+        this.Depth = depth;
     }
 
     static InstanceFromObject(obj) {
-        return new ProjectUpdate(obj.Name, obj.Concept);
+        return new ProjectUpdate(obj.Name, obj.Concept, obj.Material, obj.Width, obj.Height, obj.Depth);
     }
 }

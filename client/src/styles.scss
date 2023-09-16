@@ -1,4 +1,33 @@
-@import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+//@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+//$white: #ffffff;
+
+/*$theme-colors: (
+    //"light":      #add5fa,
+    "light":      #fcfcfc,
+    "dark":       #000301,
+    "primary":    #2c3e4f,
+    "secondary":  #165fa5,
+    "info":       #2d7ccc,
+    "success":    #0e9753,
+    "warning":    #e1c710,
+    "danger":     #ef060b,
+);*/
+
+/*$theme-colors: (
+    "light":      #F5F5F5,
+    "dark":       #333333,
+    "primary":    #FF5733,
+    "secondary":  #3498DB,
+    "info":       #27AE60,
+    "success":    #FFC300,
+    "warning":    #E74C3C,
+    "danger":     #9B59B6,
+);*/
+
+@import "bootstrap";
+//@import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 @import '../node_modules/lightgallery/scss/lightgallery-bundle.scss';
 @import '../node_modules/lightgallery/scss/lightgallery-core.scss';
@@ -6,9 +35,17 @@
 
 @import '../node_modules/@angular/cdk/overlay-prebuilt.css';
 
+@import 'variables.scss';
 
-
+body {
+    //font-family: 'Roboto', sans-serif;
+    font-family: 'Roboto Slab', serif;
+}
 
 gallery-item gallery-image img {
 
 }
+
+/*.btn:not(:hover) {
+    background-color: white;
+}*/

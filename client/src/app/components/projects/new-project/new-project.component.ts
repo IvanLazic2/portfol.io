@@ -4,9 +4,9 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 import { Router } from '@angular/router';
 import { Subscription, take } from 'rxjs';
 import { UploadService } from 'src/app/services/upload/upload.service';
-import { ProjectService } from 'src/app/services/project/project.service';
+import { ProjectService } from 'src/app/components/projects/project.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
-import { UserService } from 'src/app/services/user/user.service';
+import { UserService } from 'src/app/components/user/user.service';
 import { ProjectPOST, ToastType } from 'src/app/types';
 import { Observable, lastValueFrom, firstValueFrom } from 'rxjs';
 
@@ -34,8 +34,11 @@ export class NewProjectComponent implements OnDestroy {
   ) {
     this.form = this.fb.group({
       projectName: ['', [Validators.required, Validators.minLength(3)]],
-      projectConcept: ['', [Validators.pattern(/^[a-zA-Z0-9]+$/)]],
-      //files: this.fb.array([], [Validators.required])
+      projectConcept: [''/*, [Validators.pattern(/^[a-zA-Z0-9]+$/)]*/],
+      projectMaterial: [''],
+      projectWidth: [''],
+      projectHeight: [''],
+      projectDepth: [''],
     });
   }
   files: File[] = [];
@@ -46,6 +49,22 @@ export class NewProjectComponent implements OnDestroy {
 
   get projectConcept() {
     return this.form.get('projectConcept') as FormControl;
+  }
+
+  get projectMaterial() {
+    return this.form.get('projectMaterial') as FormControl;
+  }
+
+  get projectWidth() {
+    return this.form.get('projectWidth') as FormControl;
+  }
+
+  get projectHeight() {
+    return this.form.get('projectHeight') as FormControl;
+  }
+
+  get projectDepth() {
+    return this.form.get('projectDepth') as FormControl;
   }
 
   onSelect(event: any) {
@@ -66,13 +85,13 @@ export class NewProjectComponent implements OnDestroy {
       return;
     }
 
-    const projectName = this.form.value.projectName;
-    const projectConcept = this.form.value.projectConcept;
-    //console.log(projectName, projectConcept, files);
-
     const project: ProjectPOST = {
-      Name: projectName,
-      Concept: projectConcept
+      Name: this.form.value.projectName,
+      Concept: this.form.value.projectConcept,
+      Material: this.form.value.projectMaterial,
+      Width: this.form.value.projectWidth,
+      Height: this.form.value.projectHeight,
+      Depth: this.form.value.projectDepth,
     };
 
     try {

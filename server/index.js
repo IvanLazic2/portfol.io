@@ -69,11 +69,11 @@ const upload = multer({ storage: storage });
         app.use(express.urlencoded({ extended: true }));
 
         // routers
-        app.use('/api/projects', projectRouter);
-        app.use('/api/uploads', uploadRouter);
-        app.use('/api/thumbnails', thumbnailRouter);
-        app.use('/api/users', userRouter);
-        app.use('/api/profilePictures', profilePictureRouter);
+        app.use('/api/project', projectRouter);
+        app.use('/api/upload', uploadRouter);
+        app.use('/api/thumbnail', thumbnailRouter);
+        app.use('/api/user', userRouter);
+        app.use('/api/profilePicture', profilePictureRouter);
         app.use('/api/home', homeRouter);
 
 

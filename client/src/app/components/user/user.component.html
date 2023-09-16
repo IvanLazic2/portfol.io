@@ -1,15 +1,119 @@
-<p>user???</p>
+<div class="main-container container-md pt-5">
 
-<app-projects></app-projects>
+    <div class="profile-container">
 
-<div *ngIf="this.userService.GetIsLoggedInObservable() | async" class="container-sm mb-2">
-    <div id="upper-files-container" class="d-flex flex-wrap justify-content-between mb-2">
+        <div class="d-inline-block profile-image-container">
+            <button class="delete-button btn btn-sm btn-secondary shadow" *ngIf="this.userService.getIsEditing()"
+                (click)="ClearProfilePicture()">X</button>
 
-        <!--<ng-content select="#page-title"></ng-content>-->
-        <!--<h2 class="d-inline m-1" id="page-title" [innerHTML]="PageTitles[CurrentPage!]"></h2>-->
-        <!--<h2 class="d-inline m-1" id="page-title">Your <b>art</b></h2>-->
+            <img class="profile-picture shadow" ngxGravatar [size]="256"
+                [email]="this.userService.CurrentUser?.Email ?? ''" [fallback]="'mp'"
+                [src]="selectedImage ? selectedImage : this.userService.GetCurrentUserProfilePictureUrl()" />
 
-        <!--<div class="d-inline-flex justify-content-start align-items-center">
+            <button class="change-button btn btn-sm btn-secondary shadow" *ngIf="this.userService.getIsEditing()"
+                (click)="openFilePicker()">Change</button>
+            <input type="file" hidden #fileInput (change)="onFileSelected($event)">
+        </div>
+
+
+        <div class="profile-info-container">
+
+            <h1>{{ this.userService.CurrentUser?.Username ?? "" }}</h1>
+
+            <div *ngIf="!this.userService.getIsEditing()">
+
+                <h4 class="full-name">{{ this.userService.CurrentUser?.FullName ?? "" }}</h4>
+                <p>{{ this.userService.CurrentUser?.Bio ?? "" }}</p>
+                <button class="btn btn-secondary w-100 shadow"
+                    *ngIf="this.userService.CurrentUser.Username === (this.userService.LoggedInUser?.Username ?? '')"
+                    (click)="Edit()">Edit profile</button>
+
+            </div>
+
+
+            <div *ngIf="this.userService.getIsEditing()">
+                <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+                    <div>
+                        <label for="fullName">Full name:</label>
+                        <input class="form-control" type="text" id="fullName" formControlName="fullName">
+
+                        <div *ngIf="fullName.invalid && fullName.touched">
+                            <p *ngIf="fullName.errors?.['minlength']">Full Name must be at least 3 characters long</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="bio">Bio:</label>
+                        <textarea class="form-control" id="bio" formControlName="bio"></textarea>
+
+                        <div *ngIf="bio.invalid && bio.touched">
+                        </div>
+                    </div>
+
+                    <button class="btn btn-sm btn-danger my-1 me-1 shadow" type="button" (click)="CancelEditing()">Cancel</button>
+                    <button class="btn btn-sm btn-primary my-1 shadow" type="submit">Save</button>
+
+                </form>
+            </div>
+
+        </div>
+
+        
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="projects-container">
+
+
+        <div class="navbar py-3">
+            <div class="container-md m-0 p-0">
+
+                <h2 *ngIf="this.userService.CurrentUser.Username === (this.userService.LoggedInUser?.Username ?? ''); else notOwnProfile"
+                    class="d-inline" id="page-title">Your projects</h2>
+                <ng-template #notOwnProfile>
+                    <h2 class="d-inline" id="page-title">{{ this.userService.CurrentUser.Username }}'s projects</h2>
+                </ng-template>
+
+                <div *ngIf="this.userService.GetIsLoggedInObservable() | async">
+                    <button
+                        *ngIf="this.userService.CurrentUser.Username === (this.userService.LoggedInUser?.Username ?? '')"
+                        routerLink="/project/new" id="createProjectButton" class="btn btn-primary my-2 shadow">New</button>
+                    <!--<div *ifRoles="['Artist']">
+                <button routerLink="/project/new" id="createProjectButton" class="btn btn-primary my-2">New</button>
+            </div>-->
+                </div>
+
+            </div>
+        </div>
+
+        <app-projects></app-projects>
+
+        <div *ngIf="this.userService.GetIsLoggedInObservable() | async" class="container-sm mb-2">
+            <div id="upper-files-container" class="d-flex flex-wrap justify-content-between mb-2">
+
+                <!--<ng-content select="#page-title"></ng-content>-->
+                <!--<h2 class="d-inline m-1" id="page-title" [innerHTML]="PageTitles[CurrentPage!]"></h2>-->
+                <!--<h2 class="d-inline m-1" id="page-title">Your <b>art</b></h2>-->
+
+                <!--<div class="d-inline-flex justify-content-start align-items-center">
             <p class="m-1">Sort by</p>
             <div ngbDropdown id="dropdown-container" class="dropdown m-1">
                 <button ngbDropdownToggle class="btn btn-secondary dropdown-toggle" id="dropdownMenuLink"
@@ -25,9 +129,9 @@
             </div>
         </div>-->
 
-    </div>
+            </div>
 
-    <!--<hr>
+            <!--<hr>
 
     <div animateAfterAppear="fadeIn" id="file-container" class="files-container d-flex justify-content-center row gx-5 p-2">
         
@@ -36,4 +140,8 @@
         </div>
         
     </div>-->
+        </div>
+
+    </div>
+
 </div>

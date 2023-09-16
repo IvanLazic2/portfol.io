@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { lastValueFrom } from 'rxjs';
-import { UserService } from 'src/app/services/user/user.service';
+import { UserService } from 'src/app/components/user/user.service';
 
 @Component({
   selector: 'app-account',
@@ -28,7 +28,7 @@ export class AccountComponent implements OnInit {
   }
 
   get User() {
-    return this.userService.User;
+    return this.userService.CurrentUser;
   }
 
   get username() {
@@ -40,7 +40,7 @@ export class AccountComponent implements OnInit {
   }
 
   async ngOnInit() {
-      await this.userService.GetUser();
+      await this.userService.GetLoggedInUser();
       this.setForms();
   }
 
@@ -55,13 +55,13 @@ export class AccountComponent implements OnInit {
 
   async onUsernameSubmit() {
     await lastValueFrom(this.userService.ChangeUsername(this.username.value));
-    await this.userService.GetUser();
+    await this.userService.GetLoggedInUser();
     this.modalService.dismissAll();
   }
 
   async onEmailSubmit() {
     await lastValueFrom(this.userService.ChangeEmail(this.email.value));
-    await this.userService.GetUser();
+    await this.userService.GetLoggedInUser();
     this.modalService.dismissAll();
   }
 }

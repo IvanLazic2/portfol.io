@@ -1,15 +1,4 @@
-<h1>Your projects</h1>
-<div *ngIf="this.userService.GetIsLoggedInObservable() | async">
-    <div *ifRoles="['Artist']">
-        <button routerLink="/project/new" id="createProjectButton" class="btn btn-primary my-2">New</button>
-    </div>
-</div>
-
-
-
-
-
-<div class="filter-container p-2">
+<div class="filter-container py-2">
 
     <input class="form-control" type="text" id="search" name="search" (keyup)="onSearch($event)"
         placeholder="Search:">
@@ -48,7 +37,7 @@
 
 
 
-<div class="outer-project-container" *ngFor="let project of Projects | filter:['Name']:this.searchValue | sortBy:this.sortOrder:this.sortProperty; index as i">
+<div class="outer-project-container" *ngFor="let project of this.projectService.CurrentProjects | filter:['Name']:this.searchValue | sortBy:this.sortOrder:this.sortProperty; index as i">
 
     <div [ngClass]="i % 2 == 0 ? 'inner-project-container-ltr' : 'inner-project-container-rtl'">
 

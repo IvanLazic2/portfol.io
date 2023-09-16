@@ -8,6 +8,8 @@ import { uploadDirectory } from '../configs/upload.config.js';
 import { ProjectPOST, ProjectGET } from '../models/project/Project.models.js';
 
 export async function get(req, res, next) {
+    console.log(req.params.id)
+
     try {
 
         if (!req.params.id) {

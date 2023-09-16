@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Router } from '@angular/router';
 import { last } from 'rxjs';
 import { ToastService } from 'src/app/services/toast/toast.service';
-import { UserService } from 'src/app/services/user/user.service';
+import { UserService } from 'src/app/components/user/user.service';
 import { AuthType, ToastType } from 'src/app/types';
 
 @Component({

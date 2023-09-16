@@ -17,6 +17,13 @@ export async function get(req, res) {
 
 export async function update(req, res) {
     try {
+        const getUserResult = await UserService.getById(req.userId);
+
+        console.log(getUserResult.Username, req.body.EditedUserUsername);
+
+        if (getUserResult.Username !== req.body.EditedUserUsername) {
+            return res.status(400).json({ messageType: MessageType.Warning, message: "User edit not allowed." });
+        }
 
         const user = UserPUT.InstanceFromObject(req.body);
 

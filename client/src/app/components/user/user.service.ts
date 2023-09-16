@@ -4,19 +4,20 @@ import { BehaviorSubject, filter, map, Observable, tap, last, endWith, lastValue
 
 import { AuthType, ToastType, User } from "../../types";
 import { Router } from '@angular/router';
-import { ToastService } from '../toast/toast.service';
-import { AuthService } from '../auth/auth.service';
+import { ToastService } from '../../services/toast/toast.service';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  public readonly UserUrl = '/api/users/';
-  public readonly ProfilePictureUrl = '/api/profilePictures/';
+  public readonly UserUrl = '/api/user/';
+  public readonly ProfilePictureUrl = '/api/profilePicture/';
+
+  CurrentUser: any;
 
   isLoggedIn = new BehaviorSubject<boolean>(localStorage.getItem("token") != null);
-
-  User: any;
+  LoggedInUser: any;
   ProfilePictureSrcUrl: string;
 
   private isEditing = false;
@@ -34,19 +35,50 @@ export class UserService {
   }
 
   setIsEditing(value: boolean) {
-    this.isEditing = value;
+    if (this.CurrentUser.Username === this.LoggedInUser.Username) {
+      this.isEditing = value;
+    }
   }
 
-  async GetUser(username: string = localStorage.getItem("username") ?? "") {
+
+
+
+  async GetCurrentUser(username: string) {
+    const getUserResponse$ = this.http.get(this.UserUrl + username);
+    this.CurrentUser = await lastValueFrom(getUserResponse$);
+  }
+
+  async GetLoggedInUser() {
+    const username = localStorage.getItem("username");
+
+    if (!username) {
+      return;
+    }
+
     const getUserResponse$ = this.http.get(this.UserUrl + username);
 
-    this.User = await lastValueFrom(getUserResponse$);
-
-    if (this.User.ProfilePictureId)
-      this.ProfilePictureSrcUrl = this.ProfilePictureUrl + this.User.ProfilePictureId;
-    else
-      this.ProfilePictureSrcUrl = "";
+    this.LoggedInUser = await lastValueFrom(getUserResponse$);
   }
+
+  GetCurrentUserProfilePictureUrl(): string {
+    if (!this.CurrentUser) {
+      return "";
+    }
+
+    return this.ProfilePictureUrl + this.CurrentUser.ProfilePictureId;
+  }
+
+  GetLoggedInUserProfilePictureUrl(): string {
+    if (!this.LoggedInUser) {
+      return "";
+    }
+
+    return this.ProfilePictureUrl + this.LoggedInUser.ProfilePictureId;
+  }
+
+
+
+
 
   GetIsLoggedInObservable() {
     return this.isLoggedIn.asObservable();
@@ -54,7 +86,7 @@ export class UserService {
 
   async GetIsLoggedIn() {
     return await lastValueFrom(this.isLoggedIn);
-  }  
+  }
 
   EditUser(user: any) {
     return this.http.put(this.UserUrl, user, {
@@ -63,13 +95,13 @@ export class UserService {
   }
 
   ChangeUsername(username: string) {
-    return this.http.put(this.UserUrl + 'changeUsername/', { Username: username}, {
+    return this.http.put(this.UserUrl + 'changeUsername/', { Username: username }, {
       "headers": this.authService.GetAuthHeaders(),
     });
   }
 
   ChangeEmail(email: string) {
-    return this.http.put(this.UserUrl + 'changeEmail/', { Email: email}, {
+    return this.http.put(this.UserUrl + 'changeEmail/', { Email: email }, {
       "headers": this.authService.GetAuthHeaders(),
     });
   }
@@ -100,7 +132,7 @@ export class UserService {
           this.isLoggedIn.next(true);
           this.SetToken(res.user);
           this.SetUsername(username);
-          this.GetUser(username);
+          this.GetLoggedInUser();
 
           this.router.navigate(["/"]);
           this.toastService.show("", res.message, ToastType.Success);
@@ -118,7 +150,7 @@ export class UserService {
           this.isLoggedIn.next(true);
           this.SetToken(res.user);
           this.SetUsername(username);
-          this.GetUser(username);
+          this.GetLoggedInUser();
 
 
           this.router.navigate(["/"]);

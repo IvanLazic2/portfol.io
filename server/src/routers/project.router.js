@@ -6,9 +6,9 @@ import { jwtProtection } from '../middlewares/jwtProtection.middleware.js';
 
 const router = express.Router();
 
+router.get('/user/:username', projectController.getAllUserProjects);
 router.get('/:id', projectController.get);
 //router.get('/highlightUpload/:uploadId', projectController.highlightUpload);
-router.get('/user/:username', projectController.getAllUserProjects);
 router.get('/like/:id', jwtProtection, projectController.like);
 router.get('/unlike/:id', jwtProtection, projectController.unlike);
 router.get('/likeCount/:id', projectController.getLikeCount);

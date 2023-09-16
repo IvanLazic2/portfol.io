@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, lastValueFrom, firstValueFrom, Subscription, forkJoin, subscribeOn, timeout } from 'rxjs';
 import { UploadService } from 'src/app/services/upload/upload.service';
-import { ProjectService } from 'src/app/services/project/project.service';
+import { ProjectService } from 'src/app/components/projects/project.service';
 import { ProjectPOST } from 'src/app/types';
 
 import { GalleryItem, ImageItem, Gallery, ImageSize, ThumbnailsPosition, GalleryRef } from 'ng-gallery';

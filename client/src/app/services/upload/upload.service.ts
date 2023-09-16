@@ -5,7 +5,7 @@ import { BehaviorSubject, filter, map, Observable, tap, last, endWith } from 'rx
 
 import { Page, Category, SortOrder, ToastType } from "../../types"
 import { ToastService } from '../toast/toast.service';
-import { UserService } from '../user/user.service';
+import { UserService } from '../../components/user/user.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AuthService } from '../auth/auth.service';
 
@@ -115,8 +115,8 @@ export class UploadService {
 
 
 
-  public readonly UploadUrl = "/api/uploads/";
-  public readonly ThumbnailUrl = "/api/thumbnails/";
+  public readonly UploadUrl = "/api/upload/";
+  public readonly ThumbnailUrl = "/api/thumbnail/";
   
 
   /*public GetThumbnails(projectId: string): Observable<any[]> {

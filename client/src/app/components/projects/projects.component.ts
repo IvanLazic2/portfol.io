@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, firstValueFrom, lastValueFrom } from 'rxjs';
-import { ProjectService } from 'src/app/services/project/project.service';
+import { ProjectService } from 'src/app/components/projects/project.service';
 import { GalleryItem, ImageItem, Gallery, ImageSize, ThumbnailsPosition, GalleryRef } from 'ng-gallery';
 import { Lightbox } from "ng-gallery/lightbox";
 import { NgxMasonryOptions } from 'ngx-masonry';
 import { UploadService } from 'src/app/services/upload/upload.service';
-import { UserService } from 'src/app/services/user/user.service';
+import { UserService } from 'src/app/components/user/user.service';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -17,8 +17,9 @@ import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 export class ProjectsComponent implements OnInit {
   upIcon: any = faArrowUp;
 
-  Projects$: Observable<any[]>;
-  Projects: any[];
+  //@Input() Username: string;
+
+  //Projects: any[];
 
   searchValue: string = '';
   sortProperty: string = 'DateCreated';
@@ -30,7 +31,7 @@ export class ProjectsComponent implements OnInit {
     public gallery: Gallery,
     public lightbox: Lightbox,
     protected uploadService: UploadService,
-    private projectService: ProjectService,
+    protected projectService: ProjectService,
     private router: Router,
     protected userService: UserService,
   ) { }
@@ -42,8 +43,14 @@ export class ProjectsComponent implements OnInit {
   }
 
   private async getProjects() {
-    this.Projects$ = this.projectService.GetProjects();
-    this.Projects = await lastValueFrom(this.Projects$);
+    /*if (this.Username && this.Username.length > 0) {
+      this.Projects$ = this.projectService.GetProjects(this.Username);
+      this.Projects = await lastValueFrom(this.Projects$);
+    }*/
+
+    //this.Projects = await lastValueFrom(this.projectService.GetProjects(this.userService.CurrentUser.Username));
+
+    await this.projectService.GetProjects(this.userService.CurrentUser.Username);
   }
 
   /*galleriesInit() {

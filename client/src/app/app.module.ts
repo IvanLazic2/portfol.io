@@ -17,7 +17,6 @@ import { ToastsComponent } from './components/toasts/toasts.component';
 import { AuthformComponent } from './components/authform/authform.component';
 import { UserComponent } from './components/user/user.component';
 import { AnimateAfterAppearDirective } from './directives/animations/animateBeforeAppear/animate-after-appear.directive';
-import { SidebarModule } from './components/layout/sidebar/sidebar.module';
 import { CommonDirectivesModule } from './directives/common-directives.module';
 import { ProjectsModule } from './components/projects/projects.module';
 import { GravatarModule } from 'ngx-gravatar';
@@ -47,10 +46,10 @@ import { NavbarComponent } from './components/layout/navbar/navbar.component';
     ReactiveFormsModule,
     NgbProgressbarModule,
     CommonDirectivesModule,
-    SidebarModule,
     ProjectsModule,
     GravatarModule,
     CommonPipesModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

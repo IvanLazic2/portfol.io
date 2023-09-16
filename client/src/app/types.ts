@@ -2,7 +2,11 @@
 
 export interface ProjectPOST {
     Name: string,
-    Concept: string
+    Concept: string,
+    Material?: string,
+    Width?: string,
+    Height?: string,
+    Depth?: string
 }
 
 export interface UploadEdit {

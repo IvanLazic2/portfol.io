@@ -1,16 +1,18 @@
 import { HttpClient, HttpEvent, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthService } from '../auth/auth.service';
-import { Observable } from 'rxjs';
+import { AuthService } from '../../services/auth/auth.service';
+import { Observable, lastValueFrom } from 'rxjs';
 import { ProjectPOST, RatingDELETE, RatingPOST } from 'src/app/types';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService {
-  private projectsUrl = '/api/projects/';
+  private projectsUrl = '/api/project/';
   private getAllUserProjectsUrl = this.projectsUrl + 'user/';
   private isEditing = false;
+
+  public CurrentProjects: any[];
 
   constructor(
     private http: HttpClient,
@@ -31,10 +33,16 @@ export class ProjectService {
       });
   }
 
-  public GetProjects(username: string = localStorage.getItem("username") ?? ""): Observable<any[]> {
-    return this.http.get<any[]>(this.getAllUserProjectsUrl + username, {
+  public async GetProjects(username: string) {
+    /*return this.http.get<any[]>(this.getAllUserProjectsUrl + username, {
+      "headers": this.authService.GetAuthHeaders(),
+    });*/
+
+    const getProjectResult$ = this.http.get<any[]>(this.getAllUserProjectsUrl + username, {
       "headers": this.authService.GetAuthHeaders(),
     });
+
+    this.CurrentProjects = await lastValueFrom(getProjectResult$);
   }
 
   public GetProject(id: string): Observable<any> {

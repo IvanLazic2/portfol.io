@@ -1,7 +1,7 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { faUser, faSignOut } from '@fortawesome/free-solid-svg-icons';
 import { BehaviorSubject, filter, map, observable, Observable, startWith } from 'rxjs';
-import { UserService } from 'src/app/services/user/user.service';
+import { UserService } from 'src/app/components/user/user.service';
 import { Page, User, AuthType } from '../../../types';
 import { NavigationEnd, Router, Event as NavigationEvent } from '@angular/router';
 
@@ -14,7 +14,6 @@ import { NavigationEnd, Router, Event as NavigationEvent } from '@angular/router
 })
 export class NavbarComponent implements OnInit {
   AuthType: any = AuthType;
-  User$: BehaviorSubject<User | null>;
 
   userIcon = faUser;
   signoutIcon = faSignOut;
@@ -26,10 +25,6 @@ export class NavbarComponent implements OnInit {
     ) { }
 
   async ngOnInit() {
-      await this.userService.GetUser();
-  }
-
-  get ProfilePictureUrl() {
-    return this.userService.ProfilePictureSrcUrl;
+      await this.userService.GetLoggedInUser();
   }
 }

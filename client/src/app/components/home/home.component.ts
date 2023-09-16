@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { faArrowUp, faUpLong } from '@fortawesome/free-solid-svg-icons';
 import { Observable, lastValueFrom } from 'rxjs';
 import { HomeService } from 'src/app/services/home/home.service';
-import { ProjectService } from 'src/app/services/project/project.service';
+import { ProjectService } from 'src/app/components/projects/project.service';
 import { UploadService } from 'src/app/services/upload/upload.service';
 
 @Component({

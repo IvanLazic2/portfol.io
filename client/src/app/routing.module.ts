@@ -5,6 +5,7 @@ import { AuthformComponent } from './components/authform/authform.component';
 import { HomeComponent } from './components/home/home.component';
 import { UserComponent } from './components/user/user.component';
 import { AccountComponent } from './components/account/account.component';
+import { UserResolver } from './components/user/user.resolver';
 
 const routes: Route[] =
   [
@@ -16,6 +17,9 @@ const routes: Route[] =
     { 
       path: 'user/:username', 
       component: UserComponent, 
+      resolve: {
+        user: UserResolver,
+      },
       data: { animation: "sidebarAnimation" },
     },
     { 
@@ -43,7 +47,10 @@ const routes: Route[] =
 @NgModule({
   declarations: [],
   imports: [
-      RouterModule.forRoot(routes/*, { enableTracing: true }*/)
+      RouterModule.forRoot(routes, { 
+        /*enableTracing: true,*/
+        /*onSameUrlNavigation: 'reload',*/
+      }),
     ],
   exports: [
       RouterModule
