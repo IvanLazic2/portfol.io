@@ -187,11 +187,20 @@ export async function getLikeCount(req, res) {
     }
 }
 
-/*export async function highlightUpload(req, res, next) {
+export async function highlightUpload(req, res, next) {
     try {
-
         const getUploadResult = await UploadService.get(req.params.uploadId);
-        const updateProjectResult = await ProjectService.highlightUpload(getUploadResult.ProjectId, req.params.uploadId);
+
+        const getProjectResult = await ProjectService.get(getUploadResult.ProjectId);
+
+        if (req.params.uploadId === getProjectResult.HighlightedUploadId){
+            const updateProjectResult = await ProjectService.unhighlightUpload(getUploadResult.ProjectId, req.params.uploadId);
+        }
+        else {
+            const updateProjectResult = await ProjectService.highlightUpload(getUploadResult.ProjectId, req.params.uploadId);
+        }
+
+        
 
         return res.status(200).json({ messageType: MessageType.Success, message: "Upload highlighted" });
 
@@ -199,4 +208,4 @@ export async function getLikeCount(req, res) {
         console.error("Error in upload controller: highlightUpload: ", err);
         return res.status(500).end();
     }
-}*/
+}

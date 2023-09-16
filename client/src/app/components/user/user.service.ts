@@ -35,6 +35,10 @@ export class UserService {
   }
 
   setIsEditing(value: boolean) {
+    if (!this.LoggedInUser) {
+      return;
+    }
+    
     if (this.CurrentUser.Username === this.LoggedInUser.Username) {
       this.isEditing = value;
     }

@@ -1,26 +1,91 @@
+fa-icon {
+    cursor: pointer;
+    margin: 7px;
+    transition: all 0.2s ease;
+}
+
+.edit-icon:hover {
+    color: blue;
+}
+
+.delete-icon:hover {
+    color: red;
+}
+
+.like-icon-active {
+    color: red;
+}
+
+.like-icons {
+    color: rgb(90, 90, 90);
+    font-weight: 300;
+    font-size: 1rem;
+}
+
+.like-icon:hover {
+    color: red;
+}
+
+#concept {
+    height: 150px;
+    width: 100%;
+
+    white-space: wrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 8;
+    -webkit-box-orient: vertical;
+
+    padding: 10px;  
+    color: rgb(90, 90, 90);
+    font-weight: 300;
+    font-size: 1rem;
+}
+
+#name {
+    font-size: 1.5em;
+}
+
 .outer-project-container {
-    background-color: rgb(229, 229, 229);
     position: relative;
+    overflow: hidden;
+
+    width: 100%;
+
+    background-color: white;
+    border: solid 1px rgb(229, 229, 229);
     margin: 20px 0;
 
     border-radius: 10px;
-    max-height: 300px;
+
+    display: flex;
+    flex-direction: column;
 }
 
 gallery {
     max-height: 300px;
 }
 
+.inner-project-container {
+    /*display: grid;
+    grid-template-columns: 1fr 1fr;*/
+
+    display: flex;
+}   
+
+.project-info-container {
+    grid-area: info;
+    margin: 10px;
+    width: 100%;
+}
+
 .inner-project-container-ltr {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
     grid-template-areas:
         "gallery info";
 }
 
 .project-info-container-ltr {
-    grid-area: info;
-    margin: 10px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
 }
@@ -32,15 +97,14 @@ gallery {
 }
 
 .inner-project-container-rtl {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-        "info gallery";
+    /*grid-template-areas:
+        "info gallery";*/
+
+    flex-direction: row-reverse;
+    justify-content: space-between;
 }
 
 .project-info-container-rtl {
-    grid-area: info;
-    margin: 10px;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
 }
@@ -51,7 +115,7 @@ gallery {
     border-bottom-right-radius: 10px;
 }
 
-.buttons-ltr {
+/*.buttons-ltr {
     position: absolute;
     bottom: 0;
     right: 0;
@@ -63,6 +127,26 @@ gallery {
     bottom: 0;
     left: 0;
     margin: 10px;
+}*/
+
+.like-container {
+    position: absolute;
+    left: 0;
+    margin: 10px;
+}
+
+.date-created {
+    position: absolute;
+    right: 0;
+    margin: 10px;
+    color: rgb(90, 90, 90);
+    font-weight: 300;
+    font-size: 1rem;
+}
+
+.project-footer {
+    position: relative;
+    height: 45px;
 }
 
 
@@ -92,11 +176,46 @@ gallery {
 }
 
 
+.images-container {
+    width: 256px;
+    height: 256px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    //gap: 4px;
+    margin: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
 
+.image-container {
+    width: 100%;
+    height: 100%;
+    background-color: #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    aspect-ratio: 1;
+    //border-radius: 5px;
+}
 
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
+.big-image {
+    grid-column: span 2;
+    grid-row: span 2;
+}
 
-
+.small-image {
+    grid-column: span 1;
+    grid-row: span 1;
+}
 
 
 
@@ -113,7 +232,7 @@ gallery {
     width: 15px;
     text-align: center;
     margin: 0 auto;
-    display:inline-block;
+    display: inline-block;
     line-height: 20px;
     vertical-align: bottom;
     transition: transform 0.2s;
@@ -123,7 +242,7 @@ gallery {
     transform: rotate(180deg);
 }
 
-.filter-container{
+.filter-container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -146,21 +265,22 @@ gallery {
 .sort-container {
     flex-grow: 1;
     flex-basis: 20em;
-    max-width: 165px!important;
+    max-width: 165px !important;
 }
 
 .sort-container .sort-max-width-container {
     display: block;
-    margin: 0!important;
+    margin: 0 !important;
     padding: 0;
     overflow: hidden;
     //background-color: #f5f5f5;
     gap: 10px;
 
-    max-width: 165px!important;
+    max-width: 165px !important;
 }
 
-.dropdown, .sort-order-toggle-button {
+.dropdown,
+.sort-order-toggle-button {
     display: inline-block;
 }
 

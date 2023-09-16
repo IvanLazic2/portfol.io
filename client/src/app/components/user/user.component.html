@@ -1,4 +1,4 @@
-<div class="main-container container-md pt-5">
+<div class="main-container container-md pt-3">
 
     <div class="profile-container">
 
@@ -87,9 +87,9 @@
             <div class="container-md m-0 p-0">
 
                 <h2 *ngIf="this.userService.CurrentUser.Username === (this.userService.LoggedInUser?.Username ?? ''); else notOwnProfile"
-                    class="d-inline" id="page-title">Your projects</h2>
+                    class="m-0 d-inline" id="page-title">Your projects</h2>
                 <ng-template #notOwnProfile>
-                    <h2 class="d-inline" id="page-title">{{ this.userService.CurrentUser.Username }}'s projects</h2>
+                    <h2 class="m-0 d-inline" id="page-title">{{ this.userService.CurrentUser.Username }}'s projects</h2>
                 </ng-template>
 
                 <div *ngIf="this.userService.GetIsLoggedInObservable() | async">

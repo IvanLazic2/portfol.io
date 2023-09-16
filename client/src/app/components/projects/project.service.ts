@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { AuthService } from '../../services/auth/auth.service';
 import { Observable, lastValueFrom } from 'rxjs';
 import { ProjectPOST, RatingDELETE, RatingPOST } from 'src/app/types';
+import { UserService } from '../user/user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,7 @@ export class ProjectService {
   constructor(
     private http: HttpClient,
     private authService: AuthService,
+    private userService: UserService,
   ) { }
 
   getIsEditing() {
@@ -24,6 +26,14 @@ export class ProjectService {
   }
 
   setIsEditing(value: boolean) {
+    if (!this.userService.LoggedInUser) {
+      return;
+    }
+    
+    if (this.userService.CurrentUser.Username === this.userService.LoggedInUser.Username) {
+      this.isEditing = value;
+    }
+
     this.isEditing = value;
   }
 
@@ -84,11 +94,6 @@ export class ProjectService {
       "headers": this.authService.GetAuthHeaders(), 
     })
   }
-
-
-
-
-
 
   public HighlightUpload(uploadId: string): Observable<any> {
     return this.http.get(this.projectsUrl + 'highlightUpload/' + uploadId, {

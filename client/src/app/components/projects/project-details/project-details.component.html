@@ -1,11 +1,18 @@
-<p>project-details works!</p>
-<div *ngIf="Project$ | async as Project">
+<div class="container-md py-3" *ngIf="Project$ | async as Project">
 
     <div *ngIf="!this.projectService.getIsEditing();">
         <div *ngIf="Project$ | async as Project">
-            <p>Id: {{ Project.Id }}, Name: {{ Project.Name }}, Concept: {{ Project.Concept }}</p>
-            <button (click)="Edit()">Edit</button>
-            <button (click)="Delete()">Delete</button>
+            <div class="d-flex justify-content-between">
+                <h1>{{ Project.Name }}</h1>
+                <div>
+                    <button (click)="Edit()">Edit</button>
+                    <button class="ms-1" (click)="Delete()">Delete</button>
+                </div>
+                
+            </div>
+            
+            <pre>{{ Project.Concept }}</pre>
+            
         </div>
     </div>
 
@@ -14,7 +21,7 @@
 
             <div>
                 <label for="projectName">Name:</label>
-                <input type="text" id="projectName" formControlName="projectName">
+                <input class="form-control" type="text" id="projectName" formControlName="projectName">
 
                 <div *ngIf="projectName.invalid && projectName.touched">
                     <p *ngIf="projectName.errors?.['required']">Name is required</p>
@@ -24,7 +31,7 @@
 
             <div>
                 <label for="projectConcept">Concept:</label>
-                <input type="text" id="projectConcept" formControlName="projectConcept">
+                <textarea class="form-control" type="text" id="projectConcept" formControlName="projectConcept" rows="10"></textarea>
 
                 <div *ngIf="projectConcept.invalid && projectConcept.touched">
                     <p *ngIf="projectConcept.errors?.['pattern']">Concept must contain only alphanumeric characters and
@@ -34,7 +41,7 @@
 
 
 
-            <ngx-dropzone (change)="onSelect($event)">
+            <ngx-dropzone class="my-3" (change)="onSelect($event)">
 
                 <ngx-dropzone-label>Drop your art here.</ngx-dropzone-label>
 
@@ -65,7 +72,7 @@
             </ngx-dropzone>
 
 
-
+            <button (click)="CancelEditing()">Cancel</button>
             <button type="submit">Save</button>
 
         </form>
@@ -102,12 +109,12 @@
     </div>-->
 
     <div>
-        <ngx-masonry class="m-3" [ordered]="true" [options]="masonryOptions" [updateLayout]="update">
+        <ngx-masonry class="my-3" [ordered]="true" [options]="masonryOptions" [updateLayout]="update">
 
-            <div ngxMasonryItem *ngFor="let uploadId of this.Project.UploadIds; index as i;" class="masonry-item">
+            <div ngxMasonryItem *ngFor="let uploadId of this.Project.UploadIds; index as i;" class="masonry-item" [ngClass]="uploadId === this.Project.HighlightedUploadId ? 'highlighted':'' ">
                 <img [src]="this.uploadService.ThumbnailUrl + uploadId" [lightbox]="i" [gallery]="'lightbox'">
                 <div style="position: absolute; right: 0; top: 0;">
-                    <!--<button (click)="HighlightUpload(uploadId)">H</button>-->
+                    <button (click)="HighlightUpload(uploadId)">H</button>
                     <button (click)="DeleteUpload(uploadId)">Del</button>
                 </div>
             </div>
@@ -121,7 +128,7 @@
                  [attr.thumbSrc]="this.uploadService.ThumbnailUrl + uploadId" />
     </div>-->
 
-    <button style="position: fixed; top: 0; left: 0; z-index: 100000;" (click)="test2()">AAA</button>
+    <!--<button style="position: fixed; top: 0; left: 0; z-index: 100000;" (click)="test2()">AAA</button>-->
 
     <ng-template #itemTemplate let-index="index" let-type="type" let-data="data" let-currIndex="currIndex">
         <ng-container *ngIf="type === 'imageViewer' && index === currIndex">

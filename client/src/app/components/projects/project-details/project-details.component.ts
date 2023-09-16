@@ -33,7 +33,9 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     itemSelector: '.masonry-item',
     horizontalOrder: true,
     gutter: 10,
-    columnWidth: 200,
+    columnWidth: 310,
+    fitWidth: true,
+    /*resize: true,*/
   }
   update: boolean;
 
@@ -50,7 +52,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   ) {
     this.form = this.fb.group({
       projectName: ['', [Validators.required, Validators.minLength(3)]],
-      projectConcept: ['', [Validators.pattern(/^[a-zA-Z0-9]+$/)]]
+      projectConcept: [''/*, [Validators.pattern(/^[a-zA-Z0-9]+$/)]*/]
     });
 
 
@@ -129,6 +131,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   async HighlightUpload(uploadId: string) {
     await lastValueFrom(this.projectService.HighlightUpload(uploadId));
+    await this.getProject();
   }
 
   private async getId() {
@@ -160,6 +163,10 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   protected Edit() {
     this.setForm();
     this.projectService.setIsEditing(true);
+  }
+
+  protected CancelEditing() {
+    this.projectService.setIsEditing(false);
   }
 
   protected async onSubmit() {

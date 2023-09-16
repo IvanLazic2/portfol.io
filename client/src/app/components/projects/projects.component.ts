@@ -7,7 +7,8 @@ import { Lightbox } from "ng-gallery/lightbox";
 import { NgxMasonryOptions } from 'ngx-masonry';
 import { UploadService } from 'src/app/services/upload/upload.service';
 import { UserService } from 'src/app/components/user/user.service';
-import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { faArrowUp, faEdit, faHeart, faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'app-projects',
@@ -16,6 +17,10 @@ import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 })
 export class ProjectsComponent implements OnInit {
   upIcon: any = faArrowUp;
+  editIcon: any = faPencil;
+  deleteIcon: any = faTrash;
+  solidHeartIcon: any = faHeart;
+  regularHeartIcon: any = faHeartRegular;
 
   //@Input() Username: string;
 
@@ -26,6 +31,9 @@ export class ProjectsComponent implements OnInit {
   sortOrder: boolean | 'asc' | 'desc' = 'desc';
 
   SortDropdownLabel: string = "Date Created";
+
+  ProjectLikes: { [key: string]: number } = {};
+  ProjectIsLiked: { [key: string]: boolean } = {};
 
   constructor(
     public gallery: Gallery,
@@ -40,6 +48,10 @@ export class ProjectsComponent implements OnInit {
     this.gallery.config.loadingStrategy = 'lazy';
     await this.getProjects();
     //this.galleriesInit();
+    for (const project of this.projectService.CurrentProjects) {
+      this.ProjectLikes[project.Id] = await lastValueFrom<number>(this.projectService.GetProjectLikeCount(project.Id));
+      this.ProjectIsLiked[project.Id] = await lastValueFrom<boolean>(this.projectService.GetProjectIsLiked(project.Id));
+    }
   }
 
   private async getProjects() {
@@ -51,6 +63,15 @@ export class ProjectsComponent implements OnInit {
     //this.Projects = await lastValueFrom(this.projectService.GetProjects(this.userService.CurrentUser.Username));
 
     await this.projectService.GetProjects(this.userService.CurrentUser.Username);
+  }
+
+  getUploadIds(project: any) {
+    if (!project.HighlightedUploadId) {
+      return project.UploadIds.slice(1, 5);
+    }
+    else {
+      return project.UploadIds.filter((val : any) => { return val !== project.HighlightedUploadId }).slice(0, 5);
+    }
   }
 
   /*galleriesInit() {
@@ -99,6 +120,27 @@ export class ProjectsComponent implements OnInit {
       this.sortOrder = 'desc';
     } else {
       this.sortOrder = 'asc';
+    }
+  }
+
+  protected async LikeProject(id: string) {
+    const result = await lastValueFrom(this.projectService.LikeProject(id));
+    this.ProjectLikes[id] += 1;
+    this.ProjectIsLiked[id] = true;
+  }
+
+  protected async UnlikeProject(id: string) {
+    const result = await lastValueFrom(this.projectService.UnlikeProject(id));
+    this.ProjectLikes[id] -= 1;
+    this.ProjectIsLiked[id] = false;
+  }
+
+  protected async onClickLike(id: string) {
+    if (this.ProjectIsLiked[id]) {
+      await this.UnlikeProject(id);
+    } 
+    else {
+      await this.LikeProject(id);
     }
   }
 }

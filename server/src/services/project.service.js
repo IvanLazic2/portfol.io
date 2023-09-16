@@ -75,3 +75,25 @@ export async function decrementLike(id) {
 
     return result;
 }
+
+export async function highlightUpload(id, uploadId) {
+    const result = await db
+        .collection('projects')
+        .updateOne(
+            { _id: ObjectId(id) },
+            { $set: { HighlightedUploadId: uploadId } }
+        );
+
+    return result;
+}
+
+export async function unhighlightUpload(id) {
+    const result = await db
+        .collection('projects')
+        .updateOne(
+            { _id: ObjectId(id) },
+            { $set: { HighlightedUploadId: null } }
+        );
+
+    return result;
+}

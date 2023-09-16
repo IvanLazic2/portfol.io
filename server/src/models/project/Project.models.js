@@ -19,20 +19,21 @@ export class ProjectPOST {
 }
 
 export class ProjectGET {
-    constructor(id, name, concept, material, width, height, depth, dateCreated, userId) {
+    constructor(id, name, concept, material, width, height, depth, dateCreated, userId, highlightedUploadId) {
         this.Id = id;
         this.Name = name;
         this.Concept = concept;
-        this.DateCreated = dateCreated;
-        this.UserId = userId;
         this.Material = material;
         this.Width = width;
         this.Height = height;
         this.Depth = depth;
+        this.DateCreated = dateCreated;
+        this.UserId = userId;
+        this.HighlightedUploadId = highlightedUploadId;
     }
 
     static InstanceFromObject(obj) {
-        return new ProjectGET(obj._id, obj.Name, obj.Concept, obj.Material, obj.Width, obj.Height, obj.Depth, obj.DateCreated, obj.UserId);
+        return new ProjectGET(obj._id, obj.Name, obj.Concept, obj.Material, obj.Width, obj.Height, obj.Depth, obj.DateCreated, obj.UserId, obj.HighlightedUploadId);
     }
 
     static InstanceFromObjectArray(objArr) {
