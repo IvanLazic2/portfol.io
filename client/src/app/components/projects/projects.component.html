@@ -1,13 +1,12 @@
-<div class="filter-container py-2">
+<div class="filter-container py-2 px-1">
 
-    <input class="form-control" type="text" id="search" name="search" (keyup)="onSearch($event)"
-        placeholder="Search:">
+    <input class="form-control" type="text" id="search" name="search" (keyup)="onSearch($event)" placeholder="Search:">
 
     <div class="sort-container">
         <div class="sort-max-width-container">
             <div ngbDropdown container="body">
-                <button ngbDropdownToggle class="btn btn-outline-secondary dropdown-toggle btn-sm"
-                    id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                <button ngbDropdownToggle class="btn btn-outline-secondary dropdown-toggle btn-sm" id="dropdownMenuLink"
+                    data-bs-toggle="dropdown" aria-expanded="false">
                     {{ SortDropdownLabel }}
                 </button>
 
@@ -36,29 +35,31 @@
 
 
 
+<div class="p-1">
+    <div class="outer-project-container"
+        *ngFor="let project of this.projectService.CurrentProjects | filter:['Name']:this.searchValue | sortBy:this.sortOrder:this.sortProperty; index as i">
 
-<div class="outer-project-container" *ngFor="let project of this.projectService.CurrentProjects | filter:['Name']:this.searchValue | sortBy:this.sortOrder:this.sortProperty; index as i">
+        <div [ngClass]="i % 2 == 0 ? 'inner-project-container-ltr' : 'inner-project-container-rtl'">
 
-    <div [ngClass]="i % 2 == 0 ? 'inner-project-container-ltr' : 'inner-project-container-rtl'">
-
-        <!--<gallery [ngClass]="i % 2 == 0 ? 'gallery-ltr' : 'gallery-rtl'" imageSize="cover" loadingStrategy="lazy" [counter]="false" [id]="'gallery_' + project.Id" fluid
+            <!--<gallery [ngClass]="i % 2 == 0 ? 'gallery-ltr' : 'gallery-rtl'" imageSize="cover" loadingStrategy="lazy" [counter]="false" [id]="'gallery_' + project.Id" fluid
             thumbPosition="bottom" [thumbHeight]="50" [thumbWidth]="60" [gallerize]="'gallery_' + project.Id"></gallery>-->
 
-        <img [src]="this.uploadService.ThumbnailUrl + project.UploadIds[0]">
+            <img [src]="this.uploadService.ThumbnailUrl + project.UploadIds[0]">
 
-        <div [ngClass]="i % 2 == 0 ? 'project-info-container-ltr' : 'project-info-container-rtl'">
-            <h1> {{ project.Name }} </h1>
+            <div [ngClass]="i % 2 == 0 ? 'project-info-container-ltr' : 'project-info-container-rtl'">
+                <h1> {{ project.Name }} </h1>
 
-            <div [ngClass]="i % 2 == 0 ? 'project-concept-container-ltr' : 'project-concept-container-rtl'">
-                Concept: {{ project.Concept }}
+                <div [ngClass]="i % 2 == 0 ? 'project-concept-container-ltr' : 'project-concept-container-rtl'">
+                    Concept: {{ project.Concept }}
+                </div>
             </div>
+
         </div>
 
-    </div>
-
-    <div [ngClass]="i % 2 == 0 ? 'buttons-ltr' : 'buttons-rtl'">
-        <button (click)="DetailsProject(project.Id)">Details</button>
-        <button (click)="EditProject(project.Id)">Edit</button>
-        <button (click)="DeleteProject(project.Id)">Delete</button>
+        <div [ngClass]="i % 2 == 0 ? 'buttons-ltr' : 'buttons-rtl'">
+            <button (click)="DetailsProject(project.Id)">Details</button>
+            <button (click)="EditProject(project.Id)">Edit</button>
+            <button (click)="DeleteProject(project.Id)">Delete</button>
+        </div>
     </div>
 </div>

@@ -62,7 +62,11 @@ export class UserService {
 
   GetCurrentUserProfilePictureUrl(): string {
     if (!this.CurrentUser) {
-      return "";
+      return '';
+    }
+
+    if (!this.CurrentUser.ProfilePictureId) {
+      return '';
     }
 
     return this.ProfilePictureUrl + this.CurrentUser.ProfilePictureId;
@@ -70,7 +74,11 @@ export class UserService {
 
   GetLoggedInUserProfilePictureUrl(): string {
     if (!this.LoggedInUser) {
-      return "";
+      return '';
+    }
+
+    if (!this.LoggedInUser.ProfilePictureId) {
+      return '';
     }
 
     return this.ProfilePictureUrl + this.LoggedInUser.ProfilePictureId;

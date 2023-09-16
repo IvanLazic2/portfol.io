@@ -8,7 +8,7 @@
 
             <img class="profile-picture shadow" ngxGravatar [size]="256"
                 [email]="this.userService.CurrentUser?.Email ?? ''" [fallback]="'mp'"
-                [src]="selectedImage ? selectedImage : this.userService.GetCurrentUserProfilePictureUrl()" />
+                [src]="this.profilePicture" />
 
             <button class="change-button btn btn-sm btn-secondary shadow" *ngIf="this.userService.getIsEditing()"
                 (click)="openFilePicker()">Change</button>
@@ -23,7 +23,7 @@
             <div *ngIf="!this.userService.getIsEditing()">
 
                 <h4 class="full-name">{{ this.userService.CurrentUser?.FullName ?? "" }}</h4>
-                <p>{{ this.userService.CurrentUser?.Bio ?? "" }}</p>
+                <pre class="bio">{{ this.userService.CurrentUser?.Bio ?? "" }}</pre>
                 <button class="btn btn-secondary w-100 shadow"
                     *ngIf="this.userService.CurrentUser.Username === (this.userService.LoggedInUser?.Username ?? '')"
                     (click)="Edit()">Edit profile</button>

@@ -15,9 +15,11 @@ import { Location } from '@angular/common';
 })
 export class UserComponent implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
-  selectedImage: string | undefined;
+  //selectedImage: string | undefined;
   selectedProfilePictureFile: File | undefined;
   shouldDeleteProfilePicture: boolean;
+  profilePicture: string;
+
   form: FormGroup;
 
   constructor(
@@ -53,6 +55,8 @@ export class UserComponent implements OnInit {
 
       this.userService.setIsEditing(false);
       this.userService.GetCurrentUser(this.activatedRoute.snapshot.params['username']);
+
+      this.profilePicture = this.userService.GetCurrentUserProfilePictureUrl();
   }
 
   setForm() {
@@ -64,27 +68,35 @@ export class UserComponent implements OnInit {
   protected Edit() {
     this.setForm();
     this.userService.setIsEditing(true);
+
+    this.shouldDeleteProfilePicture = false;
   }
 
   protected CancelEditing() {
-    this.selectedImage = undefined;
+    //this.selectedImage = undefined;
     this.selectedProfilePictureFile = undefined;
     this.userService.setIsEditing(false);
+
+    this.shouldDeleteProfilePicture = false;
   }
 
   protected async ClearProfilePicture() {
     this.userService.ClearProfilePicture();
-    this.selectedImage = undefined;
+    //this.selectedImage = undefined;
     this.selectedProfilePictureFile = undefined;
     this.fileInput.nativeElement.value = '';
+
+    this.profilePicture = '';
+
+    if (this.userService.LoggedInUser.ProfilePictureId) {
+      this.shouldDeleteProfilePicture = true;
+    }
   }
 
   async onSubmit() {
-    console.log(this.userService.CurrentUser.Username)
-
     await lastValueFrom(this.userService.EditUser({ EditedUserUsername: this.userService.CurrentUser.Username, FullName: this.fullName.value, Bio: this.bio.value }));
     
-    if (this.userService.LoggedInUser.ProfilePictureId)
+    if (this.shouldDeleteProfilePicture)
       await lastValueFrom(this.userService.DeleteProfilePicture());
 
     if (this.selectedProfilePictureFile)
@@ -95,10 +107,13 @@ export class UserComponent implements OnInit {
 
       
 
-    this.selectedImage = undefined;
+    //this.selectedImage = undefined;
     this.selectedProfilePictureFile = undefined;
     await this.userService.GetCurrentUser(this.userService.LoggedInUser.Username);
     await this.userService.GetLoggedInUser();
+    this.profilePicture = this.userService.GetCurrentUserProfilePictureUrl();
+
+    console.log(this.userService.LoggedInUser.ProfilePictureId)
 
     this.userService.setIsEditing(false);
   }
@@ -113,7 +128,7 @@ export class UserComponent implements OnInit {
     if (fileInput.files && fileInput.files.length > 0) {
 
       this.selectedProfilePictureFile = fileInput.files[0];
-      this.selectedImage = URL.createObjectURL(this.selectedProfilePictureFile);
+      this.profilePicture = URL.createObjectURL(this.selectedProfilePictureFile);
 
       // You can also update the Gravatar URL here
       // For demonstration purposes, let's assume you have the URL here.
