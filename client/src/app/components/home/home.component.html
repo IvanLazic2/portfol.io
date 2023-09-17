@@ -1,4 +1,24 @@
 <div class="home-container">
+    <div>
+        <div class="video-wrapper">
+            <video src="../../../assets/videos/background video 1080p.mp4" playinline autoplay loop poster [muted]="'muted'"></video>
+
+            <div class="jumbotron">
+                <div style="background-color: transparent;" class="container text-center">
+                    <h1>Welcome to portfol.io</h1>
+                    <p>Share you art with others.</p>
+                </div>
+            </div>
+
+            
+        </div>
+
+        <div class="ms-2">
+            <h2 class="my-0" id="thin-text">Check out some of user's work</h2>
+        </div>
+
+    </div>
+
     <div class="filter-container p-2">
 
         <input class="form-control" type="text" id="search" name="search" (keyup)="onSearch($event)"
@@ -19,10 +39,13 @@
                         <button ngbDropdownItem
                             (click)="SortDropdownLabel = 'Name'; this.sortProperty = 'Name'; this.sortOrder = 'asc';"
                             id="sort-NameAtoZ" class="dropdown-item">Name</button>
+                        <button ngbDropdownItem
+                            (click)="SortDropdownLabel = 'Likes'; this.sortProperty = 'Likes'; this.sortOrder = 'desc';"
+                            id="sort-NameAtoZ" class="dropdown-item">Likes</button>
                     </div>
                 </div>
 
-                <div [ngClass]="{'asc-active': sortOrder === 'asc'}"
+                <div [ngClass]="{'desc-active': sortOrder === 'desc'}"
                     class="btn btn-outline-secondary btn-sm sort-order-toggle-button" (click)="toggleSortOrder()">
                     <fa-icon class="sort-icon" [icon]="upIcon"></fa-icon>
                 </div>
@@ -43,11 +66,22 @@
             </a>
 
             <div class="project-info-container">
-                <a style="cursor: pointer;" (click)="DetailsProject(project.Id)">
-                    <h1 id="name"> {{ project.Name }} </h1>
-                </a>
+                <div class="d-flex align-items-center gap-2 justify-content-between">
 
-                <div>
+
+                    <a style="cursor: pointer;" (click)="DetailsProject(project.Id)">
+                        <h2 class="m-0" id="name"> {{ project.Name }} </h2>
+                    </a>
+
+                    <a style="cursor: pointer;" (click)="this.router.navigate(['/user', project.Username])">
+                        <img class="profile-picture shadow" ngxGravatar [size]="32"
+                            [email]="this.userService.CurrentUser?.Email ?? ''" [fallback]="'mp'"
+                            [src]="this.userService.GetProfilePictureByUploadId(project.UserProfilePictureId)" />
+                        <span id="username">{{ project.Username ?? '' }}</span>
+                    </a>
+                </div>
+
+                <div class="mt-3">
                     <pre class="concept">{{ project.Concept }}</pre>
                 </div>
             </div>
@@ -63,7 +97,7 @@
                     <!--<button [ngClass]="this.ProjectIsLiked[project.Id] ? 'heart-solid' : 'heart-line'"
                         (click)="onClickLike(project.Id)">{{ this.ProjectIsLiked[project.Id] ? 'Unlike' : 'Like' }}</button>-->
 
-                    <span>{{ this.ProjectLikes[project.Id] }}</span>
+                    <span>{{ this.ProjectDictionary[project.Id]?.Likes ?? '' }}</span>
                 </div>
 
                 <div class="date-created">

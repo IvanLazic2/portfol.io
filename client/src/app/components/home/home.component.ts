@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit {
   Projects$: Observable<any[]>;
   Projects: any[];
 
-  ProjectLikes: { [key: string]: number } = {};
+  ProjectDictionary: { [key: string]: any } = {};
   ProjectIsLiked: { [key: string]: boolean } = {};
 
   searchValue: string = '';
@@ -31,11 +31,11 @@ export class HomeComponent implements OnInit {
   SortDropdownLabel: string = "Date Created";
 
   constructor(
-    private router: Router,
+    protected router: Router,
     protected homeService: HomeService,
     protected projectService: ProjectService,
     protected uploadService: UploadService,
-    private userService: UserService,
+    protected userService: UserService,
 
   ) { }
 
@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit {
     await this.homeService.GetProjects();
 
     for (const project of this.homeService.CurrentProjects) {
-      this.ProjectLikes[project.Id] = project.Likes;
+      this.ProjectDictionary[project.Id] = project;
       if (this.userService.GetIsLoggedIn()) {
         this.ProjectIsLiked[project.Id] = await lastValueFrom<boolean>(this.projectService.GetProjectIsLiked(project.Id));
       }
@@ -61,13 +61,13 @@ export class HomeComponent implements OnInit {
 
   protected async LikeProject(id: string) {
     const result = await lastValueFrom(this.projectService.LikeProject(id));
-    this.ProjectLikes[id] += 1;
+    this.ProjectDictionary[id].Likes += 1;
     this.ProjectIsLiked[id] = true;
   }
 
   protected async UnlikeProject(id: string) {
     const result = await lastValueFrom(this.projectService.UnlikeProject(id));
-    this.ProjectLikes[id] -= 1;
+    this.ProjectDictionary[id].Likes -= 1;
     this.ProjectIsLiked[id] = false;
   }
 

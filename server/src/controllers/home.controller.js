@@ -12,7 +12,10 @@ export async function getAll(req, res) {
         const projects = ProjectGET.InstanceFromObjectArray(getProjectsResult);
 
         for (const project of projects) {
-            project.Username = (await UserService.getById(project.UserId)).Username;
+            const getUserResult = await UserService.getById(project.UserId);
+
+            project.Username = getUserResult.Username;
+            project.UserProfilePictureId = getUserResult.ProfilePictureId;
             //project.LikedByCurrentUser = 
             project.UploadIds = (await UploadService.getAll(project.Id.toString())).map(upload => { return upload._id.toString(); });
         }

@@ -32,7 +32,7 @@ export class ProjectsComponent implements OnInit {
 
   SortDropdownLabel: string = "Date Created";
 
-  ProjectLikes: { [key: string]: number } = {};
+  ProjectDictionary: { [key: string]: any } = {};
   ProjectIsLiked: { [key: string]: boolean } = {};
 
   restArray: any[] = [];
@@ -64,7 +64,7 @@ export class ProjectsComponent implements OnInit {
     await this.projectService.GetProjects(this.userService.CurrentUser.Username);
 
     for (const project of this.projectService.CurrentProjects) {
-      this.ProjectLikes[project.Id] = project.Likes;
+      this.ProjectDictionary[project.Id] = project;
       if (this.userService.GetIsLoggedIn()) {
         this.ProjectIsLiked[project.Id] = await lastValueFrom<boolean>(this.projectService.GetProjectIsLiked(project.Id));
       }
@@ -142,13 +142,13 @@ export class ProjectsComponent implements OnInit {
 
     console.log(result)
 
-    this.ProjectLikes[id] += 1;
+    this.ProjectDictionary[id].Likes += 1;
     this.ProjectIsLiked[id] = true;
   }
 
   protected async UnlikeProject(id: string) {
     const result = await lastValueFrom(this.projectService.UnlikeProject(id));
-    this.ProjectLikes[id] -= 1;
+    this.ProjectDictionary[id].Likes -= 1;
     this.ProjectIsLiked[id] = false;
   }
 

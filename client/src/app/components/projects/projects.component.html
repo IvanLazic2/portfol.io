@@ -102,7 +102,7 @@
                 <!--<button [ngClass]="this.ProjectIsLiked[project.Id] ? 'heart-solid' : 'heart-line'"
                     (click)="onClickLike(project.Id)">{{ this.ProjectIsLiked[project.Id] ? 'Unlike' : 'Like' }}</button>-->
 
-                <span>{{ this.ProjectLikes[project.Id] }}</span>
+                <span>{{ this.ProjectDictionary[project.Id]?.Likes ?? '' }}</span>
             </div>
 
             <div class="date-created">

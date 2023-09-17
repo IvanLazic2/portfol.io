@@ -70,7 +70,7 @@ a {
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease-in-out;
-    
+
 }
 
 .image-container img:hover {
@@ -79,7 +79,7 @@ a {
 
 .project-info-container {
     padding: 1rem;
-    
+
 }
 
 .like-container {
@@ -140,7 +140,7 @@ a {
     transition: transform 0.2s;
 }
 
-.sort-order-toggle-button.asc-active .sort-icon {
+.sort-order-toggle-button.desc-active .sort-icon {
     transform: rotate(180deg);
 }
 
@@ -193,3 +193,51 @@ a {
 .dropdown-menu {
     position: absolute;
 }
+
+
+
+.jumbotron {
+    display: flex;
+    align-items: center;
+    height: 500px;
+    width: 100%;
+    background: rgb(255,255,255);
+    background: linear-gradient(180deg, rgba(255,255,255,0) 50%, rgba(255,255,255,1) 100%);
+    position: relative;
+    color: white;
+}
+
+#thin-text {
+    font-weight: 300;
+    font-size: 1.4rem;
+    line-height: 2.5rem;
+    padding-top: 5px;
+}
+
+#username {
+    font-size: 0.9rem;
+    font-weight: 400;
+    margin-left: 5px;
+    color: rgb(90, 90, 90);
+}
+
+video {
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.video-wrapper {
+    width: 100%;
+    height: 500px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+

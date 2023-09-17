@@ -93,8 +93,9 @@ export class UserService {
     return this.ProfilePictureUrl + this.LoggedInUser.ProfilePictureId;
   }
 
-
-
+  GetProfilePictureByUploadId(uploadId: string) {
+    return this.ProfilePictureUrl + uploadId;
+  }
 
 
   GetIsLoggedInObservable() {
