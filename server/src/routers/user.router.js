@@ -6,6 +6,8 @@ const router = express.Router();
 
 router.get('/id/:id', userController.getById);
 router.get('/:username', userController.get);
+router.get('/usernameExists/:username', userController.usernameExists);
+router.get('/emailExists/:email', userController.emailExists);
 router.put('/', jwtProtection, userController.update);
 router.put('/changeUsername/', jwtProtection, userController.changeUsername);
 router.put('/changeEmail/', jwtProtection, userController.changeEmail);

@@ -7,7 +7,7 @@ import path from "path";
 import crypto from "crypto";
 import util from "util";
 import jwt from "jsonwebtoken";
-import { UserDL, UserSignupPOST, UserSigninPOST, UserSigninGET, UserGET, FileDL } from "./models.mjs";
+import { UserDL, RegisterPOST, LoginPOST, UserSigninGET, UserGET, FileDL } from "./models.mjs";
 import { Decimal128, GridFSBucket, ObjectId } from "mongodb";
 import { db } from './src/configs/db.config.js';
 
@@ -205,8 +205,8 @@ const upload = multer({ storage: storage });
             }
         });
 
-        app.post("/api/signup", async (req, res) => {
-            let user = new UserSignupPOST(req.body.username, req.body.email, req.body.password);
+        app.post("/api/register", async (req, res) => {
+            let user = new RegisterPOST(req.body.username, req.body.email, req.body.password);
 
             let errorMessage = user.Validate();
 
@@ -229,8 +229,8 @@ const upload = multer({ storage: storage });
                 });
         });
 
-        app.post("/api/signin", async (req, res) => {
-            let user = new UserSigninPOST(req.body.username, req.body.password);
+        app.post("/api/login", async (req, res) => {
+            let user = new LoginPOST(req.body.username, req.body.password);
 
             let errorMessage = user.Validate();
 

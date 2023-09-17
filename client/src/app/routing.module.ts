@@ -23,12 +23,12 @@ const routes: Route[] =
       data: { animation: "sidebarAnimation" },
     },
     { 
-      path: 'signup', 
+      path: 'register', 
       component: AuthformComponent, 
       data: { animation: "navbarAnimation" } 
     },
     {
-      path: 'signin', 
+      path: 'login', 
       component: AuthformComponent, 
       data: { animation: "navbarAnimation" } 
     },

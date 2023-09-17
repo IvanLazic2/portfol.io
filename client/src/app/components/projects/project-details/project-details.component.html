@@ -104,7 +104,7 @@
 
             <button class="btn btn-outline-danger" (click)="CancelEditing()"><fa-icon [icon]="cancelIcon"></fa-icon>
                 Cancel</button>
-            <button class="ms-1 btn btn-outline-primary" type="submit"><fa-icon [icon]="saveIcon"></fa-icon>
+            <button class="ms-1 btn btn-outline-primary" type="submit" [disabled]="!this.form.valid"><fa-icon [icon]="saveIcon"></fa-icon>
                 Save</button>
 
         </form>

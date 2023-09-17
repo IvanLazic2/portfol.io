@@ -5,10 +5,14 @@
     font-size: 1.5rem;
     line-height: 2.5rem;
     padding-top: 5px;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .auth-container {
     margin-top: 0 !important;
+    width: 100%;
+    height: 100%;
 }
 
 .form-control:focus {
@@ -16,8 +20,14 @@
     box-shadow: 0px 0px 0px 4px rgba($main-color, 0.3);
 }
 
-#submitButton {
+.auth-center-container {
+    //border: 1px solid rgb(229, 229, 229);
+    border-radius: 20px;
+    width: 600px;
+}
+
+/*#submitButton {
     background-color: $main-color;
     border: 1px solid $main-color;
     color: black;
-}
+}*/

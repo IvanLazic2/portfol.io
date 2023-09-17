@@ -17,6 +17,14 @@ export async function getByUsername(username) {
     return result;
 }
 
+export async function getByEmail(email) {
+    const result = await db
+        .collection('users')
+        .findOne({ Email: email });
+
+    return result;
+}
+
 export async function update(id, user) {
     const result = await db
         .collection('users')
@@ -81,4 +89,4 @@ export async function setSelfLoveAcheavement(id) {
         );
 
     return result;
-} 
+}

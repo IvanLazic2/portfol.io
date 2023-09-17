@@ -79,8 +79,8 @@ export enum SortOrder {
 }
 
 export enum AuthType {
-    Signin = "Sign in",
-    Signup = "Sign up"
+    Register = "Register",
+    Login = "Log in"
 }
 
 export enum ToastType {

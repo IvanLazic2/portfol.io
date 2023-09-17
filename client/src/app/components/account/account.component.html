@@ -9,17 +9,18 @@
             <form [formGroup]="usernameForm">
                 <div class="mb-3">
                     <label for="username">Username:</label>
-                    <input type="text" id="username" formControlName="username">
+                    <input class="form-control" type="text" id="username" formControlName="username" (keyup)="this.usernameExists = false">
         
-                    <div *ngIf="username.invalid && username.touched">
-                        <p *ngIf="username.errors?.['required']">Username is required</p>
-                        <p *ngIf="username.errors?.['minlength']">Username must be at least 3 characters long</p>
+                    <div *ngIf="username.invalid && (username.touched || this.usernameFormSubmitted)">
+                        <p class="text-danger" *ngIf="username.errors?.['required']">Username is required</p>
+                        <p class="text-danger" *ngIf="username.errors?.['minlength']">Username must be at least 3 characters long</p>
                     </div>
+                    <p class="text-danger" *ngIf="this.usernameExists">Username is already in use.</p>
                 </div>
             </form>
         </div>
         <div class="modal-footer">
-            <button type="submit" class="btn btn-outline-dark" (click)="onUsernameSubmit()">Save</button>
+            <button type="submit" class="btn btn-outline-danger" (click)="onUsernameSubmit()" [disabled]="!this.usernameForm.valid || this.usernameExists"><fa-icon [icon]="saveIcon"></fa-icon> Save</button>
         </div>
     </ng-template>
 
@@ -32,30 +33,40 @@
             <form [formGroup]="emailForm">
                 <div class="mb-3">
                     <label for="email">Email:</label>
-                    <input type="text" id="email" formControlName="email">
+                    <input class="form-control" type="text" id="email" formControlName="email" (keyup)="this.emailExists = false">
         
-                    <div *ngIf="email.invalid && email.touched">
-                        <p *ngIf="email.errors?.['required']">Email is required</p>
-                        <p *ngIf="email.errors?.['email']">Email invalid</p>
+                    <div *ngIf="email.invalid && (email.touched || this.emailFormSubmitted)">
+                        <p class="text-danger" *ngIf="email.errors?.['required']">Email is required</p>
+                        <p class="text-danger" *ngIf="email.errors?.['email']">Email invalid</p>
                     </div>
+                    <p class="text-danger" *ngIf="this.emailExists">Email is already in use.</p>
                 </div>
             </form>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-outline-dark" (click)="onEmailSubmit()">Save</button>
+            <button type="button" class="btn btn-outline-danger" (click)="onEmailSubmit()" [disabled]="!this.emailForm.valid || this.emailExists"><fa-icon [icon]="saveIcon"></fa-icon> Save</button>
         </div>
     </ng-template>
 
-    <div>
-        <p style="display: inline-block;">Username: {{ this.User?.Username ?? "" }}</p>
-        <button style="display: inline-block;" class="btn btn-outline-primary"
-            (click)="openModal(usernameModal)">Change</button>
-    </div>
 
-    <div>
-        <p style="display: inline-block;">Email: {{ this.User?.Email ?? "" }}</p>
-        <button style="display: inline-block;" class="btn btn-outline-primary"
-            (click)="openModal(emailModal)">Change</button>
-    </div>
+    
 
+    <div class="mt-4 container-md">
+        <h2 class="my-0" id="thin-text">Here you can change important account information.</h2>
+
+        <div class="my-3">
+            <p class="mb-0"><b>Username:</b></p>
+            <p class="ms-4 mb-0 d-inline-block">{{ this.userService.LoggedInUser?.Username ?? "" }}</p>
+            <button class="ms-2 d-inline-block btn btn-sm btn-outline-danger"
+                (click)="openModal(usernameModal)"><fa-icon [icon]="exclamationIcon"></fa-icon> Change</button>
+        </div>
+    
+        <div>
+            <p class="mb-0"><b>Email:</b></p>
+            <p class="ms-4 d-inline-block">{{ this.userService.LoggedInUser?.Email ?? "" }}</p>
+            <button class="ms-2 d-inline-block btn btn-sm btn-outline-danger"
+                (click)="openModal(emailModal)"><fa-icon [icon]="exclamationIcon"></fa-icon> Change</button>
+        </div>
+    </div>
+    
 </div>

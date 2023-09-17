@@ -31,11 +31,16 @@ a {
 }
 
 .nav-link:hover {
-    color: $navbar-light-hover-color;
+    //color: $navbar-light-hover-color;
+    color: map-get($theme-colors, "primary");
+}
+
+#logout {
+    color: map-get($theme-colors, "danger");
 }
 
 #main-title {
-    font-size: 1.5rem;
+    font-size: 1.7rem;
 }
 
 #username {

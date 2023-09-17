@@ -143,8 +143,8 @@ export class UserService {
     });
   }
 
-  SignUp(username: string, email: string, password: string) {
-    this.http.post("/api/signup", { username, email, password })
+  Register(username: string, email: string, password: string) {
+    this.http.post("/api/register", { username, email, password })
       .subscribe({
         next: (res: any) => {
           this.isLoggedIn.next(true);
@@ -161,8 +161,8 @@ export class UserService {
       });
   }
 
-  SignIn(username: string, password: string) {
-    this.http.post("/api/signin", { username, password })
+  Login(username: string, password: string) {
+    this.http.post("/api/login", { username, password })
       .subscribe({
         next: (res: any) => {
           this.isLoggedIn.next(true);
@@ -185,7 +185,7 @@ export class UserService {
     localStorage.removeItem("username");
     this.isLoggedIn.next(false);
 
-    this.router.navigate(["/signin"]);
+    this.router.navigate(["/login"]);
     this.toastService.show("", "Successfully logged out.", ToastType.Success);
   }
 
@@ -196,5 +196,15 @@ export class UserService {
 
   SetUsername(username: string) {
     localStorage.setItem("username", username);
+  }
+
+  async UsernameExists(username: string): Promise<boolean> {
+    const result = this.http.get<boolean>(this.UserUrl + 'usernameExists/' + username);
+    return await lastValueFrom(result);
+  }
+
+  async EmailExists(email: string): Promise<boolean> {
+    const result = this.http.get<boolean>(this.UserUrl + 'emailExists/' + email);
+    return await lastValueFrom(result);
   }
 }

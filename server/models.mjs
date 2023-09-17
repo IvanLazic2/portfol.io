@@ -18,7 +18,7 @@ export class UserDL {
 }
 
 /* IN Models */
-export class UserSignupPOST {
+export class RegisterPOST {
     constructor(username, email, password) {
         this.Username = username;
         this.Email = email;
@@ -37,7 +37,7 @@ export class UserSignupPOST {
     }
 }
 
-export class UserSigninPOST {
+export class LoginPOST {
     constructor(username, password) {
         this.Username = username;
         this.Password = password;

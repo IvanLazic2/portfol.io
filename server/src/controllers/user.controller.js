@@ -75,6 +75,31 @@ export async function changeEmail(req, res) {
     }
 }
 
+export async function usernameExists(req, res) {
+    try {
+
+        const usernameExistsResult = await UserService.getByUsername(req.params.username);
+
+        return res.status(200).json(usernameExistsResult ? true : false);
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export async function emailExists(req, res) {
+    try {
+
+        const emailExistsResult = await UserService.getByEmail(req.params.email);
+
+        return res.status(200).json(emailExistsResult ? true : false);
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+
 
 
 
@@ -88,6 +113,6 @@ export async function remove(req, res) {
 
 
     } catch (error) {
-        console.error("Error in user controller: update:", error);
+        console.error("Error in user controller: remove:", error);
     }
 }

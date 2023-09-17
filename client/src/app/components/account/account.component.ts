@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { faExclamation, faSave, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { lastValueFrom } from 'rxjs';
 import { UserService } from 'src/app/components/user/user.service';
@@ -10,8 +11,16 @@ import { UserService } from 'src/app/components/user/user.service';
   styleUrls: ['./account.component.scss']
 })
 export class AccountComponent implements OnInit {
+  exclamationIcon: any = faTriangleExclamation;
+  saveIcon: any = faSave;
+
   usernameForm: FormGroup;
+  usernameFormSubmitted = false;
+  usernameExists = false;
+
   emailForm: FormGroup;
+  emailFormSubmitted = false;
+  emailExists = false;
 
   constructor(
     private fb: FormBuilder,
@@ -25,10 +34,6 @@ export class AccountComponent implements OnInit {
     this.emailForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
     });
-  }
-
-  get User() {
-    return this.userService.CurrentUser;
   }
 
   get username() {
@@ -45,21 +50,53 @@ export class AccountComponent implements OnInit {
   }
 
   setForms() {
-    this.username.setValue(this.User.Username);
-    this.email.setValue(this.User.Email);
+    this.usernameFormSubmitted = false;
+    this.usernameExists = false;
+    this.emailFormSubmitted = false;
+    this.emailExists = false;
+
+    this.username.setValue(this.userService.LoggedInUser.Username);
+    this.email.setValue(this.userService.LoggedInUser.Email);
   }
 
   openModal(content: any) {
+    this.setForms();
     this.modalService.open(content).result;
   }
 
   async onUsernameSubmit() {
+    this.usernameFormSubmitted = true;
+
+    if (!this.usernameForm.valid) {
+      return;
+    }
+
+    this.usernameExists = await this.userService.UsernameExists(this.username.value)
+    console.log(this.usernameExists)
+
+    if (this.usernameExists) {
+      return;
+    }
+
     await lastValueFrom(this.userService.ChangeUsername(this.username.value));
+    this.userService.SetUsername(this.username.value);
     await this.userService.GetLoggedInUser();
     this.modalService.dismissAll();
   }
 
   async onEmailSubmit() {
+    this.emailFormSubmitted = true;
+
+    if (!this.emailForm.valid) {
+      return;
+    }
+
+    this.emailExists = await this.userService.EmailExists(this.email.value);
+
+    if (this.emailExists) {
+      return;
+    }
+
     await lastValueFrom(this.userService.ChangeEmail(this.email.value));
     await this.userService.GetLoggedInUser();
     this.modalService.dismissAll();
