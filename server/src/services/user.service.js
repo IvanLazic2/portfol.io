@@ -101,3 +101,11 @@ export async function setSelfLoveAcheavement(id) {
 
     return result;
 }
+
+export async function remove(id) {
+    const result = await db
+        .collection('users')
+        .deleteOne({ _id: ObjectId(id) });
+
+    return result;
+}

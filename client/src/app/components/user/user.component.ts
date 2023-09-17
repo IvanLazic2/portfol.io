@@ -61,8 +61,6 @@ export class UserComponent implements OnInit {
   }
 
   async ngOnInit() {
-    console.log("init")
-
     this.userService.setIsEditing(false);
     this.userService.GetCurrentUser(this.activatedRoute.snapshot.params['username']);
 

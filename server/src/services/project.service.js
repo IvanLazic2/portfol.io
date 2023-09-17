@@ -23,6 +23,15 @@ export async function getAllUserProjects(username) {
     return result;
 }
 
+export async function getAllUserProjectsById(userId) {
+    const result = await db
+        .collection('projects')
+        .find({ 'UserId': userId })
+        .toArray();
+        
+    return result;
+}
+
 export async function create(userId, project) {
     const projectCreate = ProjectCreate.InstanceFromObject(userId, project);
 
@@ -94,6 +103,14 @@ export async function unhighlightUpload(id) {
             { _id: ObjectId(id) },
             { $set: { HighlightedUploadId: null } }
         );
+
+    return result;
+}
+
+export async function removeUserProjects(userId) {
+    const result = await db
+        .collection('projects')
+        .deleteMany({ UserId: userId });
 
     return result;
 }

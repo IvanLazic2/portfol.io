@@ -57,15 +57,20 @@
         <div class="my-3">
             <p class="mb-0"><b>Username:</b></p>
             <p class="ms-4 mb-0 d-inline-block">{{ this.userService.LoggedInUser?.Username ?? "" }}</p>
-            <button class="ms-2 d-inline-block btn btn-sm btn-outline-danger"
+            <button class="ms-2 d-inline-block btn btn-sm btn-outline-warning"
                 (click)="openModal(usernameModal)"><fa-icon [icon]="exclamationIcon"></fa-icon> Change</button>
         </div>
     
-        <div>
+        <div class="my-3">
             <p class="mb-0"><b>Email:</b></p>
             <p class="ms-4 d-inline-block">{{ this.userService.LoggedInUser?.Email ?? "" }}</p>
-            <button class="ms-2 d-inline-block btn btn-sm btn-outline-danger"
+            <button class="ms-2 d-inline-block btn btn-sm btn-outline-warning"
                 (click)="openModal(emailModal)"><fa-icon [icon]="exclamationIcon"></fa-icon> Change</button>
+        </div>
+
+        <div>
+            <p class="mb-0 d-inline-block"><b>Delete account</b></p>
+            <button class="ms-2 d-inline-block btn btn-sm btn-outline-danger" (click)="DeleteAccount()"><fa-icon [icon]="deleteIcon"></fa-icon> Delete</button>
         </div>
     </div>
     

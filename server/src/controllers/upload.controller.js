@@ -37,7 +37,7 @@ async function createThumbnail(inputPath, outputPath, width, height) {
     await createImageThumbnail(inputPath, outputPath, width, height);
 }
 
-export async function create(req, res, next) {
+export async function create(req, res) {
     try {
         const result = await UploadService.create(req.body.projectId, req.file);
 
@@ -52,20 +52,21 @@ export async function create(req, res, next) {
 
     } catch (err) {
         console.error("Error in upload controller: create: ", err);
-        next(err);
+        return res.status(500).end();
     }
 }
 
-export async function get(req, res, next) {
+export async function get(req, res) {
     try {
         const getUploadResult = await UploadService.get(req.params.id);
         res.sendFile(path.resolve(getUploadPath(getUploadResult.ProjectId, req.params.id)));
     } catch (error) {
         console.error(error)
+        return res.status(500).end();
     }
 }
 
-export async function remove(req, res, next) {
+export async function remove(req, res) {
     try {
         const getUploadResult = await UploadService.get(req.params.id);
         const getProjectResult = await ProjectService.get(getUploadResult.ProjectId);
@@ -84,7 +85,7 @@ export async function remove(req, res, next) {
 
     } catch (err) {
         console.error("Error in upload controller: deleteFile: ", err);
-        next(err);
+        return res.status(500).end();
     }
 }
 
@@ -94,6 +95,7 @@ export async function download(req, res) {
 
         return res.status(200).download(getUploadPath(getUploadResult.ProjectId, req.params.id), getUploadResult.Name);
     } catch (error) {
-        console.error(error)
+        console.error(error);
+        return res.status(500).end();
     }
 }

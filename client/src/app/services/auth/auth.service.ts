@@ -50,8 +50,6 @@ export class AuthService {
       const result$ = this.http.post<any>(this.authUrl + "login", { username, password });
       const result = await lastValueFrom(result$);
 
-      console.log("res", result);
-
       this.userService.isLoggedIn.next(true);
       this.SetToken(result.user.token);
       this.SetUsername(username);
@@ -71,12 +69,10 @@ export class AuthService {
     this.userService.isLoggedIn.next(false);
 
     this.router.navigate(["/login"]);
-    //this.toastService.show("", "Successfully logged out.", ToastType.Success);
   }
 
   public SetToken(token: string) {
     localStorage.setItem("token", token);
-    //this.User.next({ Username: user.Username });
   }
 
   public SetUsername(username: string) {

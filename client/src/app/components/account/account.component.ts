@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { faExclamation, faSave, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
+import { faExclamation, faSave, faTrash, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { lastValueFrom } from 'rxjs';
 import { UserService } from 'src/app/components/user/user.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { ToastService } from 'src/app/services/toast/toast.service';
 
 @Component({
   selector: 'app-account',
@@ -14,6 +15,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 export class AccountComponent implements OnInit {
   exclamationIcon: any = faTriangleExclamation;
   saveIcon: any = faSave;
+  deleteIcon: any = faTrash;
 
   usernameForm: FormGroup;
   usernameFormSubmitted = false;
@@ -27,7 +29,8 @@ export class AccountComponent implements OnInit {
     private fb: FormBuilder,
     protected userService: UserService,
     private authService: AuthService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private toastService: ToastService,
   ) {
     this.usernameForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
@@ -102,5 +105,14 @@ export class AccountComponent implements OnInit {
     await lastValueFrom(this.userService.ChangeEmail(this.email.value));
     await this.userService.GetLoggedInUser();
     this.modalService.dismissAll();
+  }
+
+  async DeleteAccount() {
+    const deleteAccountResponse$ = this.userService.DeleteAccount();
+    const deleteAccountResponse = await lastValueFrom<any>(deleteAccountResponse$);
+
+    this.toastService.showFromMessageType(deleteAccountResponse.messageType, deleteAccountResponse.message);
+
+    this.authService.LogOut();
   }
 }

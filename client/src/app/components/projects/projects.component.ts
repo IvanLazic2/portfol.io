@@ -142,9 +142,10 @@ export class ProjectsComponent implements OnInit {
   }
 
   protected async LikeProject(id: string) {
-    const result = await lastValueFrom(this.projectService.LikeProject(id));
-
-    console.log(result)
+    const likeProjectResponse$ = this.projectService.LikeProject(id);
+    const likeProjectResponse = await lastValueFrom(likeProjectResponse$);
+    
+    this.projectService.CheckAcheavement(likeProjectResponse);
 
     this.ProjectDictionary[id].Likes += 1;
     this.ProjectIsLiked[id] = true;

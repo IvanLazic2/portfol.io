@@ -17,8 +17,6 @@ export class UserResolver {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ) {
-    console.log("resolver")
-
     const username = route.paramMap.get('username');
     await this.userService.GetCurrentUser(username!);
     await this.projectService.GetProjects(username!);

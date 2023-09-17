@@ -289,7 +289,11 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   }
 
   protected async LikeProject(id: string) {
-    const result = await lastValueFrom(this.projectService.LikeProject(id));
+    const likeProjectResponse$ = this.projectService.LikeProject(id);
+    const likeProjectResponse = await lastValueFrom(likeProjectResponse$);
+
+    this.projectService.CheckAcheavement(likeProjectResponse);
+
     this.ProjectLikes += 1;
     this.ProjectIsLiked = true;
   }

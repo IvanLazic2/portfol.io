@@ -7,7 +7,5 @@ export async function register(username, email, salt, hash) {
         .collection('users')
         .insertOne(userDL);
     
-    
-
     return result;
 }

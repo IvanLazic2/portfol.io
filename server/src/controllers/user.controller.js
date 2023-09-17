@@ -1,6 +1,12 @@
 import * as UserService from '../services/user.service.js';
 import { UserGET, UserPUT } from '../models/user/User.models.js';
 import { MessageType } from '../enums/messageType.js';
+import * as ProjectService from '../services/project.service.js';
+import * as LikeService from '../services/like.service.js';
+import * as UploadService from '../services/upload.service.js';
+import { uploadDirectory } from '../configs/upload.config.js';
+import { profilePictureDirectory } from '../configs/profilePicture.config.js';
+import fs from 'fs/promises';
 
 export async function get(req, res) {
     try {
@@ -99,17 +105,31 @@ export async function emailExists(req, res) {
     }
 }
 
-
-
-
-
-
-
-
-
 export async function remove(req, res) {
     try {
 
+        const getUserResult = await UserService.getById(req.userId);
+        const getUserProjects = await ProjectService.getAllUserProjectsById(req.userId);
+
+        for (const project of getUserProjects) {
+            try {
+                await fs.rm(uploadDirectory + project._id.toString(), { recursive: true });
+            }
+            catch (error) { }   
+
+            const removeUploadsResult = await UploadService.removeAll(project._id.toString());
+        }
+
+        try {
+            await fs.rm(profilePictureDirectory + getUserResult.ProfilePictureId + '.jpg');
+        }
+        catch (error) { }
+
+        const removeUserResult = await UserService.remove(req.userId);
+        const removeUserProjectsResult = await ProjectService.removeUserProjects(req.userId);
+        const removeUserLikesResult = await LikeService.removeUserLikes(req.userId);
+
+        return res.status(200).json({ messageType: MessageType.Success, message: "Account deleted." });
 
 
     } catch (error) {

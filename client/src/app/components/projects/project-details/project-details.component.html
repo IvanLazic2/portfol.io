@@ -158,7 +158,7 @@
                 <div style="position: absolute; right: 0; top: 0;">
                     <button class="btn btn-sm btn-primary" (click)="this.uploadService.Download(uploadId)"><fa-icon
                             [icon]="downloadIcon"></fa-icon></button>
-                    <div *ngIf="this.userService.GetIsLoggedInObservable() | async">
+                    <div class="d-inline-block" *ngIf="this.userService.GetIsLoggedInObservable() | async">
                         <button
                             *ngIf="(this.userService.CurrentUser?.Username ?? false) === (this.userService.LoggedInUser?.Username ?? true);"
                             ngbTooltip="Highlight image" placement="top"
@@ -166,7 +166,7 @@
                             class="ms-1 btn btn-sm btn-secondary" (click)="HighlightUpload(uploadId)"><fa-icon
                                 [icon]="highlightIcon"></fa-icon></button>
                     </div>
-                    <div *ngIf="this.userService.GetIsLoggedInObservable() | async">
+                    <div class="d-inline-block" *ngIf="this.userService.GetIsLoggedInObservable() | async">
                         <button *ngIf="(this.userService.CurrentUser?.Username ?? false) === (this.userService.LoggedInUser?.Username ?? true);"
                             class="ms-1 me-2 btn btn-sm btn-danger" (click)="DeleteUpload(uploadId)"><fa-icon
                                 [icon]="deleteIcon"></fa-icon></button>

@@ -60,13 +60,17 @@ export class HomeComponent implements OnInit {
   }
 
   protected async LikeProject(id: string) {
-    const result = await lastValueFrom(this.projectService.LikeProject(id));
+    const likeProjectResponse$ = this.projectService.LikeProject(id);
+    const likeProjectResponse = await lastValueFrom(likeProjectResponse$);
+
+    this.projectService.CheckAcheavement(likeProjectResponse);
+
     this.ProjectDictionary[id].Likes += 1;
     this.ProjectIsLiked[id] = true;
   }
 
   protected async UnlikeProject(id: string) {
-    const result = await lastValueFrom(this.projectService.UnlikeProject(id));
+    const unlikeProjectResponse$ = await lastValueFrom(this.projectService.UnlikeProject(id));
     this.ProjectDictionary[id].Likes -= 1;
     this.ProjectIsLiked[id] = false;
   }

@@ -16,9 +16,6 @@ export class HomeService {
 
   public async GetProjects() {
     const getProjectsResult$ = this.http.get<any[]>(this.homeUrl);
-
     this.CurrentProjects = await lastValueFrom(getProjectsResult$);
-
-    console.log(this.CurrentProjects)
   }
 }

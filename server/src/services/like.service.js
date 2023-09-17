@@ -32,3 +32,11 @@ export async function getProjectLikeCount(projectId) {
 
     return result.Likes;
 }
+
+export async function removeUserLikes(userId) {
+    const result = await db
+        .collection('likes')
+        .deleteMany({ userId: userId });
+
+    return result;
+}

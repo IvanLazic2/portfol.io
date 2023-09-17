@@ -143,10 +143,6 @@ export class UserService {
     });
   }
 
-
-
-  
-
   async UsernameExists(username: string): Promise<boolean> {
     const result = this.http.get<boolean>(this.UserUrl + 'usernameExists/' + username);
     return await lastValueFrom(result);
@@ -155,5 +151,11 @@ export class UserService {
   async EmailExists(email: string): Promise<boolean> {
     const result = this.http.get<boolean>(this.UserUrl + 'emailExists/' + email);
     return await lastValueFrom(result);
+  }
+
+  DeleteAccount() {
+    return this.http.delete(this.UserUrl, {
+      "headers": AuthService.GetAuthHeaders(),
+    });
   }
 }

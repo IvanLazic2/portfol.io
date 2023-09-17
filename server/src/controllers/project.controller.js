@@ -163,7 +163,7 @@ export async function like(req, res) {
         const incrementLikeResult = await ProjectService.incrementLike(req.params.id);
 
         if (selfLoveAcheavementAquired) {
-            return res.status(200).json({ messageType: MessageType.Info, message: "Acheavement \"Self love\" aquired!" });
+            return res.status(200).json({ messageType: MessageType.Info, message: "Acheavement \"Self love\" aquired!", acheavement: true });
         }
         else {
             return res.status(200).json({ messageType: MessageType.Success });
@@ -223,7 +223,7 @@ export async function highlightUpload(req, res, next) {
             return res.status(401).end();
         }
 
-        
+
 
         if (req.params.uploadId === getProjectResult.HighlightedUploadId) {
             const updateProjectResult = await ProjectService.unhighlightUpload(getUploadResult.ProjectId, req.params.uploadId);
