@@ -16,7 +16,7 @@ import { router as authRouter } from './src/routers/auth.router.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 (
     async () => {
