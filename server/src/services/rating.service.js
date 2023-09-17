@@ -1,6 +1,6 @@
 import { db } from '../configs/db.config.js';
 
-import { RatingCreateOrUpdate } from "../models/rating/Rating.model.js";
+import { RatingCreateOrUpdate } from "../models/rating/Rating.models.js";
 
 export async function createOrUpdateRating(projectId, userId, rating) {
     const ratingCreateOrUpdate = RatingCreateOrUpdate.InstanceFromObject(projectId, userId, rating);

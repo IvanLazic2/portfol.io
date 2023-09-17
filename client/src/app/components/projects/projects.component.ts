@@ -9,6 +9,7 @@ import { UploadService } from 'src/app/services/upload/upload.service';
 import { UserService } from 'src/app/components/user/user.service';
 import { faArrowUp, faEdit, faHeart, faPen, faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
+import { ToastService } from 'src/app/services/toast/toast.service';
 
 @Component({
   selector: 'app-projects',
@@ -44,6 +45,7 @@ export class ProjectsComponent implements OnInit {
     protected projectService: ProjectService,
     private router: Router,
     protected userService: UserService,
+    private toastService: ToastService,
   ) { }
 
   async ngOnInit() {
@@ -75,7 +77,7 @@ export class ProjectsComponent implements OnInit {
     let result = [];
 
     if (!project.HighlightedUploadId) {
-      result = project.UploadIds.slice(1, 5);
+      result = project.UploadIds.slice(1, 6);
     }
     else {
       result = project.UploadIds.filter((val : any) => { return val !== project.HighlightedUploadId }).slice(0, 5);
@@ -121,7 +123,9 @@ export class ProjectsComponent implements OnInit {
   }
 
   protected async DeleteProject(id: string) {
-    const result = await firstValueFrom(this.projectService.DeleteProject(id));
+    const deleteProjectResponse = await firstValueFrom(this.projectService.DeleteProject(id));
+    this.toastService.showFromMessageType(deleteProjectResponse.messageType, deleteProjectResponse.message);
+
     await this.getProjects();
   }
 

@@ -4,7 +4,8 @@
         <div *ngIf="Project$ | async as Project">
             <div class="d-flex justify-content-between">
                 <div class="d-flex gap-2 align-items-center">
-                    <a style="cursor: pointer;" (click)="this.router.navigate(['/user', this.userService.CurrentUser.Username])">
+                    <a style="cursor: pointer;"
+                        (click)="this.router.navigate(['/user', this.userService.CurrentUser.Username])">
                         <img class="profile-picture shadow" ngxGravatar [size]="32"
                             [email]="this.userService.CurrentUser?.Email ?? ''" [fallback]="'mp'"
                             [src]="this.userService.GetCurrentUserProfilePictureUrl()" />
@@ -16,21 +17,24 @@
 
                             <fa-icon (click)="onClickLike()" class="like-icon like-icon-active"
                                 *ngIf="this.ProjectIsLiked" [icon]="solidHeartIcon"></fa-icon>
-                            <fa-icon (click)="onClickLike()" class="like-icon"
-                                *ngIf="!this.ProjectIsLiked" [icon]="regularHeartIcon"></fa-icon>
-        
+                            <fa-icon (click)="onClickLike()" class="like-icon" *ngIf="!this.ProjectIsLiked"
+                                [icon]="regularHeartIcon"></fa-icon>
+
                             <!--<button [ngClass]="this.ProjectIsLiked[project.Id] ? 'heart-solid' : 'heart-line'"
                                 (click)="onClickLike(project.Id)">{{ this.ProjectIsLiked[project.Id] ? 'Unlike' : 'Like' }}</button>-->
-        
+
                             <span>{{ this.ProjectLikes }}</span>
                         </div>
                     </div>
                 </div>
                 <div *ngIf="this.userService.GetIsLoggedInObservable() | async">
-                    <button class="btn btn-sm btn-outline-secondary" (click)="Edit()"><fa-icon
-                            [icon]="editIcon"></fa-icon> Edit</button>
-                    <button class="ms-1 btn btn-sm btn-outline-danger" (click)="Delete()"><fa-icon
-                            [icon]="deleteIcon"></fa-icon> Delete</button>
+                    <div
+                        *ngIf="(this.userService.CurrentUser?.Username ?? false) === (this.userService.LoggedInUser?.Username ?? true);">
+                        <button class="btn btn-sm btn-outline-secondary" (click)="Edit()"><fa-icon
+                                [icon]="editIcon"></fa-icon> Edit</button>
+                        <button class="ms-1 btn btn-sm btn-outline-danger" (click)="Delete()"><fa-icon
+                                [icon]="deleteIcon"></fa-icon> Delete</button>
+                    </div>
                 </div>
 
             </div>
@@ -104,7 +108,8 @@
 
             <button class="btn btn-outline-danger" (click)="CancelEditing()"><fa-icon [icon]="cancelIcon"></fa-icon>
                 Cancel</button>
-            <button class="ms-1 btn btn-outline-primary" type="submit" [disabled]="!this.form.valid"><fa-icon [icon]="saveIcon"></fa-icon>
+            <button class="ms-1 btn btn-outline-primary" type="submit" [disabled]="!this.form.valid"><fa-icon
+                    [icon]="saveIcon"></fa-icon>
                 Save</button>
 
         </form>
@@ -153,14 +158,19 @@
                 <div style="position: absolute; right: 0; top: 0;">
                     <button class="btn btn-sm btn-primary" (click)="this.uploadService.Download(uploadId)"><fa-icon
                             [icon]="downloadIcon"></fa-icon></button>
-                    <button *ngIf="this.userService.GetIsLoggedInObservable() | async" ngbTooltip="Highlight image"
-                        placement="top"
-                        [ngClass]="this.Project.HighlightedUploadId === uploadId ? 'highlighted-button': ''"
-                        class="ms-1 btn btn-sm btn-secondary" (click)="HighlightUpload(uploadId)"><fa-icon
-                            [icon]="highlightIcon"></fa-icon></button>
-                    <button *ngIf="this.userService.GetIsLoggedInObservable() | async"
-                        class="ms-1 me-2 btn btn-sm btn-danger" (click)="DeleteUpload(uploadId)"><fa-icon
-                            [icon]="deleteIcon"></fa-icon></button>
+                    <div *ngIf="this.userService.GetIsLoggedInObservable() | async">
+                        <button
+                            *ngIf="(this.userService.CurrentUser?.Username ?? false) === (this.userService.LoggedInUser?.Username ?? true);"
+                            ngbTooltip="Highlight image" placement="top"
+                            [ngClass]="this.Project.HighlightedUploadId === uploadId ? 'highlighted-button': ''"
+                            class="ms-1 btn btn-sm btn-secondary" (click)="HighlightUpload(uploadId)"><fa-icon
+                                [icon]="highlightIcon"></fa-icon></button>
+                    </div>
+                    <div *ngIf="this.userService.GetIsLoggedInObservable() | async">
+                        <button *ngIf="(this.userService.CurrentUser?.Username ?? false) === (this.userService.LoggedInUser?.Username ?? true);"
+                            class="ms-1 me-2 btn btn-sm btn-danger" (click)="DeleteUpload(uploadId)"><fa-icon
+                                [icon]="deleteIcon"></fa-icon></button>
+                    </div>
                 </div>
             </div>
 

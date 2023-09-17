@@ -85,7 +85,9 @@ export enum AuthType {
 
 export enum ToastType {
     Success = "Success",
-    Warning = "Warning"
+    Warning = "Warning",
+    Error = "Error",
+    Info = "Info"
 }
 
 //// Models

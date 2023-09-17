@@ -52,7 +52,7 @@ export async function create(req, res) {
             .resize({ width: 512 })
             .toFile(profilePictureDirectory + profilePictureId + '.jpg');
 
-        return res.status(200).json({ MessageType: MessageType.Success, Message: "Profile picture updated." });
+        return res.status(200).json({ messageType: MessageType.Success, message: "Profile picture updated." });
 
     } catch (error) {
         console.error(error);
@@ -66,7 +66,7 @@ export async function remove(req, res) {
         const removeProfilePictureResult = await UserService.removeProfilePicture(req.userId);
         await removeIfExists(profilePictureDirectory + getUserResult.ProfilePictureId + '.jpg');
 
-        return res.status(200).json({ MessageType: MessageType.Success, Message: "Profile picture removed." });
+        return res.status(200).json({ messageType: MessageType.Success, message: "Profile picture removed." });
 
     } catch (error) {
         console.error(error);

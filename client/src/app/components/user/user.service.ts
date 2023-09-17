@@ -26,7 +26,7 @@ export class UserService {
     protected router: Router,
     protected http: HttpClient,
     protected toastService: ToastService,
-    private authService: AuthService) {
+    ) {
 
   }
 
@@ -38,7 +38,7 @@ export class UserService {
     if (!this.LoggedInUser) {
       return;
     }
-    
+
     if (this.CurrentUser.Username === this.LoggedInUser.Username) {
       this.isEditing = value;
     }
@@ -108,19 +108,19 @@ export class UserService {
 
   EditUser(user: any) {
     return this.http.put(this.UserUrl, user, {
-      "headers": this.authService.GetAuthHeaders(),
+      "headers": AuthService.GetAuthHeaders(),
     });
   }
 
   ChangeUsername(username: string) {
     return this.http.put(this.UserUrl + 'changeUsername/', { Username: username }, {
-      "headers": this.authService.GetAuthHeaders(),
+      "headers": AuthService.GetAuthHeaders(),
     });
   }
 
   ChangeEmail(email: string) {
     return this.http.put(this.UserUrl + 'changeEmail/', { Email: email }, {
-      "headers": this.authService.GetAuthHeaders(),
+      "headers": AuthService.GetAuthHeaders(),
     });
   }
 
@@ -129,7 +129,7 @@ export class UserService {
     formData.append('profilePicture', profilePicture, profilePicture.name);
 
     return this.http.post(this.ProfilePictureUrl, formData, {
-      "headers": this.authService.GetAuthHeaders(),
+      "headers": AuthService.GetAuthHeaders(),
     });
   }
 
@@ -139,64 +139,13 @@ export class UserService {
 
   DeleteProfilePicture() {
     return this.http.delete(this.ProfilePictureUrl, {
-      "headers": this.authService.GetAuthHeaders(),
+      "headers": AuthService.GetAuthHeaders(),
     });
   }
 
-  Register(username: string, email: string, password: string) {
-    this.http.post("/api/register", { username, email, password })
-      .subscribe({
-        next: (res: any) => {
-          this.isLoggedIn.next(true);
-          this.SetToken(res.user);
-          this.SetUsername(username);
-          this.GetLoggedInUser();
-
-          this.router.navigate(["/"]);
-          this.toastService.show("", res.message, ToastType.Success);
-
-        }, error: (err) => {
-          this.toastService.show("", err.error.message, ToastType.Warning);
-        }
-      });
-  }
-
-  Login(username: string, password: string) {
-    this.http.post("/api/login", { username, password })
-      .subscribe({
-        next: (res: any) => {
-          this.isLoggedIn.next(true);
-          this.SetToken(res.user);
-          this.SetUsername(username);
-          this.GetLoggedInUser();
 
 
-          this.router.navigate(["/"]);
-          this.toastService.show("", res.message, ToastType.Success);
-
-        }, error: (err) => {
-          this.toastService.show("", err.error.message, ToastType.Warning);
-        }
-      });
-  }
-
-  LogOut() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
-    this.isLoggedIn.next(false);
-
-    this.router.navigate(["/login"]);
-    this.toastService.show("", "Successfully logged out.", ToastType.Success);
-  }
-
-  SetToken(user: any) {
-    localStorage.setItem("token", user.Token);
-    //this.User.next({ Username: user.Username });
-  }
-
-  SetUsername(username: string) {
-    localStorage.setItem("username", username);
-  }
+  
 
   async UsernameExists(username: string): Promise<boolean> {
     const result = this.http.get<boolean>(this.UserUrl + 'usernameExists/' + username);

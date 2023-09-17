@@ -7,5 +7,7 @@ import { ToastService } from 'src/app/services/toast/toast.service';
   styleUrls: ['./toasts.component.scss']
 })
 export class ToastsComponent {
+  showToast: boolean = false;
+
   constructor(public toastService: ToastService) { }
 }

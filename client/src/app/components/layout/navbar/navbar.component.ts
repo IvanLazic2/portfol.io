@@ -4,6 +4,7 @@ import { BehaviorSubject, filter, map, observable, Observable, startWith } from 
 import { UserService } from 'src/app/components/user/user.service';
 import { Page, User, AuthType } from '../../../types';
 import { NavigationEnd, Router, Event as NavigationEvent } from '@angular/router';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 
 @Component({
@@ -21,7 +22,8 @@ export class NavbarComponent implements OnInit {
   isMenuCollapsed = true;
 
   constructor(
-    protected userService: UserService
+    protected userService: UserService,
+    protected authService: AuthService,
     ) { }
 
   async ngOnInit() {

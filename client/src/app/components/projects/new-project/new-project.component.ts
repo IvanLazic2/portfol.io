@@ -111,6 +111,8 @@ export class NewProjectComponent implements OnInit, OnDestroy {
 
       const createResponse = await firstValueFrom(this.projectService.CreateProject(project));
 
+      this.toastService.showFromMessageType(createResponse.messageType, createResponse.message)
+
       if (!createResponse.projectId)
         console.error("projectId undefined");
 

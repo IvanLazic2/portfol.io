@@ -7,7 +7,7 @@ import * as UploadService from '../services/upload.service.js';
 import * as ProjectService from '../services/project.service.js';
 import * as UserService from '../services/user.service.js';
 import { MessageType } from "../enums/messageType.js";
-import { UploadGET } from "../models/upload/Upload.model.js";
+import { UploadGET } from "../models/upload/Upload.models.js";
 
 import { URL } from 'url';
 
@@ -80,7 +80,7 @@ export async function remove(req, res, next) {
 
         const removeResult = await UploadService.remove(req.params.id);
 
-        /* temp */ return res.status(200).json({ message: "File delete called: id: " + req.params.id });
+        return res.status(200).json({ messageType: MessageType.Success, message: "Image deleted." });
 
     } catch (err) {
         console.error("Error in upload controller: deleteFile: ", err);

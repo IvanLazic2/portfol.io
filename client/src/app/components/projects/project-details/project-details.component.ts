@@ -13,6 +13,7 @@ import { NgxMasonryOptions } from 'ngx-masonry';
 import { faArrowsToEye, faCancel, faDownload, faHeart, faPencil, faSave, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { UserService } from '../../user/user.service';
 import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
+import { ToastService } from 'src/app/services/toast/toast.service';
 
 @Component({
   selector: 'app-project-details',
@@ -64,6 +65,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     protected router: Router,
     private elementRef: ElementRef,
     protected userService: UserService,
+    private toastService: ToastService,
   ) {
     this.form = this.fb.group({
       projectName: ['', [Validators.required, Validators.minLength(3)]],
@@ -163,12 +165,12 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     this.Project$ = this.projectService.GetProject(this.ProjectId);
     this.Project = await lastValueFrom(this.Project$);
 
+    this.userService.GetCurrentUserById(this.Project.UserId);
+
     this.ProjectLikes = this.Project.Likes;
     if (this.userService.GetIsLoggedIn()) {
       this.ProjectIsLiked = await lastValueFrom<boolean>(this.projectService.GetProjectIsLiked(this.Project.Id));
     }
-
-    this.userService.GetCurrentUserById(this.Project.UserId);
   }
 
   private async getThumbnails() {
@@ -206,7 +208,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     };
 
     try {
-      const editResponse = await firstValueFrom(this.projectService.EditProject(this.ProjectId, project));
+      const editResponse = await firstValueFrom<any>(this.projectService.EditProject(this.ProjectId, project));
+      this.toastService.showFromMessageType(editResponse.messageType, editResponse.message);
 
       const uploadResponses$ = this.uploadService.UploadProjectFiles(this.ProjectId, this.filesToAdd);
 
@@ -268,11 +271,13 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   protected async Delete() {
     const result = await firstValueFrom(this.projectService.DeleteProject(this.ProjectId));
-    this.router.navigate(['/']); // TEMP!!!
+    this.toastService.showFromMessageType(result.messageType, result.message);
+    this.router.navigate(['/user', this.userService.CurrentUser.Username]);
   }
 
   protected async DeleteUpload(uploadId: string) {
-    const deleteResponse = await lastValueFrom(this.uploadService.DeleteUpload(uploadId));
+    const deleteUploadResponse = await lastValueFrom(this.uploadService.DeleteUpload(uploadId));
+    this.toastService.showFromMessageType(deleteUploadResponse.messageType, deleteUploadResponse.message);
 
     //await this.getThumbnails();
     await this.getProject();

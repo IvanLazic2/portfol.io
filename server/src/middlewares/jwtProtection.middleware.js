@@ -9,7 +9,7 @@ export const jwtProtection = (req, res, next) => {
             if (err)
                 console.log(token);
 
-            req.id = decodedToken.id;
+            req.id = decodedToken.id; /* TEMP!!!! */
             req.userId = decodedToken.id;
 
             return;
@@ -22,3 +22,4 @@ export const jwtProtection = (req, res, next) => {
         return res.status(401).json({ message: "Unauthenticated." });
     }
 }
+

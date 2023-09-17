@@ -17,7 +17,7 @@ import { router as thumbnailRouter } from './src/routers/thumbnail.router.js';
 import { router as userRouter } from './src/routers/user.router.js';
 import { router as profilePictureRouter } from './src/routers/profilePicture.router.js';
 import { router as homeRouter } from './src/routers/home.router.js';
-
+import { router as authRouter } from './src/routers/auth.router.js';
 
 
 // TEMP!!!!
@@ -75,7 +75,7 @@ const upload = multer({ storage: storage });
         app.use('/api/user', userRouter);
         app.use('/api/profilePicture', profilePictureRouter);
         app.use('/api/home', homeRouter);
-
+        app.use('/api/auth', authRouter);
 
 
         
@@ -205,7 +205,7 @@ const upload = multer({ storage: storage });
             }
         });
 
-        app.post("/api/register", async (req, res) => {
+        /*app.post("/api/register", async (req, res) => {
             let user = new RegisterPOST(req.body.username, req.body.email, req.body.password);
 
             let errorMessage = user.Validate();
@@ -254,7 +254,7 @@ const upload = multer({ storage: storage });
                 .catch(err => {
                     return res.status(500).json({ message: err });
                 });
-        });
+        });*/
 
         app.delete("/api/files/:_id", jwtProtection, async (req, res) => {
             try {

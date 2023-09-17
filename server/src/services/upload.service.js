@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
 import { db } from "../configs/db.config.js"
-import { UploadDL } from "../models/upload/Upload.model.js";
+import { UploadDL } from "../models/upload/Upload.models.js";
 
 export async function create(projectId, file) {
     const uploadDL = new UploadDL(projectId, file.originalname, file.size, Date.now(), file.mimetype);

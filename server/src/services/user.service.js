@@ -1,5 +1,16 @@
 import { ObjectId } from 'mongodb';
 import { db } from '../configs/db.config.js';
+import { UserDL } from '../models/user/User.models.js';
+
+export async function register(username, email, salt, hash) {
+    const userDL = new UserDL(username, email, salt, hash);
+
+    const result = await db
+        .collection('users')
+        .insertOne(userDL);
+
+    return result;
+}
 
 export async function getById(id) {
     const result = await db

@@ -13,11 +13,12 @@ import { Component, OnInit } from '@angular/core';
 import { ChildrenOutletContexts, NavigationEnd, Router, Event as NavigationEvent, NavigationStart } from '@angular/router';
 import { Location } from '@angular/common';
 import { BehaviorSubject, filter, map, startWith } from 'rxjs';
-import { Page } from './types';
+import { Page, ToastType } from './types';
 import { animate, state, style, transition, trigger, query, group } from '@angular/animations';
 import { AnimationService } from './services/animation/animation.service';
 import { start } from '@popperjs/core';
 import { IntersectionObserverService } from './services/IntersectionObserver/intersection-observer-service.service';
+import { ToastService } from './services/toast/toast.service';
 
 
 /* CONTENT LAYOUT
@@ -146,7 +147,8 @@ export class AppComponent {
   constructor(
     protected animationService: AnimationService,
     protected router: Router,
-    protected location: Location
+    protected location: Location,
+    private toastService: ToastService,
   ) {
     //this.router.navigate([{ outlets: { primary: ['signin'], sidebar: ['sidebar'] } }])
   }
@@ -158,6 +160,7 @@ export class AppComponent {
   )*/
 
   title = 'client';
+
 
   getRouteAnimation() {
     return this.animationService.GetCurrentAnimation();

@@ -22,9 +22,6 @@ export async function isProjectLiked(userId, projectId) {
         .collection('likes')
         .findOne({ userId: userId, projectId: projectId });
 
-
-    console.log(result)
-
     return (result) ? true : false;
 }
 

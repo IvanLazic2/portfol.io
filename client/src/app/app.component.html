@@ -16,9 +16,13 @@
 </head>
 
 <body>
+    
+    <div class="toast-container">
+        <app-toasts aria-live="polite" aria-atomic="true"></app-toasts>
+    </div>
 
     <div class="layout-container">
-
+        
 
         <header>
             <app-navbar></app-navbar>
@@ -64,9 +68,7 @@
 
 
 
-    <div class="toast-container">
-        <app-toasts aria-live="polite" aria-atomic="true"></app-toasts>
-    </div>
+    
 
     <!--<app-files [Files]="this.Files$" [CurrentPage]="this.CurrentPage" [Action]="'page_' + this.CurrentPage">
         <h2 class="d-inline m-1" id="page-title" [innerHTML]="PageTitles[CurrentPage]"></h2>

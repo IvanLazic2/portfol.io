@@ -7,6 +7,7 @@ import { IntersectionObserverService } from 'src/app/services/IntersectionObserv
 import { UserService } from 'src/app/components/user/user.service';
 import { Location } from '@angular/common';
 import { faCancel, faEdit, faPencil, faPlus, faSave, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { ToastService } from 'src/app/services/toast/toast.service';
 
 @Component({
   selector: 'app-user',
@@ -36,6 +37,7 @@ export class UserComponent implements OnInit {
     protected activatedRoute: ActivatedRoute,
     protected userService: UserService,
     private gravatarService: NgxGravatarService,
+    private toastService: ToastService,
   ) {
     this.form = this.fb.group({
       fullName: ['', [Validators.required, Validators.minLength(3)]],
@@ -59,12 +61,12 @@ export class UserComponent implements OnInit {
   }
 
   async ngOnInit() {
-      console.log("init")
+    console.log("init")
 
-      this.userService.setIsEditing(false);
-      this.userService.GetCurrentUser(this.activatedRoute.snapshot.params['username']);
+    this.userService.setIsEditing(false);
+    this.userService.GetCurrentUser(this.activatedRoute.snapshot.params['username']);
 
-      this.profilePicture = this.userService.GetCurrentUserProfilePictureUrl();
+    this.profilePicture = this.userService.GetCurrentUserProfilePictureUrl();
   }
 
   setForm() {
@@ -104,26 +106,39 @@ export class UserComponent implements OnInit {
   }
 
   async onSubmit() {
-    await lastValueFrom(this.userService.EditUser({ EditedUserUsername: this.userService.CurrentUser.Username, FullName: this.fullName.value, Bio: this.bio.value }));
-    
-    if (this.shouldDeleteProfilePicture)
-      await lastValueFrom(this.userService.DeleteProfilePicture());
+    try {
+      const editUserResult = await lastValueFrom<any>(this.userService.EditUser({ EditedUserUsername: this.userService.CurrentUser.Username, FullName: this.fullName.value, Bio: this.bio.value }));
+      this.toastService.showFromMessageType(editUserResult.messageType, editUserResult.message);
 
-    if (this.selectedProfilePictureFile)
-      await lastValueFrom(this.userService.ChangeProfilePicture(this.selectedProfilePictureFile));
+      if (this.shouldDeleteProfilePicture){
+        const deleteProfilePictureResult = await lastValueFrom<any>(this.userService.DeleteProfilePicture());
+        if (deleteProfilePictureResult.messageType !== "Success")
+          this.toastService.showFromMessageType(deleteProfilePictureResult.messageType, deleteProfilePictureResult.message);
+      }
+        
+      if (this.selectedProfilePictureFile){
+        const changeProfilePictureResult = await lastValueFrom<any>(this.userService.ChangeProfilePicture(this.selectedProfilePictureFile));
+        if (changeProfilePictureResult.messageType !== "Success")
+          this.toastService.showFromMessageType(changeProfilePictureResult.messageType, changeProfilePictureResult.message);
+      }
+        
+
+    } catch (error: any) {
+      this.toastService.showFromCode(error.code, error.message);
+      console.error(error);
+    }
 
 
-    
 
-      
+
+
+
 
     //this.selectedImage = undefined;
     this.selectedProfilePictureFile = undefined;
     await this.userService.GetCurrentUser(this.userService.LoggedInUser.Username);
     await this.userService.GetLoggedInUser();
     this.profilePicture = this.userService.GetCurrentUserProfilePictureUrl();
-
-    console.log(this.userService.LoggedInUser.ProfilePictureId)
 
     this.userService.setIsEditing(false);
   }
@@ -139,16 +154,10 @@ export class UserComponent implements OnInit {
 
       this.selectedProfilePictureFile = fileInput.files[0];
       this.profilePicture = URL.createObjectURL(this.selectedProfilePictureFile);
-
-      // You can also update the Gravatar URL here
-      // For demonstration purposes, let's assume you have the URL here.
-      //const newImageUrl = 'URL_TO_NEW_IMAGE'; // Replace with the actual URL
-
-      //this.profileImageUrl = this.gravatarService.generateGravatarUrl(newImageUrl);
     }
   }
 
   async onDeleteProfilePicture() {
-    await lastValueFrom(this.userService.DeleteProfilePicture()); 
+    await lastValueFrom(this.userService.DeleteProfilePicture());
   }
 }

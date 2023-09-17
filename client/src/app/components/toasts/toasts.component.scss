@@ -14,9 +14,17 @@
 }
 
 .Success {
-    background-color: $main-color;
+    background-color: map-get($theme-colors, "success");
 }
 
 .Warning {
-    background-color: $warning;
+    background-color: map-get($theme-colors, "warning");
+}
+
+.Error {
+    background-color: map-get($theme-colors, "danger");
+}
+
+.Info {
+    background-color: map-get($theme-colors, "info");
 }

@@ -37,12 +37,12 @@ export class ProjectService {
       this.isEditing = value;
     }
 
-    this.isEditing = value;
+    //this.isEditing = value;
   }
 
   public CreateProject(project: ProjectPOST): Observable<any> {
     return this.http.post(this.projectsUrl, project, {
-        "headers": this.authService.GetAuthHeaders(),
+        "headers": AuthService.GetAuthHeaders(),
       });
   }
 
@@ -52,7 +52,7 @@ export class ProjectService {
     });*/
 
     const getProjectResult$ = this.http.get<any[]>(this.getAllUserProjectsUrl + username, {
-      "headers": this.authService.GetAuthHeaders(),
+      "headers": AuthService.GetAuthHeaders(),
     });
 
     this.CurrentProjects = await lastValueFrom(getProjectResult$);
@@ -60,31 +60,31 @@ export class ProjectService {
 
   public GetProject(id: string): Observable<any> {
     return this.http.get(this.projectsUrl + id, {
-      "headers": this.authService.GetAuthHeaders(),
+      "headers": AuthService.GetAuthHeaders(),
     })
   }
 
   public EditProject(id: string, project: ProjectPOST) {
     return this.http.put(this.projectsUrl + id, project, {
-      "headers": this.authService.GetAuthHeaders(),
+      "headers": AuthService.GetAuthHeaders(),
     });
   }
 
   public DeleteProject(id: string): Observable<any> {
     return this.http.delete(this.projectsUrl + id, {
-      "headers": this.authService.GetAuthHeaders(),
+      "headers": AuthService.GetAuthHeaders(),
     })
   }
 
   public LikeProject(projectId: string): Observable<any> {
     return this.http.get(this.projectsUrl + 'like/' + projectId, {
-      "headers": this.authService.GetAuthHeaders(), 
+      "headers": AuthService.GetAuthHeaders(), 
     })
   }
 
   public UnlikeProject(projectId: string): Observable<any> {
     return this.http.get(this.projectsUrl + 'unlike/' + projectId, {
-      "headers": this.authService.GetAuthHeaders(), 
+      "headers": AuthService.GetAuthHeaders(), 
     })
   }
 
@@ -94,13 +94,13 @@ export class ProjectService {
 
   public GetProjectIsLiked(projectId: string): Observable<boolean> {
     return this.http.get<boolean>(this.projectsUrl + 'isLiked/' + projectId, {
-      "headers": this.authService.GetAuthHeaders(), 
+      "headers": AuthService.GetAuthHeaders(), 
     })
   }
 
   public HighlightUpload(uploadId: string): Observable<any> {
     return this.http.get(this.projectsUrl + 'highlightUpload/' + uploadId, {
-      "headers": this.authService.GetAuthHeaders(),
+      "headers": AuthService.GetAuthHeaders(),
     })
   }
   

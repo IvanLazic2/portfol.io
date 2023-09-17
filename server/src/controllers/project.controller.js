@@ -9,8 +9,6 @@ import { uploadDirectory } from '../configs/upload.config.js';
 import { ProjectPOST, ProjectGET } from '../models/project/Project.models.js';
 
 export async function get(req, res, next) {
-    console.log(req.params.id)
-
     try {
 
         if (!req.params.id) {
@@ -220,6 +218,12 @@ export async function highlightUpload(req, res, next) {
         const getUploadResult = await UploadService.get(req.params.uploadId);
 
         const getProjectResult = await ProjectService.get(getUploadResult.ProjectId);
+
+        if (getProjectResult.UserId != req.userId) {
+            return res.status(401).end();
+        }
+
+        
 
         if (req.params.uploadId === getProjectResult.HighlightedUploadId) {
             const updateProjectResult = await ProjectService.unhighlightUpload(getUploadResult.ProjectId, req.params.uploadId);

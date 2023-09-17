@@ -22,3 +22,12 @@ export class UserPUT {
         return new UserPUT(obj.FullName, obj.Bio);
     }
 }
+
+export class UserDL {
+    constructor(username, email, salt, hash) {
+        this.Username = username;
+        this.Email = email;
+        this.Salt = salt;
+        this.Hash = hash;
+    }
+}

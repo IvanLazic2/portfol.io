@@ -1,5 +1,5 @@
 import * as UserService from '../services/user.service.js';
-import { UserGET, UserPUT } from '../models/user/User.model.js';
+import { UserGET, UserPUT } from '../models/user/User.models.js';
 import { MessageType } from '../enums/messageType.js';
 
 export async function get(req, res) {
@@ -44,7 +44,7 @@ export async function update(req, res) {
 
         const updateUserResult = await UserService.update(req.userId, user);
 
-        res.status(200).json({ messageType: MessageType.Success, message: "Account updated." });
+        res.status(200).json({ messageType: MessageType.Success, message: "Profile updated." });
 
     } catch (error) {
         console.error(error);

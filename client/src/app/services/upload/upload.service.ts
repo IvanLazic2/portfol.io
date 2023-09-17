@@ -129,7 +129,7 @@ export class UploadService {
     formData.append('file', file, file.name);
 
     const req = new HttpRequest('POST', this.UploadUrl, formData, {
-      "headers": this.authService.GetAuthHeaders(),
+      "headers": AuthService.GetAuthHeaders(),
       reportProgress: true,
     });
 
@@ -147,7 +147,7 @@ export class UploadService {
       formData.append('projectId', projectId);
 
       const response = this.http.post(this.UploadUrl, formData, {
-        "headers": this.authService.GetAuthHeaders(),
+        "headers": AuthService.GetAuthHeaders(),
         reportProgress: true,
         observe: 'events'
       });
@@ -174,7 +174,7 @@ export class UploadService {
 
   DeleteUpload(uploadId: string): Observable<any> {
     return this.http.delete(this.UploadUrl + uploadId, {
-      "headers": this.authService.GetAuthHeaders(),
+      "headers": AuthService.GetAuthHeaders(),
     });
   }
 

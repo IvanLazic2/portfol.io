@@ -4,6 +4,7 @@ import { faExclamation, faSave, faTriangleExclamation } from '@fortawesome/free-
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { lastValueFrom } from 'rxjs';
 import { UserService } from 'src/app/components/user/user.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-account',
@@ -25,6 +26,7 @@ export class AccountComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     protected userService: UserService,
+    private authService: AuthService,
     private modalService: NgbModal
   ) {
     this.usernameForm = this.fb.group({
@@ -79,7 +81,7 @@ export class AccountComponent implements OnInit {
     }
 
     await lastValueFrom(this.userService.ChangeUsername(this.username.value));
-    this.userService.SetUsername(this.username.value);
+    this.authService.SetUsername(this.username.value);
     await this.userService.GetLoggedInUser();
     this.modalService.dismissAll();
   }

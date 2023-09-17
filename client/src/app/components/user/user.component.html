@@ -39,7 +39,7 @@
                         <input class="form-control" type="text" id="fullName" formControlName="fullName">
 
                         <div *ngIf="fullName.invalid && fullName.touched">
-                            <p *ngIf="fullName.errors?.['minlength']">Full Name must be at least 3 characters long</p>
+                            <p class="text-danger" *ngIf="fullName.errors?.['minlength']">Full Name must be at least 3 characters long</p>
                         </div>
                     </div>
 

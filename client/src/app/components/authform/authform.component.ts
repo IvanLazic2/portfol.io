@@ -7,6 +7,7 @@ import { UserService } from 'src/app/components/user/user.service';
 import { AuthType, ToastType } from 'src/app/types';
 import { faAt, faEnvelope, faEyeSlash, faEye, faRightToBracket } from '@fortawesome/free-solid-svg-icons';
 import { PasswordValidators } from 'src/app/validators/password-validators';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-authform',
@@ -45,6 +46,7 @@ export class AuthformComponent implements OnInit {
   constructor(
     protected router: Router,
     protected userService: UserService,
+    private authService: AuthService,
     protected toastService: ToastService,
     private fb: FormBuilder,
   ) { }
@@ -91,14 +93,14 @@ export class AuthformComponent implements OnInit {
       return;
     }
 
-    this.userService.Register(
+    this.authService.Register(
       this.form.value.username,
       this.form.value.email,
       this.form.value.password);
   }
 
   Login() {
-    this.userService.Login(
+    this.authService.Login(
       this.form.value.username,
       this.form.value.password);
   }
