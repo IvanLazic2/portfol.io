@@ -12,7 +12,7 @@ router.get('/highlightUpload/:uploadId', jwtProtection, projectController.highli
 router.get('/like/:id', jwtProtection, projectController.like);
 router.get('/unlike/:id', jwtProtection, projectController.unlike);
 router.get('/likeCount/:id', projectController.getLikeCount);
-router.get('/isLiked/:id', projectController.getIsLiked);
+router.get('/isLiked/:id', jwtProtection, projectController.getIsLiked);
 router.post('/', jwtProtection, projectController.create);
 //router.post('/rateProject/', ratingController.rateProject);
 //router.post('/removeProjectRating/', ratingController.removeProjectRating);

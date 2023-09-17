@@ -87,3 +87,13 @@ export async function remove(req, res, next) {
         next(err);
     }
 }
+
+export async function download(req, res) {
+    try {
+        const getUploadResult = await UploadService.get(req.params.id);
+
+        return res.status(200).download(getUploadPath(getUploadResult.ProjectId, req.params.id), getUploadResult.Name);
+    } catch (error) {
+        console.error(error)
+    }
+}

@@ -29,7 +29,10 @@ export class ProjectService {
     if (!this.userService.LoggedInUser) {
       return;
     }
-    
+    else if (!this.userService.CurrentUser) {
+      return;
+    }
+
     if (this.userService.CurrentUser.Username === this.userService.LoggedInUser.Username) {
       this.isEditing = value;
     }

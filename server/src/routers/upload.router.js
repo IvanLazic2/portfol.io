@@ -6,6 +6,7 @@ import { jwtProtection } from '../middlewares/jwtProtection.middleware.js';
 
 const router = express.Router();
 
+router.get('/download/:id', uploadController.download);
 router.get('/:id', uploadController.get);
 //router.post('/', multipleUploadMiddleware, uploadController.saveFiles);
 router.post('/', jwtProtection, upload.single('upload'), uploadController.create);

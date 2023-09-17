@@ -23,6 +23,7 @@ import { CommonDirectivesModule } from 'src/app/directives/common-directives.mod
 import { CommonPipesModule } from 'src/app/pipes/common-pipes.module';
 import { BarRatingModule } from 'ngx-bar-rating';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { GravatarModule } from 'ngx-gravatar';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     CommonPipesModule,
     BarRatingModule,
     FontAwesomeModule,
+
+    GravatarModule
     
   ],
   exports: [

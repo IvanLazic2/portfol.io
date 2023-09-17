@@ -3,6 +3,7 @@ import { MessageType } from '../enums/messageType.js';
 import * as ProjectService from '../services/project.service.js';
 import * as UploadService from '../services/upload.service.js';
 import * as LikeService from '../services/like.service.js';
+import * as UserService from '../services/user.service.js';
 import { uploadDirectory } from '../configs/upload.config.js';
 
 import { ProjectPOST, ProjectGET } from '../models/project/Project.models.js';
@@ -22,9 +23,9 @@ export async function get(req, res, next) {
         const project = ProjectGET.InstanceFromObject(getProjectResult);
 
         project.UploadIds = (await UploadService.getAll(project.Id.toString()))
-            .map(upload => { 
-                    return upload._id.toString(); 
-                });
+            .map(upload => {
+                return upload._id.toString();
+            });
 
         return res.status(200).json(project);
 
@@ -116,15 +117,22 @@ export async function remove(req, res, next) {
         if (getProjectResult.UserId != req.userId) {
             return res.status(401).end();
         }
+    }
+    catch (error) {
+        console.error("Error in project controller: remove", error);
+        return res.status(500).end();
+    }
 
-        
-
+    try {
         await fs.rm(uploadDirectory + req.params.id, { recursive: true });
+    }
+    catch (error) {
+        console.error("Error in project controller: remove", error);
+    }
 
+    try {
         await UploadService.removeAll(req.params.id);
-
         await ProjectService.remove(req.params.id);
-
         res.status(200).json({ messageType: MessageType.Success, message: "Project removed" });
 
     } catch (error) {
@@ -134,15 +142,34 @@ export async function remove(req, res, next) {
 }
 
 export async function like(req, res) {
+    let selfLoveAcheavementAquired = false;
+
     try {
         if (await LikeService.isProjectLiked(req.userId, req.params.id)) {
             return res.status(400).json({ messageType: MessageType.Warning, message: "Already liked." });
         }
 
         const likeProjectResult = await LikeService.likeProject(req.userId, req.params.id);
+
+        const getProjectResut = await ProjectService.get(req.params.id);
+
+        if (req.userId === getProjectResut.UserId) {
+            const getUserResult = await UserService.getById(req.userId);
+
+            if (!getUserResult.SelfLoveAcheavement) {
+                const setSelfLoveAcheavement = await UserService.setSelfLoveAcheavement(req.userId);
+                selfLoveAcheavementAquired = true;
+            }
+        }
+
         const incrementLikeResult = await ProjectService.incrementLike(req.params.id);
 
-        return res.status(200).json({ messageType: MessageType.Success });
+        if (selfLoveAcheavementAquired) {
+            return res.status(200).json({ messageType: MessageType.Info, message: "Acheavement \"Self love\" aquired!" });
+        }
+        else {
+            return res.status(200).json({ messageType: MessageType.Success });
+        }
 
     } catch (error) {
         console.error("Error in project controller: like: ", error);
@@ -170,6 +197,7 @@ export async function unlike(req, res) {
 export async function getIsLiked(req, res) {
     try {
         const isProjectLikedResult = await LikeService.isProjectLiked(req.userId, req.params.id);
+
         return res.status(200).json(isProjectLikedResult);
     } catch (error) {
         console.error("Error in project controller: isLiked: ", error);
@@ -193,14 +221,14 @@ export async function highlightUpload(req, res, next) {
 
         const getProjectResult = await ProjectService.get(getUploadResult.ProjectId);
 
-        if (req.params.uploadId === getProjectResult.HighlightedUploadId){
+        if (req.params.uploadId === getProjectResult.HighlightedUploadId) {
             const updateProjectResult = await ProjectService.unhighlightUpload(getUploadResult.ProjectId, req.params.uploadId);
         }
         else {
             const updateProjectResult = await ProjectService.highlightUpload(getUploadResult.ProjectId, req.params.uploadId);
         }
 
-        
+
 
         return res.status(200).json({ messageType: MessageType.Success, message: "Upload highlighted" });
 

@@ -185,11 +185,11 @@ export class UploadService {
 
 
 
-  Download(_id: string) {
+  Download(id: string) {
     const token = window.localStorage.getItem("token");
     const headers = new HttpHeaders({ "authorization": token ?? "" });
 
-    this.http.get("/api/files/download/" + _id, { "headers": headers, responseType: "blob", observe: "response" })
+    this.http.get(this.UploadUrl + "download/" + id, { "headers": headers, responseType: "blob", observe: "response" })
       .subscribe((res) => {
         let fileName = res.headers.get("content-disposition")?.split(";")[1].split("=")[1].slice(1, -1);
         let blob = res.body as Blob;

@@ -3,16 +3,25 @@
     <div *ngIf="!this.projectService.getIsEditing();">
         <div *ngIf="Project$ | async as Project">
             <div class="d-flex justify-content-between">
-                <h1>{{ Project.Name }}</h1>
-                <div>
-                    <button (click)="Edit()">Edit</button>
-                    <button class="ms-1" (click)="Delete()">Delete</button>
+                <div class="d-flex gap-2 align-items-center">
+                    <a style="cursor: pointer;" (click)="this.router.navigate(['/user', this.userService.CurrentUser.Username])">
+                        <img class="profile-picture shadow" ngxGravatar [size]="32"
+                            [email]="this.userService.CurrentUser?.Email ?? ''" [fallback]="'mp'"
+                            [src]="this.userService.GetCurrentUserProfilePictureUrl()" />
+                    </a>
+                    <h4 class="m-0">{{ Project.Name }}</h4>
                 </div>
-                
+                <div *ngIf="this.userService.GetIsLoggedInObservable() | async">
+                    <button class="btn btn-sm btn-outline-secondary" (click)="Edit()"><fa-icon
+                            [icon]="editIcon"></fa-icon> Edit</button>
+                    <button class="ms-1 btn btn-sm btn-outline-danger" (click)="Delete()"><fa-icon
+                            [icon]="deleteIcon"></fa-icon> Delete</button>
+                </div>
+
             </div>
-            
-            <pre>{{ Project.Concept }}</pre>
-            
+
+            <pre class="mt-2">{{ Project.Concept }}</pre>
+
         </div>
     </div>
 
@@ -23,25 +32,27 @@
                 <label for="projectName">Name:</label>
                 <input class="form-control" type="text" id="projectName" formControlName="projectName">
 
-                <div *ngIf="projectName.invalid && projectName.touched">
-                    <p *ngIf="projectName.errors?.['required']">Name is required</p>
-                    <p *ngIf="projectName.errors?.['minlength']">Name must be at least 3 characters long</p>
+                <div *ngIf="projectName.invalid && (projectName.touched || this.formSubmitted)">
+                    <p class="text-danger" *ngIf="projectName.errors?.['required']">Name is required</p>
+                    <p class="text-danger" *ngIf="projectName.errors?.['minlength']">Name must be at least 3 characters
+                        long</p>
                 </div>
             </div>
 
             <div>
                 <label for="projectConcept">Concept:</label>
-                <textarea class="form-control" type="text" id="projectConcept" formControlName="projectConcept" rows="10"></textarea>
+                <textarea class="form-control" type="text" id="projectConcept" formControlName="projectConcept"
+                    rows="10"></textarea>
 
-                <div *ngIf="projectConcept.invalid && projectConcept.touched">
+                <!--<div *ngIf="projectConcept.invalid && projectConcept.touched">
                     <p *ngIf="projectConcept.errors?.['pattern']">Concept must contain only alphanumeric characters and
                         spaces</p>
-                </div>
+                </div>-->
             </div>
 
 
 
-            <ngx-dropzone class="my-3" (change)="onSelect($event)">
+            <ngx-dropzone class="my-3" (change)="onSelect($event)" [accept]="'image/*'">
 
                 <ngx-dropzone-label>Drop your art here.</ngx-dropzone-label>
 
@@ -72,8 +83,10 @@
             </ngx-dropzone>
 
 
-            <button (click)="CancelEditing()">Cancel</button>
-            <button type="submit">Save</button>
+            <button class="btn btn-outline-danger" (click)="CancelEditing()"><fa-icon [icon]="cancelIcon"></fa-icon>
+                Cancel</button>
+            <button class="ms-1 btn btn-outline-primary" type="submit"><fa-icon [icon]="saveIcon"></fa-icon>
+                Save</button>
 
         </form>
     </div>
@@ -111,11 +124,24 @@
     <div>
         <ngx-masonry class="my-3" [ordered]="true" [options]="masonryOptions" [updateLayout]="update">
 
-            <div ngxMasonryItem *ngFor="let uploadId of this.Project.UploadIds; index as i;" class="masonry-item" [ngClass]="uploadId === this.Project.HighlightedUploadId ? 'highlighted':'' ">
-                <img [src]="this.uploadService.ThumbnailUrl + uploadId" [lightbox]="i" [gallery]="'lightbox'">
+            <div ngxMasonryItem *ngFor="let uploadId of this.Project.UploadIds; index as i;" class="masonry-item"
+                [ngClass]="uploadId === this.Project.HighlightedUploadId && this.userService.GetIsLoggedIn() ? 'highlighted':'' ">
+
+                <div class="masonry-item-image-container">
+                    <img [src]="this.uploadService.ThumbnailUrl + uploadId" [lightbox]="i" [gallery]="'lightbox'">
+                </div>
+
                 <div style="position: absolute; right: 0; top: 0;">
-                    <button (click)="HighlightUpload(uploadId)">H</button>
-                    <button (click)="DeleteUpload(uploadId)">Del</button>
+                    <button class="btn btn-sm btn-primary" (click)="this.uploadService.Download(uploadId)"><fa-icon
+                            [icon]="downloadIcon"></fa-icon></button>
+                    <button *ngIf="this.userService.GetIsLoggedInObservable() | async" ngbTooltip="Highlight image"
+                        placement="top"
+                        [ngClass]="this.Project.HighlightedUploadId === uploadId ? 'highlighted-button': ''"
+                        class="ms-1 btn btn-sm btn-secondary" (click)="HighlightUpload(uploadId)"><fa-icon
+                            [icon]="highlightIcon"></fa-icon></button>
+                    <button *ngIf="this.userService.GetIsLoggedInObservable() | async"
+                        class="ms-1 me-2 btn btn-sm btn-danger" (click)="DeleteUpload(uploadId)"><fa-icon
+                            [icon]="deleteIcon"></fa-icon></button>
                 </div>
             </div>
 

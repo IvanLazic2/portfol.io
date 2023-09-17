@@ -36,7 +36,7 @@
     <div class="project-container p-2">
 
         <div class="project-card"
-            *ngFor="let project of Projects | filter:['Name', 'Username']:this.searchValue | sortBy:this.sortOrder:this.sortProperty, index as i">
+            *ngFor="let project of this.homeService.CurrentProjects | filter:['Name', 'Username']:this.searchValue | sortBy:this.sortOrder:this.sortProperty, index as i">
             <img [src]="this.uploadService.ThumbnailUrl + project.UploadIds[0]">
 
             <div [ngClass]="i % 2 == 0 ? 'project-info-container-ltr' : 'project-info-container-rtl'">

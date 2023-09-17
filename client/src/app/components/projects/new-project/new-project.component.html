@@ -20,9 +20,9 @@
             </div>
 
 
-            <div *ngIf="projectName.invalid && projectName.touched">
-                <p *ngIf="projectName.errors?.['required']">Name is required</p>
-                <p *ngIf="projectName.errors?.['minLength']">Name must be at least 3 characters long</p>
+            <div *ngIf="projectName.invalid && (projectName.touched || this.formSubmitted)">
+                <p class="text-danger" *ngIf="projectName.errors?.['required']">Name is required</p>
+                <p class="text-danger" *ngIf="projectName.errors?.['minlength']">Name must be at least 3 characters long</p>
             </div>
 
 
@@ -32,10 +32,10 @@
             </div>
 
 
-            <div *ngIf="projectConcept.invalid && projectConcept.touched">
-                <p *ngIf="projectConcept.errors?.['pattern']">Concept must contain only alphanumeric characters and
+            <!--<div *ngIf="projectConcept.invalid && projectConcept.touched">
+                <p class="text-danger" *ngIf="projectConcept.errors?.['pattern']">Concept must contain only alphanumeric characters and
                     spaces</p>
-            </div>
+            </div>-->
 
             <div class="form-group my-3">
                 <label for="projectMaterial">Material:</label>
@@ -58,7 +58,7 @@
 
 
 
-        <ngx-dropzone (change)="onSelect($event)" class="my-3">
+        <ngx-dropzone [ngClass]="this.filesEmpty ? 'border-danger' : ''" (change)="onSelect($event)" class="my-3" [accept]="'image/*'">
 
             <ngx-dropzone-label>Drop your art here.</ngx-dropzone-label>
 
@@ -87,6 +87,8 @@
             </div>
 
         </ngx-dropzone>
+
+        <p class="text-danger" *ngIf="this.filesEmpty">Upload at least one image.</p>
 
         
 

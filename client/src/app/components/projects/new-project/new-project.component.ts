@@ -1,5 +1,5 @@
 import { HttpEventType, HttpEvent } from '@angular/common/http';
-import { Component, ElementRef, Inject, OnDestroy, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription, take } from 'rxjs';
@@ -15,8 +15,10 @@ import { Observable, lastValueFrom, firstValueFrom } from 'rxjs';
   templateUrl: './new-project.component.html',
   styleUrls: ['./new-project.component.scss']
 })
-export class NewProjectComponent implements OnDestroy {
+export class NewProjectComponent implements OnInit, OnDestroy {
   form: FormGroup;
+  formSubmitted: boolean = false;
+  filesEmpty: boolean = false;
   //uploadProgress: number = 0;
   uploadProgresses: { [key: string]: number } = {};
   uploadSubscriptions: Subscription[] = [];
@@ -29,12 +31,12 @@ export class NewProjectComponent implements OnDestroy {
     private projectService: ProjectService,
 
     protected userService: UserService,
-    private router: Router,
+    protected router: Router,
     private toastService: ToastService,
   ) {
     this.form = this.fb.group({
       projectName: ['', [Validators.required, Validators.minLength(3)]],
-      projectConcept: [''/*, [Validators.pattern(/^[a-zA-Z0-9]+$/)]*/],
+      projectConcept: ['', /*[Validators.pattern(/^[a-zA-Z0-9,. \t\n;()-_+=*^%$#@!&|\\/]*$/)]*/],
       projectMaterial: [''],
       projectWidth: [''],
       projectHeight: [''],
@@ -67,6 +69,11 @@ export class NewProjectComponent implements OnDestroy {
     return this.form.get('projectDepth') as FormControl;
   }
 
+  ngOnInit(): void {
+    this.formSubmitted = false;
+    this.filesEmpty = false;
+  }
+
   onSelect(event: any) {
     console.log(event);
     this.files.push(...event.addedFiles);
@@ -80,8 +87,13 @@ export class NewProjectComponent implements OnDestroy {
   }
 
   async onSubmit() {
-    if (!this.form.valid) {
-      alert("Form not valid");
+    this.formSubmitted = true;
+
+    if (this.files.length === 0) {
+      this.filesEmpty = true;
+    }
+
+    if (!this.form.valid || this.files.length === 0) {
       return;
     }
 
@@ -95,6 +107,7 @@ export class NewProjectComponent implements OnDestroy {
     };
 
     try {
+
 
       const createResponse = await firstValueFrom(this.projectService.CreateProject(project));
 
@@ -125,7 +138,7 @@ export class NewProjectComponent implements OnDestroy {
       });
 
       await Promise.all(uploadPromises);
-      
+
     } catch (error) {
       console.error(error);
     }
@@ -133,6 +146,8 @@ export class NewProjectComponent implements OnDestroy {
     for (const subscription of this.uploadSubscriptions) {
       subscription.unsubscribe();
     }
+
+    this.router.navigate(['/user', this.userService.CurrentUser.Username]);
 
   }
 

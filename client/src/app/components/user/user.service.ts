@@ -52,6 +52,11 @@ export class UserService {
     this.CurrentUser = await lastValueFrom(getUserResponse$);
   }
 
+  async GetCurrentUserById(id: string) {
+    const getUserResponse$ = this.http.get(this.UserUrl + 'id/' + id);
+    this.CurrentUser = await lastValueFrom(getUserResponse$);
+  }
+
   async GetLoggedInUser() {
     const username = localStorage.getItem("username");
 
@@ -96,8 +101,8 @@ export class UserService {
     return this.isLoggedIn.asObservable();
   }
 
-  async GetIsLoggedIn() {
-    return await lastValueFrom(this.isLoggedIn);
+  GetIsLoggedIn() {
+    return localStorage.getItem("token") != null;
   }
 
   EditUser(user: any) {

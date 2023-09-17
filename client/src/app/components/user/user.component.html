@@ -3,15 +3,15 @@
     <div class="profile-container">
 
         <div class="d-inline-block profile-image-container">
-            <button class="delete-button btn btn-sm btn-secondary shadow" *ngIf="this.userService.getIsEditing()"
-                (click)="ClearProfilePicture()">X</button>
+            <button class="delete-button btn btn-sm btn-outline-danger shadow" *ngIf="this.userService.getIsEditing()"
+                (click)="ClearProfilePicture()"><fa-icon [icon]="xIcon"></fa-icon></button>
 
             <img class="profile-picture shadow" ngxGravatar [size]="256"
                 [email]="this.userService.CurrentUser?.Email ?? ''" [fallback]="'mp'"
                 [src]="this.profilePicture" />
 
             <button class="change-button btn btn-sm btn-secondary shadow" *ngIf="this.userService.getIsEditing()"
-                (click)="openFilePicker()">Change</button>
+                (click)="openFilePicker()"><fa-icon [icon]="changeIcon"></fa-icon> Change</button>
             <input type="file" hidden #fileInput (change)="onFileSelected($event)">
         </div>
 
@@ -26,7 +26,7 @@
                 <pre class="bio">{{ this.userService.CurrentUser?.Bio ?? "" }}</pre>
                 <button class="btn btn-secondary w-100 shadow"
                     *ngIf="this.userService.CurrentUser.Username === (this.userService.LoggedInUser?.Username ?? '')"
-                    (click)="Edit()">Edit profile</button>
+                    (click)="Edit()"><fa-icon [icon]="editIcon"></fa-icon> Edit profile</button>
 
             </div>
 
@@ -51,8 +51,8 @@
                         </div>
                     </div>
 
-                    <button class="btn btn-sm btn-danger my-1 me-1 shadow" type="button" (click)="CancelEditing()">Cancel</button>
-                    <button class="btn btn-sm btn-primary my-1 shadow" type="submit">Save</button>
+                    <button class="btn btn-sm btn-outline-danger my-1 me-1 shadow" type="button" (click)="CancelEditing()"><fa-icon [icon]="cancelIcon"></fa-icon> Cancel</button>
+                    <button class="btn btn-sm btn-outline-primary my-1 shadow" type="submit"><fa-icon [icon]="saveIcon"></fa-icon> Save</button>
 
                 </form>
             </div>
@@ -95,7 +95,7 @@
                 <div *ngIf="this.userService.GetIsLoggedInObservable() | async">
                     <button
                         *ngIf="this.userService.CurrentUser.Username === (this.userService.LoggedInUser?.Username ?? '')"
-                        routerLink="/project/new" id="createProjectButton" class="btn btn-primary my-2 shadow">New</button>
+                        routerLink="/project/new" id="createProjectButton" class="btn btn-primary my-2 shadow"><fa-icon [icon]="newIcon"></fa-icon> New</button>
                     <!--<div *ifRoles="['Artist']">
                 <button routerLink="/project/new" id="createProjectButton" class="btn btn-primary my-2">New</button>
             </div>-->

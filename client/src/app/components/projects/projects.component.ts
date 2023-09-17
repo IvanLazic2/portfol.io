@@ -7,7 +7,7 @@ import { Lightbox } from "ng-gallery/lightbox";
 import { NgxMasonryOptions } from 'ngx-masonry';
 import { UploadService } from 'src/app/services/upload/upload.service';
 import { UserService } from 'src/app/components/user/user.service';
-import { faArrowUp, faEdit, faHeart, faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faArrowUp, faEdit, faHeart, faPen, faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
@@ -17,7 +17,7 @@ import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
 })
 export class ProjectsComponent implements OnInit {
   upIcon: any = faArrowUp;
-  editIcon: any = faPencil;
+  editIcon: any = faPen;
   deleteIcon: any = faTrash;
   solidHeartIcon: any = faHeart;
   regularHeartIcon: any = faHeartRegular;
@@ -35,6 +35,8 @@ export class ProjectsComponent implements OnInit {
   ProjectLikes: { [key: string]: number } = {};
   ProjectIsLiked: { [key: string]: boolean } = {};
 
+  restArray: any[] = [];
+
   constructor(
     public gallery: Gallery,
     public lightbox: Lightbox,
@@ -48,10 +50,7 @@ export class ProjectsComponent implements OnInit {
     this.gallery.config.loadingStrategy = 'lazy';
     await this.getProjects();
     //this.galleriesInit();
-    for (const project of this.projectService.CurrentProjects) {
-      this.ProjectLikes[project.Id] = await lastValueFrom<number>(this.projectService.GetProjectLikeCount(project.Id));
-      this.ProjectIsLiked[project.Id] = await lastValueFrom<boolean>(this.projectService.GetProjectIsLiked(project.Id));
-    }
+    
   }
 
   private async getProjects() {
@@ -63,15 +62,30 @@ export class ProjectsComponent implements OnInit {
     //this.Projects = await lastValueFrom(this.projectService.GetProjects(this.userService.CurrentUser.Username));
 
     await this.projectService.GetProjects(this.userService.CurrentUser.Username);
+
+    for (const project of this.projectService.CurrentProjects) {
+      this.ProjectLikes[project.Id] = project.Likes;
+      if (this.userService.GetIsLoggedIn()) {
+        this.ProjectIsLiked[project.Id] = await lastValueFrom<boolean>(this.projectService.GetProjectIsLiked(project.Id));
+      }
+    }
   }
 
   getUploadIds(project: any) {
+    let result = [];
+
     if (!project.HighlightedUploadId) {
-      return project.UploadIds.slice(1, 5);
+      result = project.UploadIds.slice(1, 5);
     }
     else {
-      return project.UploadIds.filter((val : any) => { return val !== project.HighlightedUploadId }).slice(0, 5);
+      result = project.UploadIds.filter((val : any) => { return val !== project.HighlightedUploadId }).slice(0, 5);
     }
+
+    const restCount = 5 - result.length;
+
+    this.restArray = Array.from({  length: restCount }, (_, i) => i);
+
+    return result;
   }
 
   /*galleriesInit() {
@@ -125,6 +139,9 @@ export class ProjectsComponent implements OnInit {
 
   protected async LikeProject(id: string) {
     const result = await lastValueFrom(this.projectService.LikeProject(id));
+
+    console.log(result)
+
     this.ProjectLikes[id] += 1;
     this.ProjectIsLiked[id] = true;
   }

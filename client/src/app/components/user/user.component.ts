@@ -6,6 +6,7 @@ import { lastValueFrom } from 'rxjs';
 import { IntersectionObserverService } from 'src/app/services/IntersectionObserver/intersection-observer-service.service';
 import { UserService } from 'src/app/components/user/user.service';
 import { Location } from '@angular/common';
+import { faCancel, faEdit, faPencil, faPlus, faSave, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-user',
@@ -14,6 +15,13 @@ import { Location } from '@angular/common';
   providers: [IntersectionObserverService]
 })
 export class UserComponent implements OnInit {
+  editIcon: any = faPencil;
+  changeIcon: any = faEdit;
+  saveIcon: any = faSave;
+  cancelIcon: any = faCancel;
+  xIcon: any = faXmark;
+  newIcon: any = faPlus;
+
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   //selectedImage: string | undefined;
   selectedProfilePictureFile: File | undefined;
@@ -75,7 +83,9 @@ export class UserComponent implements OnInit {
   protected CancelEditing() {
     //this.selectedImage = undefined;
     this.selectedProfilePictureFile = undefined;
+    this.profilePicture = this.userService.GetCurrentUserProfilePictureUrl();
     this.userService.setIsEditing(false);
+
 
     this.shouldDeleteProfilePicture = false;
   }

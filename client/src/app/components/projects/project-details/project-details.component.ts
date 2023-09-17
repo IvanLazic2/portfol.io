@@ -10,6 +10,8 @@ import { ProjectPOST } from 'src/app/types';
 import { GalleryItem, ImageItem, Gallery, ImageSize, ThumbnailsPosition, GalleryRef } from 'ng-gallery';
 import { Lightbox } from "ng-gallery/lightbox";
 import { NgxMasonryOptions } from 'ngx-masonry';
+import { faArrowsToEye, faCancel, faDownload, faPencil, faSave, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { UserService } from '../../user/user.service';
 
 
 @Component({
@@ -18,7 +20,15 @@ import { NgxMasonryOptions } from 'ngx-masonry';
   styleUrls: ['./project-details.component.scss']
 })
 export class ProjectDetailsComponent implements OnInit, OnDestroy {
+  editIcon: any = faPencil;
+  deleteIcon: any = faTrash;
+  cancelIcon: any = faCancel;
+  saveIcon: any = faSave;
+  highlightIcon: any = faArrowsToEye;
+  downloadIcon: any = faDownload;
+
   form: FormGroup;
+  formSubmitted: boolean = false;
   ProjectId: string;
   Project$: Observable<any>;
   Project: any;
@@ -47,8 +57,9 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     protected projectService: ProjectService,
     private route: ActivatedRoute,
     protected uploadService: UploadService,
-    private router: Router,
+    protected router: Router,
     private elementRef: ElementRef,
+    protected userService: UserService,
   ) {
     this.form = this.fb.group({
       projectName: ['', [Validators.required, Validators.minLength(3)]],
@@ -72,8 +83,6 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     await this.getProject();
 
     this.galleryInit();
-
-
 
     this.setForm();
   }
@@ -149,6 +158,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   private async getProject() {
     this.Project$ = this.projectService.GetProject(this.ProjectId);
     this.Project = await lastValueFrom(this.Project$);
+    
+    this.userService.GetCurrentUserById(this.Project.UserId);
   }
 
   private async getThumbnails() {
@@ -156,6 +167,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   }
 
   private async setForm() {
+    this.formSubmitted = false;
     this.projectName.setValue(this.Project.Name);
     this.projectConcept.setValue(this.Project.Concept);
   }
@@ -170,6 +182,12 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   }
 
   protected async onSubmit() {
+    this.formSubmitted = true;
+
+    if (!this.form.valid) {
+      return;
+    }
+
     const projectName = this.form.value.projectName;
     const projectConcept = this.form.value.projectConcept;
 
@@ -255,4 +273,5 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.galleryRef.destroy();
   }
+
 }

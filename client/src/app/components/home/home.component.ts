@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { faArrowUp, faUpLong } from '@fortawesome/free-solid-svg-icons';
 import { Observable, lastValueFrom } from 'rxjs';
-import { HomeService } from 'src/app/services/home/home.service';
+import { HomeService } from 'src/app/components/home/home.service';
 import { ProjectService } from 'src/app/components/projects/project.service';
 import { UploadService } from 'src/app/services/upload/upload.service';
+import { UserService } from '../user/user.service';
 
 @Component({
   selector: 'app-home',
@@ -28,26 +29,26 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private homeService: HomeService,
-    private projectService: ProjectService,
+    protected homeService: HomeService,
+    protected projectService: ProjectService,
     protected uploadService: UploadService,
+    private userService: UserService,
 
   ) { }
 
   async ngOnInit() {
     await this.getProjects();
-
-    for (const project of this.Projects) {
-      this.ProjectLikes[project.Id] = await lastValueFrom<number>(this.projectService.GetProjectLikeCount(project.Id));
-      this.ProjectIsLiked[project.Id] = await lastValueFrom<boolean>(this.projectService.GetProjectIsLiked(project.Id));
-    }
   }
 
   private async getProjects() {
-    this.Projects$ = this.homeService.GetProjects();
-    this.Projects = await lastValueFrom(this.Projects$);
+    await this.homeService.GetProjects();
 
-    console.log(this.Projects);
+    for (const project of this.homeService.CurrentProjects) {
+      this.ProjectLikes[project.Id] = project.Likes;
+      if (this.userService.GetIsLoggedIn()) {
+        this.ProjectIsLiked[project.Id] = await lastValueFrom<boolean>(this.projectService.GetProjectIsLiked(project.Id));
+      }
+    }
   }
 
   protected DetailsProject(id: string) {

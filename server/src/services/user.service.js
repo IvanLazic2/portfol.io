@@ -71,3 +71,14 @@ export async function removeProfilePicture(id) {
 
     return result;
 }
+
+export async function setSelfLoveAcheavement(id) {
+    const result = await db
+        .collection('users')
+        .updateOne(
+            { _id: ObjectId(id) },
+            { $set: { SelfLoveAcheavement: true }}
+        );
+
+    return result;
+} 

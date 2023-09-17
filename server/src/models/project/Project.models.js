@@ -15,11 +15,14 @@ export class ProjectPOST {
     Validate() {
         if (!this.Name)
             return "Name is required.";
+
+        if (this.Name.length < 3)
+            return "Name must be at letast 3 characters long.";
     }
 }
 
 export class ProjectGET {
-    constructor(id, name, concept, material, width, height, depth, dateCreated, userId, highlightedUploadId) {
+    constructor(id, name, concept, material, width, height, depth, dateCreated, userId, highlightedUploadId, likes) {
         this.Id = id;
         this.Name = name;
         this.Concept = concept;
@@ -30,10 +33,11 @@ export class ProjectGET {
         this.DateCreated = dateCreated;
         this.UserId = userId;
         this.HighlightedUploadId = highlightedUploadId;
+        this.Likes = likes;
     }
 
     static InstanceFromObject(obj) {
-        return new ProjectGET(obj._id, obj.Name, obj.Concept, obj.Material, obj.Width, obj.Height, obj.Depth, obj.DateCreated, obj.UserId, obj.HighlightedUploadId);
+        return new ProjectGET(obj._id, obj.Name, obj.Concept, obj.Material, obj.Width, obj.Height, obj.Depth, obj.DateCreated, obj.UserId, obj.HighlightedUploadId, obj.Likes);
     }
 
     static InstanceFromObjectArray(objArr) {

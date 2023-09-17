@@ -15,11 +15,22 @@ export async function get(req, res) {
     }
 }
 
+export async function getById(req, res) {
+    try {
+
+        const getUserResult = await UserService.getById(req.params.id);
+        const user = UserGET.InstanceFromObject(getUserResult);
+
+        return res.status(200).json(user);
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 export async function update(req, res) {
     try {
         const getUserResult = await UserService.getById(req.userId);
-
-        console.log(getUserResult.Username, req.body.EditedUserUsername);
 
         if (getUserResult.Username !== req.body.EditedUserUsername) {
             return res.status(400).json({ messageType: MessageType.Warning, message: "User edit not allowed." });

@@ -17,10 +17,13 @@
                     <button ngbDropdownItem
                         (click)="SortDropdownLabel = 'Name'; this.sortProperty = 'Name'; this.sortOrder = 'asc';"
                         id="sort-NameAtoZ" class="dropdown-item">Name</button>
+                    <button ngbDropdownItem
+                        (click)="SortDropdownLabel = 'Likes'; this.sortProperty = 'Likes'; this.sortOrder = 'desc';"
+                        id="sort-NameAtoZ" class="dropdown-item">Likes</button>
                 </div>
             </div>
 
-            <div [ngClass]="{'asc-active': sortOrder === 'asc'}"
+            <div [ngClass]="{'desc-active': sortOrder === 'desc'}"
                 class="btn btn-outline-secondary btn-sm sort-order-toggle-button" (click)="toggleSortOrder()">
                 <fa-icon class="sort-icon" [icon]="upIcon"></fa-icon>
             </div>
@@ -54,6 +57,9 @@
                 <div class="image-container small-iamge" *ngFor="let uploadId of getUploadIds(project)">
                     <img [src]="this.uploadService.ThumbnailUrl + uploadId">
                 </div>
+                <div class="image-placeholder" *ngFor="let index of restArray">
+
+                </div>
             </a>
 
             <!--<img [src]="this.uploadService.ThumbnailUrl + project.UploadIds[0]">-->
@@ -61,9 +67,12 @@
             <!--<div class="project-info-container" [ngClass]="i % 2 == 0 ? 'project-info-container-ltr' : 'project-info-container-rtl'">-->
             <div class="project-info-container project-info-container-ltr">
                 <div class="d-flex justify-content-between">
-                    <a style="cursor: pointer;" (click)="DetailsProject(project.Id)"><h1 id="name"> {{ project.Name }} </h1></a>
+                    <a style="cursor: pointer;" (click)="DetailsProject(project.Id)">
+                        <h1 id="name"> {{ project.Name }} </h1>
+                    </a>
 
-                    <div *ngIf="this.userService.CurrentUser.Username === (this.userService.LoggedInUser?.Username ?? '');">
+                    <div
+                        *ngIf="this.userService.CurrentUser.Username === (this.userService.LoggedInUser?.Username ?? '');">
                         <!--<button (click)="DetailsProject(project.Id)">Details</button>-->
                         <fa-icon class="edit-icon" (click)="EditProject(project.Id)" [icon]="editIcon"></fa-icon>
                         <fa-icon class="delete-icon" (click)="DeleteProject(project.Id)" [icon]="deleteIcon"></fa-icon>
@@ -78,15 +87,17 @@
 
             </div>
 
-            
+
 
         </div>
 
         <div class="project-footer">
             <div class="like-container">
 
-                <fa-icon (click)="onClickLike(project.Id)" class="like-icon like-icon-active" *ngIf="this.ProjectIsLiked[project.Id]" [icon]="solidHeartIcon"></fa-icon>
-                <fa-icon (click)="onClickLike(project.Id)" class="like-icon" *ngIf="!this.ProjectIsLiked[project.Id]" [icon]="regularHeartIcon"></fa-icon>
+                <fa-icon (click)="onClickLike(project.Id)" class="like-icon like-icon-active"
+                    *ngIf="this.ProjectIsLiked[project.Id]" [icon]="solidHeartIcon"></fa-icon>
+                <fa-icon (click)="onClickLike(project.Id)" class="like-icon" *ngIf="!this.ProjectIsLiked[project.Id]"
+                    [icon]="regularHeartIcon"></fa-icon>
 
                 <!--<button [ngClass]="this.ProjectIsLiked[project.Id] ? 'heart-solid' : 'heart-line'"
                     (click)="onClickLike(project.Id)">{{ this.ProjectIsLiked[project.Id] ? 'Unlike' : 'Like' }}</button>-->
