@@ -1,6 +1,7 @@
 import mongodb, { GridFSBucket, ObjectId } from "mongodb";
 
-const url = "mongodb://127.0.0.1:27017";
+//const url = "mongodb://127.0.0.1:27017";
+const url = "mongodb+srv://ivanlazic:efZWcnn1Ei4cMBJO@cluster0.kyxulvk.mongodb.net/?retryWrites=true&w=majority"
 const client = new mongodb.MongoClient(url);
 const dbName = "portfolio";
 
