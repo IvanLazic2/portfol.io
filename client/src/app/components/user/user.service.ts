@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, filter, map, Observable, tap, last, endWith, lastValueFrom, firstValueFrom } from 'rxjs';
 
-import { AuthType, ToastType, User } from "../../types";
+import { AuthType, ToastType } from "../../types";
 import { Router } from '@angular/router';
 import { ToastService } from '../../services/toast/toast.service';
 import { AuthService } from '../../services/auth/auth.service';
@@ -43,9 +43,6 @@ export class UserService {
       this.isEditing = value;
     }
   }
-
-
-
 
   async GetCurrentUser(username: string) {
     const getUserResponse$ = this.http.get(this.UserUrl + username);

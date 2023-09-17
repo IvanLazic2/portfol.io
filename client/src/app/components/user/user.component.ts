@@ -24,7 +24,6 @@ export class UserComponent implements OnInit {
   newIcon: any = faPlus;
 
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
-  //selectedImage: string | undefined;
   selectedProfilePictureFile: File | undefined;
   shouldDeleteProfilePicture: boolean;
   profilePicture: string;
@@ -43,13 +42,6 @@ export class UserComponent implements OnInit {
       fullName: ['', [Validators.required, Validators.minLength(3)]],
       bio: ['', [Validators.pattern(/^[a-zA-Z0-9]+$/)]]
     });
-
-    /*activatedRoute.params.subscribe(async val => {
-      console.log("init")
-
-      this.userService.setIsEditing(false);
-      await this.getUser();
-    });*/
   }
 
   get fullName() {
@@ -81,7 +73,6 @@ export class UserComponent implements OnInit {
   }
 
   protected CancelEditing() {
-    //this.selectedImage = undefined;
     this.selectedProfilePictureFile = undefined;
     this.profilePicture = this.userService.GetCurrentUserProfilePictureUrl();
     this.userService.setIsEditing(false);
@@ -92,7 +83,6 @@ export class UserComponent implements OnInit {
 
   protected async ClearProfilePicture() {
     this.userService.ClearProfilePicture();
-    //this.selectedImage = undefined;
     this.selectedProfilePictureFile = undefined;
     this.fileInput.nativeElement.value = '';
 
@@ -127,12 +117,6 @@ export class UserComponent implements OnInit {
     }
 
 
-
-
-
-
-
-    //this.selectedImage = undefined;
     this.selectedProfilePictureFile = undefined;
     await this.userService.GetCurrentUser(this.userService.LoggedInUser.Username);
     await this.userService.GetLoggedInUser();

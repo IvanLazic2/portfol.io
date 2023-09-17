@@ -17,23 +17,6 @@ export class AnimationService {
       this.currentAnimation = this.lastAnimation;
 
     this.lastAnimation = this.currentAnimation;
-    //console.log(this.currentAnimation);
     return this.currentAnimation;
-
-
-    /*
-    localStorage.setItem("currentAnimation", this.contexts.getContext("primary")?.route?.snapshot?.data?.["animation"]);
-
-    if (!localStorage.getItem("lastAnimation"))
-      localStorage.setItem("lastAnimation", "navbarAnimation");
-
-    if (!localStorage.getItem("currentAnimation"))
-      localStorage.setItem("currentAnimation", localStorage.getItem("lastAnimation")!);
-
-    localStorage.setItem("lastAnimation", localStorage.getItem("currentAnimation")!);
-
-    console.log(localStorage.getItem("currentAnimation"));
-    return localStorage.getItem("currentAnimation");
-    */
   }
 }

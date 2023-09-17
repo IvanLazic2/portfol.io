@@ -11,8 +11,7 @@ const routes: Route[] =
   [
     { 
       path: '', 
-      component: HomeComponent, 
-      data: { animation: "navbarAnimation" },
+      component: HomeComponent,
     },
     { 
       path: 'user/:username', 
@@ -20,27 +19,22 @@ const routes: Route[] =
       resolve: {
         user: UserResolver,
       },
-      data: { animation: "sidebarAnimation" },
     },
     { 
       path: 'register', 
       component: AuthformComponent, 
-      data: { animation: "navbarAnimation" } 
     },
     {
       path: 'login', 
-      component: AuthformComponent, 
-      data: { animation: "navbarAnimation" } 
+      component: AuthformComponent,
     },
     {
       path: 'project',
       loadChildren: () => import('./components/projects/projects.module').then(m => m.ProjectsModule),
-      data: { animation: "sidebarAnimation" }
     },
     {
       path: 'account',
       component: AccountComponent,
-      data: { animation: "sidebarAnimation" }
     }
   ]
 

@@ -23,10 +23,6 @@ export class ProjectsComponent implements OnInit {
   solidHeartIcon: any = faHeart;
   regularHeartIcon: any = faHeartRegular;
 
-  //@Input() Username: string;
-
-  //Projects: any[];
-
   searchValue: string = '';
   sortProperty: string = 'DateCreated';
   sortOrder: boolean | 'asc' | 'desc' = 'desc';
@@ -51,18 +47,10 @@ export class ProjectsComponent implements OnInit {
   async ngOnInit() {
     this.gallery.config.loadingStrategy = 'lazy';
     await this.getProjects();
-    //this.galleriesInit();
     
   }
 
   private async getProjects() {
-    /*if (this.Username && this.Username.length > 0) {
-      this.Projects$ = this.projectService.GetProjects(this.Username);
-      this.Projects = await lastValueFrom(this.Projects$);
-    }*/
-
-    //this.Projects = await lastValueFrom(this.projectService.GetProjects(this.userService.CurrentUser.Username));
-
     await this.projectService.GetProjects(this.userService.CurrentUser.Username);
 
     for (const project of this.projectService.CurrentProjects) {
@@ -89,28 +77,6 @@ export class ProjectsComponent implements OnInit {
 
     return result;
   }
-
-  /*galleriesInit() {
-    for (const project of this.Projects) {
-      const gallery = this.gallery.ref('gallery_' + project.Id);
-
-      this.addImages(project, gallery);
-    }
-
-    this.lightbox.setConfig({
-      panelClass: undefined,
-    });
-  }
-
-  private addImages(project: any, gallery: GalleryRef) {
-    const galleryItems = project.UploadIds.map((uploadId: any) => {
-      const item = new ImageItem({ src: this.uploadService.UploadUrl + uploadId, thumb: this.uploadService.ThumbnailUrl + uploadId })
-      //const item = new ImageItem({ src: '/api/upload/' + thumbnail.UploadId, thumb: '/api/thumbnail/' + thumbnail.UploadId })
-      return item;
-    });
-
-    gallery.load(galleryItems);
-  }*/
 
   protected DetailsProject(id: string) {
     this.projectService.setIsEditing(false);

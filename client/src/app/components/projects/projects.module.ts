@@ -41,18 +41,14 @@ import { GravatarModule } from 'ngx-gravatar';
     ReactiveFormsModule,
     RouterModule,
     NgxDropzoneModule,
-
     GalleryModule,
     LightboxModule,
-
     ImageViewerModule,
     NgxMasonryModule,
     CommonDirectivesModule,
-    
     CommonPipesModule,
     BarRatingModule,
     FontAwesomeModule,
-
     GravatarModule
     
   ],

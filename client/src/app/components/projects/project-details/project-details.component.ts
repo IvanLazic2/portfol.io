@@ -173,9 +173,9 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  private async getThumbnails() {
+  /*private async getThumbnails() {
     //this.Thumbnails = await lastValueFrom(this.filesService.GetThumbnails(this.ProjectId));
-  }
+  }*/
 
   private async setForm() {
     this.formSubmitted = false;
@@ -222,11 +222,11 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
               } else if (event.type === HttpEventType.Response) {
                 delete this.uploadProgresses[fileName];
                 console.log(fileName, event.body);
-                resolve(); // Resolve the promise on successful upload
+                resolve();
               }
             },
             error: (error: any) => {
-              reject(error); // Reject the promise on upload error
+              reject(error);
             }
           });
 
@@ -234,14 +234,12 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
         });
       });
 
-      await Promise.all(uploadPromises); // Wait for all uploads to complete
+      await Promise.all(uploadPromises); 
 
     } catch (error) {
       console.error(error);
-      // Handle error, provide feedback to the user, etc.
     }
 
-    // Cleanup upload subscriptions
     for (const subscription of this.uploadSubscriptions) {
       subscription.unsubscribe();
     }
@@ -249,12 +247,10 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     try {
 
       await this.getProject();
-      await this.getThumbnails();
       this.addImages();
 
     } catch (error) {
       console.error(error);
-      // Handle error while getting project or thumbnails
     }
 
     this.filesToAdd = [];

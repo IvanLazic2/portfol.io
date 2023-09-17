@@ -2,7 +2,7 @@ import { HttpClient, HttpEvent, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from '../../services/auth/auth.service';
 import { Observable, lastValueFrom } from 'rxjs';
-import { ProjectPOST, RatingDELETE, RatingPOST, ToastType } from 'src/app/types';
+import { ProjectPOST, ToastType } from 'src/app/types';
 import { UserService } from '../user/user.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 
@@ -49,10 +49,6 @@ export class ProjectService {
   }
 
   public async GetProjects(username: string) {
-    /*return this.http.get<any[]>(this.getAllUserProjectsUrl + username, {
-      "headers": this.authService.GetAuthHeaders(),
-    });*/
-
     const getProjectResult$ = this.http.get<any[]>(this.getAllUserProjectsUrl + username, {
       "headers": AuthService.GetAuthHeaders(),
     });

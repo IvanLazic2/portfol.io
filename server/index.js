@@ -29,6 +29,8 @@ const port = 3000;
         app.use('/api/home', homeRouter);
         app.use('/api/auth', authRouter);
 
+        app.use(express.static('../client/dist/client'));
+
         app.listen(port, () => {
             console.log(`Server is listening at ${port}`);
         });

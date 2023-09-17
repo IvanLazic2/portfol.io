@@ -34,19 +34,12 @@
 
 </div>
 
-
-
-
-
 <div class="p-1">
     <div class="outer-project-container shadow-sm"
         *ngFor="let project of this.projectService.CurrentProjects | filter:['Name']:this.searchValue | sortBy:this.sortOrder:this.sortProperty; index as i">
 
-        <!--<div class="inner-project-container" [ngClass]="i % 2 == 0 ? 'inner-project-container-ltr' : 'inner-project-container-rtl'">-->
         <div class="inner-project-container inner-project-container-ltr">
 
-            <!--<gallery [ngClass]="i % 2 == 0 ? 'gallery-ltr' : 'gallery-rtl'" imageSize="cover" loadingStrategy="lazy" [counter]="false" [id]="'gallery_' + project.Id" fluid
-            thumbPosition="bottom" [thumbHeight]="50" [thumbWidth]="60" [gallerize]="'gallery_' + project.Id"></gallery>-->
             <a style="cursor: pointer;" (click)="DetailsProject(project.Id)" class="images-container">
                 <div *ngIf="project.HighlightedUploadId" class="image-container big-image">
                     <img [src]="this.uploadService.ThumbnailUrl + project.HighlightedUploadId">
@@ -62,9 +55,6 @@
                 </div>
             </a>
 
-            <!--<img [src]="this.uploadService.ThumbnailUrl + project.UploadIds[0]">-->
-
-            <!--<div class="project-info-container" [ngClass]="i % 2 == 0 ? 'project-info-container-ltr' : 'project-info-container-rtl'">-->
             <div class="project-info-container project-info-container-ltr">
                 <div class="d-flex justify-content-between">
                     <a style="cursor: pointer;" (click)="DetailsProject(project.Id)">
@@ -73,14 +63,11 @@
 
                     <div
                         *ngIf="this.userService.CurrentUser.Username === (this.userService.LoggedInUser?.Username ?? '');">
-                        <!--<button (click)="DetailsProject(project.Id)">Details</button>-->
                         <fa-icon class="edit-icon" (click)="EditProject(project.Id)" [icon]="editIcon"></fa-icon>
                         <fa-icon class="delete-icon" (click)="DeleteProject(project.Id)" [icon]="deleteIcon"></fa-icon>
                     </div>
                 </div>
 
-
-                <!--<div [ngClass]="i % 2 == 0 ? 'project-concept-container-ltr' : 'project-concept-container-rtl'">-->
                 <div class="project-concept-container project-concept-container-ltr">
                     <pre id="concept">{{ project.Concept }}</pre>
                 </div>
@@ -99,9 +86,6 @@
                 <fa-icon (click)="onClickLike(project.Id)" class="like-icon" *ngIf="!this.ProjectIsLiked[project.Id]"
                     [icon]="regularHeartIcon"></fa-icon>
 
-                <!--<button [ngClass]="this.ProjectIsLiked[project.Id] ? 'heart-solid' : 'heart-line'"
-                    (click)="onClickLike(project.Id)">{{ this.ProjectIsLiked[project.Id] ? 'Unlike' : 'Like' }}</button>-->
-
                 <span>{{ this.ProjectDictionary[project.Id]?.Likes ?? '' }}</span>
             </div>
 
@@ -109,8 +93,6 @@
                 {{ project.DateCreated | date: 'dd.MM.yyyy.' }}
             </div>
         </div>
-
-        <!--<div [ngClass]="i % 2 == 0 ? 'buttons-ltr' : 'buttons-rtl'">-->
 
     </div>
 </div>

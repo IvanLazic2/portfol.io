@@ -16,13 +16,12 @@
 </head>
 
 <body>
-    
+
     <div class="toast-container">
         <app-toasts aria-live="polite" aria-atomic="true"></app-toasts>
     </div>
 
     <div class="layout-container">
-        
 
         <header>
             <app-navbar></app-navbar>
@@ -32,53 +31,11 @@
             <router-outlet></router-outlet>
         </main>
 
-
-
         <footer class="container-fluid text-center">
-            <p>Footer Text</p>
+            <p style="color: rgb(105, 105, 105);" class="m-3" id="footer-copy">&copy; 2023. portforl.io</p>
         </footer>
 
-
-
-        <!--<app-sidebar [@navbarAnimationTrigger]="getRouteAnimation()" class="navbar">
-            
-            <div *ngIf="canShowNewArt()">
-                <app-new-project animateAfterAppear="fadeIn" *ifRoles="['Artist']" ></app-new-project>
-            </div>
-            
-        </app-sidebar>-->
-
-        <!--<app-sidebar [@navbarAnimationTrigger]="getRouteAnimation()"></app-sidebar>-->
-
-
-        <!--<div [@contentAnimationTrigger]="getRouteAnimation()" class="content">
-            <router-outlet></router-outlet>
-        </div>-->
-
-        <!--<div [@footerTrigger]="navShape" class="footer">
-            <app-footer></app-footer>
-        </div>-->
-
-
     </div>
-
-
-
-
-
-
-
-    
-
-    <!--<app-files [Files]="this.Files$" [CurrentPage]="this.CurrentPage" [Action]="'page_' + this.CurrentPage">
-        <h2 class="d-inline m-1" id="page-title" [innerHTML]="PageTitles[CurrentPage]"></h2>
-    </app-files>-->
-
-    <!--<select [(ngModel)]="navShape">
-        <option value="navbar">Navbar</option>
-        <option value="sidebar">Sidebar</option>
-    </select>-->
-
 
 
 </body>

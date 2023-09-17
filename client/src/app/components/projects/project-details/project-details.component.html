@@ -20,9 +20,6 @@
                             <fa-icon (click)="onClickLike()" class="like-icon" *ngIf="!this.ProjectIsLiked"
                                 [icon]="regularHeartIcon"></fa-icon>
 
-                            <!--<button [ngClass]="this.ProjectIsLiked[project.Id] ? 'heart-solid' : 'heart-line'"
-                                (click)="onClickLike(project.Id)">{{ this.ProjectIsLiked[project.Id] ? 'Unlike' : 'Like' }}</button>-->
-
                             <span>{{ this.ProjectLikes }}</span>
                         </div>
                     </div>
@@ -67,10 +64,6 @@
                 <textarea class="form-control" type="text" id="projectConcept" formControlName="projectConcept"
                     rows="10"></textarea>
 
-                <!--<div *ngIf="projectConcept.invalid && projectConcept.touched">
-                    <p *ngIf="projectConcept.errors?.['pattern']">Concept must contain only alphanumeric characters and
-                        spaces</p>
-                </div>-->
             </div>
 
 
@@ -115,36 +108,6 @@
         </form>
     </div>
 
-    <!--<div style="margin: 20px;">
-        <div style="display: inline; position: relative; margin: 2px;" *ngFor="let thumbnail of this.Thumbnails">
-            <img [src]="'data:image/jpeg;base64,' + thumbnail.Data">
-            <button style="position: absolute; right: 0;" (click)="DeleteUpload(thumbnail.UploadId)">Del</button>
-        </div>
-    </div> aaaaa-->
-
-    <!--<div>
-        <gallery fluid thumbPosition="bottom" gallerize [items]="images"></gallery>
-    </div>-->
-
-    <!--<div>
-        <lightgallery [settings]="settings">
-                ovo je za full sliku
-                <a className="gallery-item" *ngFor="let thumbnail of this.Thumbnails" [attr.data-src]="'data:image/jpeg;base64,' + thumbnail.Data">
-                    ovo je za thumbnail
-                    <img className="img-responsive" [src]="'data:image/jpeg;base64,' + thumbnail.Data">
-                </a>
-        </lightgallery> 
-    </div>-->
-
-    <!--<div class="gallery m-3">
-        <div class="gallery-img" *ngFor="let uploadId of this.Project.UploadIds; index as i">
-
-            <img [lightbox]="i" [src]="this.uploadService.ThumbnailUrl + uploadId" [gallery]="'lightbox'">
-            <button style="position: absolute; right: 0; top: 0;" (click)="DeleteUpload(uploadId)">Del</button>
-
-        </div>
-    </div>-->
-
     <div>
         <ngx-masonry class="my-3" [ordered]="true" [options]="masonryOptions" [updateLayout]="update">
 
@@ -176,14 +139,6 @@
 
         </ngx-masonry>
     </div>
-
-    <!--<div style="margin: 20px;" gallerize>
-            <img *ngFor="let uploadId of this.Project.UploadIds" [src]="this.uploadService.ThumbnailUrl + uploadId"
-                 [attr.imageSrc]="this.uploadService.UploadUrl + uploadId"
-                 [attr.thumbSrc]="this.uploadService.ThumbnailUrl + uploadId" />
-    </div>-->
-
-    <!--<button style="position: fixed; top: 0; left: 0; z-index: 100000;" (click)="test2()">AAA</button>-->
 
     <ng-template #itemTemplate let-index="index" let-type="type" let-data="data" let-currIndex="currIndex">
         <ng-container *ngIf="type === 'imageViewer' && index === currIndex">
