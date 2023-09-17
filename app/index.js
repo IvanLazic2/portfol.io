@@ -4,6 +4,7 @@ import path from "path";
 import express from "express";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import cors from 'cors';
 
 import { router as projectRouter } from './src/routers/project.router.js';
 import { router as uploadRouter } from './src/routers/upload.router.js';
@@ -22,6 +23,8 @@ const port = process.env.PORT || 3000;
     async () => {
 
         const app = express();
+
+        app.use(cors());
 
         app.use(express.json());
         app.use(express.urlencoded({ extended: true }));
