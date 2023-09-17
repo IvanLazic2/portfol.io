@@ -13,6 +13,8 @@ export async function register(username, email, salt, hash) {
 }
 
 export async function getById(id) {
+    if (!id) return null;
+
     const result = await db
         .collection('users')
         .findOne({ _id: ObjectId(id) });
@@ -21,6 +23,8 @@ export async function getById(id) {
 }
 
 export async function getByUsername(username) {
+    if (!username) return null;
+
     const result = await db
         .collection('users')
         .findOne({ Username: username });
@@ -29,6 +33,8 @@ export async function getByUsername(username) {
 }
 
 export async function getByEmail(email) {
+    if (!email) return null;
+
     const result = await db
         .collection('users')
         .findOne({ Email: email });

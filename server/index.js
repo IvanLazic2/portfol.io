@@ -1,6 +1,9 @@
 // https://github.com/geshan/expressjs-structure/tree/master
 
+import path from "path";
 import express from "express";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 import { router as projectRouter } from './src/routers/project.router.js';
 import { router as uploadRouter } from './src/routers/upload.router.js';
@@ -9,6 +12,9 @@ import { router as userRouter } from './src/routers/user.router.js';
 import { router as profilePictureRouter } from './src/routers/profilePicture.router.js';
 import { router as homeRouter } from './src/routers/home.router.js';
 import { router as authRouter } from './src/routers/auth.router.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const port = 3000;
 
@@ -30,6 +36,10 @@ const port = 3000;
         app.use('/api/auth', authRouter);
 
         app.use(express.static('../client/dist/client'));
+
+        app.get('*', (req, res) => {
+            res.sendFile(path.join(__dirname, '../client/dist/client/index.html'));
+        });
 
         app.listen(port, () => {
             console.log(`Server is listening at ${port}`);

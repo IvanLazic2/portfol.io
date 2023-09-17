@@ -61,10 +61,13 @@
                         <h1 id="name"> {{ project.Name }} </h1>
                     </a>
 
-                    <div
-                        *ngIf="this.userService.CurrentUser.Username === (this.userService.LoggedInUser?.Username ?? '');">
-                        <fa-icon class="edit-icon" (click)="EditProject(project.Id)" [icon]="editIcon"></fa-icon>
-                        <fa-icon class="delete-icon" (click)="DeleteProject(project.Id)" [icon]="deleteIcon"></fa-icon>
+                    <div *ngIf="this.userService.GetIsLoggedInObservable() | async">
+                        <div
+                            *ngIf="this.userService.CurrentUser.Username === (this.userService.LoggedInUser?.Username ?? '');">
+                            <fa-icon class="edit-icon" (click)="EditProject(project.Id)" [icon]="editIcon"></fa-icon>
+                            <fa-icon class="delete-icon" (click)="DeleteProject(project.Id)"
+                                [icon]="deleteIcon"></fa-icon>
+                        </div>
                     </div>
                 </div>
 

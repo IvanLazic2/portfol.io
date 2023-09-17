@@ -7,8 +7,7 @@
                 (click)="ClearProfilePicture()"><fa-icon [icon]="xIcon"></fa-icon></button>
 
             <img class="profile-picture shadow" ngxGravatar [size]="256"
-                [email]="this.userService.CurrentUser?.Email ?? ''" [fallback]="'mp'"
-                [src]="this.profilePicture" />
+                [email]="this.userService.CurrentUser?.Email ?? ''" [fallback]="'mp'" [src]="this.profilePicture" />
 
             <button class="change-button btn btn-sm btn-secondary shadow" *ngIf="this.userService.getIsEditing()"
                 (click)="openFilePicker()"><fa-icon [icon]="changeIcon"></fa-icon> Change</button>
@@ -24,9 +23,11 @@
 
                 <h4 class="full-name">{{ this.userService.CurrentUser?.FullName ?? "" }}</h4>
                 <pre class="bio">{{ this.userService.CurrentUser?.Bio ?? "" }}</pre>
-                <button class="btn btn-secondary w-100 shadow"
-                    *ngIf="this.userService.CurrentUser.Username === (this.userService.LoggedInUser?.Username ?? '')"
-                    (click)="Edit()"><fa-icon [icon]="editIcon"></fa-icon> Edit profile</button>
+                <div *ngIf="this.userService.GetIsLoggedInObservable() | async">
+                    <button class="btn btn-secondary w-100 shadow"
+                        *ngIf="this.userService.CurrentUser.Username === (this.userService.LoggedInUser?.Username ?? '')"
+                        (click)="Edit()"><fa-icon [icon]="editIcon"></fa-icon> Edit profile</button>
+                </div>
 
             </div>
 
@@ -39,7 +40,8 @@
                         <input class="form-control" type="text" id="fullName" formControlName="fullName">
 
                         <div *ngIf="fullName.invalid && fullName.touched">
-                            <p class="text-danger" *ngIf="fullName.errors?.['minlength']">Full Name must be at least 3 characters long</p>
+                            <p class="text-danger" *ngIf="fullName.errors?.['minlength']">Full Name must be at least 3
+                                characters long</p>
                         </div>
                     </div>
 
@@ -51,8 +53,10 @@
                         </div>
                     </div>
 
-                    <button class="btn btn-sm btn-outline-danger my-1 me-1 shadow" type="button" (click)="CancelEditing()"><fa-icon [icon]="cancelIcon"></fa-icon> Cancel</button>
-                    <button class="btn btn-sm btn-outline-primary my-1 shadow" type="submit"><fa-icon [icon]="saveIcon"></fa-icon> Save</button>
+                    <button class="btn btn-sm btn-outline-danger my-1 me-1 shadow" type="button"
+                        (click)="CancelEditing()"><fa-icon [icon]="cancelIcon"></fa-icon> Cancel</button>
+                    <button class="btn btn-sm btn-outline-primary my-1 shadow" type="submit"><fa-icon
+                            [icon]="saveIcon"></fa-icon> Save</button>
 
                 </form>
             </div>
@@ -77,7 +81,8 @@
                 <div *ngIf="this.userService.GetIsLoggedInObservable() | async">
                     <button
                         *ngIf="this.userService.CurrentUser.Username === (this.userService.LoggedInUser?.Username ?? '')"
-                        routerLink="/project/new" id="createProjectButton" class="btn btn-primary my-2 shadow"><fa-icon [icon]="newIcon"></fa-icon> New</button>
+                        routerLink="/project/new" id="createProjectButton" class="btn btn-primary my-2 shadow"><fa-icon
+                            [icon]="newIcon"></fa-icon> New</button>
 
                 </div>
 
