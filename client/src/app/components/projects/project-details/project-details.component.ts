@@ -10,9 +10,9 @@ import { ProjectPOST } from 'src/app/types';
 import { GalleryItem, ImageItem, Gallery, ImageSize, ThumbnailsPosition, GalleryRef } from 'ng-gallery';
 import { Lightbox } from "ng-gallery/lightbox";
 import { NgxMasonryOptions } from 'ngx-masonry';
-import { faArrowsToEye, faCancel, faDownload, faPencil, faSave, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faArrowsToEye, faCancel, faDownload, faHeart, faPencil, faSave, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { UserService } from '../../user/user.service';
-
+import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'app-project-details',
@@ -26,12 +26,16 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   saveIcon: any = faSave;
   highlightIcon: any = faArrowsToEye;
   downloadIcon: any = faDownload;
+  solidHeartIcon: any = faHeart;
+  regularHeartIcon: any = faHeartRegular;
 
   form: FormGroup;
   formSubmitted: boolean = false;
   ProjectId: string;
   Project$: Observable<any>;
   Project: any;
+  ProjectLikes: number;
+  ProjectIsLiked: boolean;
 
   filesToAdd: File[] = [];
   uploadProgresses: { [key: string]: number } = {};
@@ -158,7 +162,12 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   private async getProject() {
     this.Project$ = this.projectService.GetProject(this.ProjectId);
     this.Project = await lastValueFrom(this.Project$);
-    
+
+    this.ProjectLikes = this.Project.Likes;
+    if (this.userService.GetIsLoggedIn()) {
+      this.ProjectIsLiked = await lastValueFrom<boolean>(this.projectService.GetProjectIsLiked(this.Project.Id));
+    }
+
     this.userService.GetCurrentUserById(this.Project.UserId);
   }
 
@@ -272,6 +281,27 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.galleryRef.destroy();
+  }
+
+  protected async LikeProject(id: string) {
+    const result = await lastValueFrom(this.projectService.LikeProject(id));
+    this.ProjectLikes += 1;
+    this.ProjectIsLiked = true;
+  }
+
+  protected async UnlikeProject(id: string) {
+    const result = await lastValueFrom(this.projectService.UnlikeProject(id));
+    this.ProjectLikes -= 1;
+    this.ProjectIsLiked = false;
+  }
+
+  protected async onClickLike() {
+    if (this.ProjectIsLiked) {
+      await this.UnlikeProject(this.Project.Id);
+    }
+    else {
+      await this.LikeProject(this.Project.Id);
+    }
   }
 
 }

@@ -9,7 +9,22 @@
                             [email]="this.userService.CurrentUser?.Email ?? ''" [fallback]="'mp'"
                             [src]="this.userService.GetCurrentUserProfilePictureUrl()" />
                     </a>
-                    <h4 class="m-0">{{ Project.Name }}</h4>
+                    <div class="d-flex align-items-center">
+                        <h4 class="m-0">{{ Project.Name }}</h4>
+
+                        <div class="ms-2 like-container">
+
+                            <fa-icon (click)="onClickLike()" class="like-icon like-icon-active"
+                                *ngIf="this.ProjectIsLiked" [icon]="solidHeartIcon"></fa-icon>
+                            <fa-icon (click)="onClickLike()" class="like-icon"
+                                *ngIf="!this.ProjectIsLiked" [icon]="regularHeartIcon"></fa-icon>
+        
+                            <!--<button [ngClass]="this.ProjectIsLiked[project.Id] ? 'heart-solid' : 'heart-line'"
+                                (click)="onClickLike(project.Id)">{{ this.ProjectIsLiked[project.Id] ? 'Unlike' : 'Like' }}</button>-->
+        
+                            <span>{{ this.ProjectLikes }}</span>
+                        </div>
+                    </div>
                 </div>
                 <div *ngIf="this.userService.GetIsLoggedInObservable() | async">
                     <button class="btn btn-sm btn-outline-secondary" (click)="Edit()"><fa-icon
@@ -18,6 +33,10 @@
                             [icon]="deleteIcon"></fa-icon> Delete</button>
                 </div>
 
+            </div>
+
+            <div class="date-created mt-2">
+                {{ this.Project.DateCreated | date: 'dd.MM.yyyy.' }}
             </div>
 
             <pre class="mt-2">{{ Project.Concept }}</pre>

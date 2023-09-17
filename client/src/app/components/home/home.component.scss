@@ -1,25 +1,127 @@
-// flex container for project cards that are displayed one next to the other and they always fit the screen width
+fa-icon {
+    cursor: pointer;
+    margin: 7px;
+    transition: all 0.2s ease;
+}
+
+a {
+    display: block;
+}
+
+.concept {
+    height: 50px;
+    overflow: hidden;
+    color: rgb(90, 90, 90);
+    font-weight: 300;
+    font-size: 1rem;
+
+    white-space: wrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 8;
+    -webkit-box-orient: vertical;
+
+}
+
 .project-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: begin;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow: auto;
-    background-color: #f5f5f5;
-    gap: 10px;
-    
-    
+    position: relative;
+    /*max-width: 1200px;*/
+    margin: 0 auto;
+    display: grid;
+    gap: 1rem;
+}
+
+@media (min-width: 600px) {
+    .project-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 900px) {
+    .project-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 1200px) {
+    .project-container {
+        grid-template-columns: repeat(4, 1fr);
+    }
 }
 
 .project-card {
-    border: 2px solid red;
+    position: relative;
+    border: 1px solid rgb(229, 229, 229);
 
-    height: 400px;
+    height: 500px;
+    overflow: hidden;
+    border-radius: 10px;
 }
+
+.image-container {
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out;
+    
+}
+
+.image-container img:hover {
+    transform: scale(1.05);
+}
+
+.project-info-container {
+    padding: 1rem;
+    
+}
+
+.like-container {
+    position: absolute;
+    left: 0;
+    margin: 10px;
+}
+
+.like-icon-active {
+    color: red;
+}
+
+.like-icons {
+    color: rgb(90, 90, 90);
+    font-weight: 300;
+    font-size: 1rem;
+}
+
+.like-icon:hover {
+    color: red;
+}
+
+.date-created {
+    position: absolute;
+    right: 0;
+    margin: 10px;
+    color: rgb(90, 90, 90);
+    font-weight: 300;
+    font-size: 1rem;
+}
+
+.project-footer {
+    position: absolute;
+    bottom: 0;
+    height: 45px;
+    width: 100%;
+}
+
+
+
+
+
 
 .sort-order-toggle-button {
     cursor: pointer;
@@ -32,7 +134,7 @@
     width: 15px;
     text-align: center;
     margin: 0 auto;
-    display:inline-block;
+    display: inline-block;
     line-height: 20px;
     vertical-align: bottom;
     transition: transform 0.2s;
@@ -42,7 +144,7 @@
     transform: rotate(180deg);
 }
 
-.filter-container{
+.filter-container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -65,21 +167,22 @@
 .sort-container {
     flex-grow: 1;
     flex-basis: 20em;
-    max-width: 165px!important;
+    max-width: 165px !important;
 }
 
 .sort-container .sort-max-width-container {
     display: block;
-    margin: 0!important;
+    margin: 0 !important;
     padding: 0;
     overflow: hidden;
     background-color: #f5f5f5;
     gap: 10px;
 
-    max-width: 165px!important;
+    max-width: 165px !important;
 }
 
-.dropdown, .sort-order-toggle-button {
+.dropdown,
+.sort-order-toggle-button {
     display: inline-block;
 }
 

@@ -3,6 +3,12 @@ ngx-masonry {
     margin: 0 auto;
 }
 
+fa-icon {
+    cursor: pointer;
+    margin: 7px;
+    transition: all 0.2s ease;
+}
+
 .masonry-item {
     width: 310px;
     margin-bottom: 10px;
@@ -44,4 +50,27 @@ ngx-masonry {
 .highlighted-button {
     color: gold;
     z-index: 9999;
+}
+
+
+
+
+.like-icon-active {
+    color: red;
+}
+
+.like-icons {
+    color: rgb(90, 90, 90);
+    font-weight: 300;
+    font-size: 1rem;
+}
+
+.like-icon:hover {
+    color: red;
+}
+
+.date-created {
+    color: rgb(90, 90, 90);
+    font-weight: 300;
+    font-size: 1rem;
 }

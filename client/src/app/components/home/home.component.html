@@ -35,23 +35,40 @@
 
     <div class="project-container p-2">
 
-        <div class="project-card"
+        <div class="project-card shadow-sm"
             *ngFor="let project of this.homeService.CurrentProjects | filter:['Name', 'Username']:this.searchValue | sortBy:this.sortOrder:this.sortProperty, index as i">
-            <img [src]="this.uploadService.ThumbnailUrl + project.UploadIds[0]">
 
-            <div [ngClass]="i % 2 == 0 ? 'project-info-container-ltr' : 'project-info-container-rtl'">
-                <h1> {{ project.Name }} </h1>
+            <a class="image-container" style="cursor: pointer;" (click)="DetailsProject(project.Id)">
+                <img [src]="this.uploadService.ThumbnailUrl + project.UploadIds[0]">
+            </a>
 
-                <div [ngClass]="i % 2 == 0 ? 'project-concept-container-ltr' : 'project-concept-container-rtl'">
-                    Concept: {{ project.Concept }}
+            <div class="project-info-container">
+                <a style="cursor: pointer;" (click)="DetailsProject(project.Id)">
+                    <h1 id="name"> {{ project.Name }} </h1>
+                </a>
+
+                <div>
+                    <pre class="concept">{{ project.Concept }}</pre>
                 </div>
             </div>
 
-            <div class="buttons">
-                <button [ngClass]="this.ProjectIsLiked[project.Id] ? 'heart-solid' : 'heart-line'"
-                    (click)="onClickLike(project.Id)">{{ this.ProjectIsLiked[project.Id] ? 'Unlike' : 'Like' }}</button>
-                <span>{{ this.ProjectLikes[project.Id] }}</span>
-                <button (click)="DetailsProject(project.Id)">Details</button>
+            <div class="project-footer">
+                <div class="like-container">
+
+                    <fa-icon (click)="onClickLike(project.Id)" class="like-icon like-icon-active"
+                        *ngIf="this.ProjectIsLiked[project.Id]" [icon]="solidHeartIcon"></fa-icon>
+                    <fa-icon (click)="onClickLike(project.Id)" class="like-icon"
+                        *ngIf="!this.ProjectIsLiked[project.Id]" [icon]="regularHeartIcon"></fa-icon>
+
+                    <!--<button [ngClass]="this.ProjectIsLiked[project.Id] ? 'heart-solid' : 'heart-line'"
+                        (click)="onClickLike(project.Id)">{{ this.ProjectIsLiked[project.Id] ? 'Unlike' : 'Like' }}</button>-->
+
+                    <span>{{ this.ProjectLikes[project.Id] }}</span>
+                </div>
+
+                <div class="date-created">
+                    {{ project.DateCreated | date: 'dd.MM.yyyy.' }}
+                </div>
             </div>
         </div>
 

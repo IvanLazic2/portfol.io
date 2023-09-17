@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { faArrowUp, faUpLong } from '@fortawesome/free-solid-svg-icons';
+import { faArrowUp, faHeart, faUpLong } from '@fortawesome/free-solid-svg-icons';
 import { Observable, lastValueFrom } from 'rxjs';
 import { HomeService } from 'src/app/components/home/home.service';
 import { ProjectService } from 'src/app/components/projects/project.service';
 import { UploadService } from 'src/app/services/upload/upload.service';
 import { UserService } from '../user/user.service';
+import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'app-home',
@@ -14,6 +15,8 @@ import { UserService } from '../user/user.service';
 })
 export class HomeComponent implements OnInit {
   upIcon: any = faArrowUp;
+  solidHeartIcon: any = faHeart;
+  regularHeartIcon: any = faHeartRegular;
 
   Projects$: Observable<any[]>;
   Projects: any[];
