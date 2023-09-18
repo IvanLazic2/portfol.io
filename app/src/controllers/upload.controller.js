@@ -22,7 +22,7 @@ async function createImageThumbnail(inputPath, outputPath, width, height) {
 
         await sharp(inputPath, { failOnError: false })
             .rotate()
-            .resize({ width: 256 })
+            .resize({ width: 512 })
             .toFile(outputPath);
     } catch (error) {
         console.error('Error generating thumbnail:', error);
