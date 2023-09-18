@@ -8,7 +8,8 @@ export class UserGET {
     }
 
     static InstanceFromObject(obj) {
-        return new UserGET(obj.Email, obj.Username, obj.FullName, obj.Bio, obj.ProfilePictureId);
+        if (obj)
+            return new UserGET(obj.Email, obj.Username, obj.FullName, obj.Bio, obj.ProfilePictureId);
     }
 }
 

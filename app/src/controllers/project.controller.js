@@ -11,10 +11,12 @@ import { ProjectPOST, ProjectGET } from '../models/project/Project.models.js';
 export async function get(req, res, next) {
     try {
 
-        if (!req.params.id) {
+        if (!req.params.id || req.params.id === "user") {
             console.error("Error in project controller: get: projectId undefined.");
             return res.status(500).end();
         }
+
+        console.log("projectid", req.params.id)
 
         const getProjectResult = await ProjectService.get(req.params.id);
 
@@ -22,7 +24,8 @@ export async function get(req, res, next) {
 
         project.UploadIds = (await UploadService.getAll(project.Id.toString()))
             .map(upload => {
-                return upload._id.toString();
+                if (upload)
+                    return upload._id.toString();
             });
 
         return res.status(200).json(project);

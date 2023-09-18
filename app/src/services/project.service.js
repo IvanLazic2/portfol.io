@@ -12,14 +12,24 @@ export async function get(id) {
 }
 
 export async function getAllUserProjects(username) {
-    const userId = (await db
-        .collection('users')
-        .findOne({ 'Username': username }))._id.toString();
+    let result = [];
 
-    const result = await db
-        .collection('projects')
-        .find({ 'UserId': userId })
-        .toArray();
+    const user = (await db
+        .collection('users')
+        .findOne({ 'Username': username }));
+
+    if (user) {
+        console.log(user);
+
+        const userId = user._id.toString();
+
+        result = await db
+            .collection('projects')
+            .find({ 'UserId': userId })
+            .toArray();
+    }
+
+
     return result;
 }
 
@@ -28,7 +38,7 @@ export async function getAllUserProjectsById(userId) {
         .collection('projects')
         .find({ 'UserId': userId })
         .toArray();
-        
+
     return result;
 }
 

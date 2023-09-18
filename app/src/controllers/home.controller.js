@@ -6,17 +6,26 @@ import { ProjectGET } from '../models/project/Project.models.js';
 
 export async function getAll(req, res) {
     try {
-        
+
         const getProjectsResult = await HomeService.getAll();
 
         const projects = ProjectGET.InstanceFromObjectArray(getProjectsResult);
 
-        for (const project of projects) {
-            const getUserResult = await UserService.getById(project.UserId);
+        for (let i = 0; i < projects.length; i++) {
+            const getUserResult = await UserService.getById(projects[i].UserId);
 
-            project.Username = getUserResult.Username;
-            project.UserProfilePictureId = getUserResult.ProfilePictureId;
-            project.UploadIds = (await UploadService.getAll(project.Id.toString())).map(upload => { return upload._id.toString(); });
+            if (!getUserResult) {
+                projects.splice(i, 1);
+                i--;
+            }
+            else {
+                projects[i].Username = getUserResult.Username;
+                projects[i].UserProfilePictureId = getUserResult.ProfilePictureId;
+                projects[i].UploadIds = (await UploadService.getAll(projects[i].Id.toString())).map(upload => {
+                    if (upload)
+                        return upload._id.toString();
+                });
+            }
         }
 
         return res.status(200).json(projects);
